@@ -1,0 +1,44 @@
+[
+  {
+    "title": "GitHub Finder",
+    "image": "githubFinder.png",
+    "image_alt": "GitHub Finder Project",
+    "githubURL": "https://github.com/slicedearth/githubfinder",
+    "description": "React website that uses the GitHub API to search for users and display information from their profile."
+  },
+  {
+    "title": "WearIt React",
+    "image": "wearitReact.png",
+    "image_alt": "WearIt React Project",
+    "githubURL": "https://github.com/slicedearth/marketing-assessment",
+    "description": "Clothing store website built with React featuring a contact form and newsletter signup via Mailchimp."
+  },
+  {
+    "title": "WearIt EJS",
+    "image": "wearitEJS.png",
+    "image_alt": "WearIt EJS Project",
+    "githubURL": "https://github.com/slicedearth/ejs-site",
+    "description": "Clothing store website with a dark mode toggle, built with EJS and Express."
+  },
+  {
+    "title": "ReVue MongoDB",
+    "image": "revueMongoDB.png",
+    "image_alt": "ReVue MongoDB Project",
+    "githubURL": "https://github.com/slicedearth/api-challenge/tree/Assessment",
+    "description": "Music review website built with Vue and MongoDB."
+  },
+  {
+    "title": "ReVue SQLite",
+    "image": "revueSQLite.png",
+    "image_alt": "ReVue SQLite Project",
+    "githubURL": "https://github.com/slicedearth/vue_assessment",
+    "description": "Music review website built with Vue and SQLite."
+  },
+  {
+    "title": "Portfolio",
+    "image": "portfolio.png",
+    "image_alt": "Portfolio Project",
+    "githubURL": "https://github.com/slicedearth/portfolio",
+    "description": "Personal portfolio website built with Gatsby and Bulma."
+  }
+]
