@@ -1,12 +1,39 @@
 import React from "react"
-import githubFinderIMG from "../../images/githubFinder.png"
-import wearitReactIMG from "../../images/wearitReact.png"
-import wearitEJSIMG from "../../images/wearitEJS.png"
-import revueMongoDBIMG from "../../images/revueMongoDB.png"
-import revueSQLiteIMG from "../../images/revueSQLite.png"
-import portfolioIMG from "../../images/portfolio.png"
+import Img from "gatsby-image"
+import { useStaticQuery, graphql } from "gatsby"
 
 export default function Projects() {
+  const data = useStaticQuery(
+    graphql`
+      fragment fluidImage on File {
+        childImageSharp {
+          fluid(maxWidth: 1000) {
+            ...GatsbyImageSharpFluid
+          }
+        }
+      }
+      query {
+        imageOne: file(relativePath: { eq: "githubFinder.png" }) {
+          ...fluidImage
+        }
+        imageTwo: file(relativePath: { eq: "wearitReact.png" }) {
+          ...fluidImage
+        }
+        imageThree: file(relativePath: { eq: "wearitEJS.png" }) {
+          ...fluidImage
+        }
+        imageFour: file(relativePath: { eq: "revueMongoDB.png" }) {
+          ...fluidImage
+        }
+        imageFive: file(relativePath: { eq: "revueSQLite.png" }) {
+          ...fluidImage
+        }
+        imageSix: file(relativePath: { eq: "portfolio.png" }) {
+          ...fluidImage
+        }
+      }
+    `
+  )
   return (
     <section id="projects" className="section section-padding">
       <h3 className="is-size-3 has-text-centered pb-3 has-text-weight-bold">
@@ -17,7 +44,7 @@ export default function Projects() {
           <div className="project-grid">
             <div className="project-item">
               <figure className="image mb-3">
-                <img src={githubFinderIMG} alt="" />
+                <Img fluid={data.imageOne.childImageSharp.fluid} />
               </figure>
               <p className="title is-size-4 has-text-centered">GitHub Finder</p>
               <p className="has-text-centered subtitle is-size-6">
@@ -30,7 +57,7 @@ export default function Projects() {
             </div>
             <div className="project-item">
               <figure className="image mb-3">
-                <img src={wearitReactIMG} alt="" />
+                <Img fluid={data.imageTwo.childImageSharp.fluid} />
               </figure>
               <p className="title is-size-4 has-text-centered">WearIt React</p>
               <p className="has-text-centered subtitle is-size-6">
@@ -43,7 +70,7 @@ export default function Projects() {
             </div>
             <div className="project-item">
               <figure className="image mb-3">
-                <img src={wearitEJSIMG} alt="" />
+                <Img fluid={data.imageThree.childImageSharp.fluid} />
               </figure>
               <p className="title is-size-4 has-text-centered">WearIt EJS</p>
               <p className="has-text-centered subtitle is-size-6">
@@ -56,7 +83,7 @@ export default function Projects() {
             </div>
             <div className="project-item">
               <figure className="image mb-3">
-                <img src={revueMongoDBIMG} alt="" />
+                <Img fluid={data.imageFour.childImageSharp.fluid} />
               </figure>
               <p className="title is-size-4 has-text-centered">ReVue MongoDB</p>
               <p className="has-text-centered subtitle is-size-6">
@@ -68,7 +95,7 @@ export default function Projects() {
             </div>
             <div className="project-item">
               <figure className="image mb-3">
-                <img src={revueSQLiteIMG} alt="" />
+                <Img fluid={data.imageFive.childImageSharp.fluid} />
               </figure>
               <p className="title is-size-4 has-text-centered">ReVue SQLite</p>
               <p className="has-text-centered subtitle is-size-6">
@@ -80,7 +107,7 @@ export default function Projects() {
             </div>
             <div className="project-item">
               <figure className="image mb-3">
-                <img src={portfolioIMG} alt="" />
+                <Img fluid={data.imageSix.childImageSharp.fluid} />
               </figure>
               <p className="title is-size-4 has-text-centered">Portfolio</p>
               <p className="has-text-centered subtitle is-size-6">
