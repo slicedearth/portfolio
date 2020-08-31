@@ -1,0 +1,87 @@
+// GOOGLE FONTS IMPORT
+@import url("https://fonts.googleapis.com/css2?family=Raleway&family=Shadows+Into+Light&family=Ubuntu+Mono&display=swap");
+
+// VARIABLES
+$gradient-col-1: #2c5364;
+$gradient-col-2: #203a43;
+$gradient-col-3: #0f2027;
+$family-primary: "Raleway", sans-serif;
+$family-secondary: "Shadows Into Light", cursive;
+$family-code: "Ubuntu Mono", monospace;
+$navbar-item-color: hsl(0, 0%, 100%);
+// SMOOTH SCROLL
+// html {
+//   scroll-behavior: smooth;
+// }
+// @media screen and (prefers-reduced-motion: reduce) {
+//   html {
+//     scroll-behavior: auto;
+//   }
+// }
+body {
+  background-color: whitesmoke;
+}
+// .project-tiles {
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: space-between;
+// }
+
+.hero.is-large {
+  height: 90vh;
+}
+.footer-link {
+  color: hsl(0, 0%, 100%);
+  font-weight: 600;
+  &:hover {
+    color: #f1f1f1f1;
+  }
+}
+.is-grad {
+  background: $gradient-col-3;
+  background: -webkit-linear-gradient(
+    to right,
+    rgba($gradient-col-1, 1),
+    rgba($gradient-col-2, 1),
+    rgba($gradient-col-3, 1)
+  );
+  background: -moz-linear-gradient(
+    to right,
+    rgba($gradient-col-1, 1),
+    rgba($gradient-col-2, 1),
+    rgba($gradient-col-3, 1)
+  );
+  background: linear-gradient(
+    to right,
+    rgba($gradient-col-1, 1),
+    rgba($gradient-col-2, 1),
+    rgba($gradient-col-3, 1)
+  );
+}
+.project-grid {
+  display: grid;
+  grid-gap: 2rem;
+  // grid-template-columns: repeat(1fr);
+}
+@media screen and (min-width: 769px) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (min-width: 1024px) {
+  .project-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.project-item {
+  background: white;
+  padding: 1.25rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  border-radius: 6px;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+    0 0px 0 1px rgba(10, 10, 10, 0.02);
+}
+
+// BULMA IMPORT
+@import "~bulma/bulma.sass";

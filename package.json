@@ -2,7 +2,7 @@
   "name": "gatsby-portfolio",
   "private": true,
   "description": "A personal portfolio built with Gatsby",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
@@ -14,9 +14,17 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
+    "bulma": "^0.9.0",
     "gatsby": "^2.23.12",
+    "gatsby-plugin-netlify": "^2.3.11",
+    "gatsby-plugin-netlify-cache": "^1.2.0",
+    "gatsby-plugin-react-helmet": "^3.3.10",
+    "gatsby-plugin-sass": "^2.3.12",
+    "node-sass": "^4.14.1",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-helmet": "^6.1.0",
+    "smooth-scroll": "^16.1.3"
   },
   "devDependencies": {
     "prettier": "2.0.5"
