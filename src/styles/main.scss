@@ -1,20 +1,108 @@
-// GOOGLE FONTS IMPORT
-@import url("https://fonts.googleapis.com/css2?family=Raleway&family=Shadows+Into+Light&family=Ubuntu+Mono&display=swap");
+// FONTS
+//  -- PRIMARY
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Barlow Regular "), local("Barlow-Regular"),
+    url("./fonts/barlow-latin-400.woff2") format("woff2"),
+    url("./fonts/barlow-latin-400.woff") format("woff");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: local("Barlow SemiBold "), local("Barlow-SemiBold"),
+    url("./fonts/barlow-latin-600.woff2") format("woff2"),
+    url("./fonts/barlow-latin-600.woff") format("woff");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Barlow Bold "), local("Barlow-Bold"),
+    url("./fonts/barlow-latin-700.woff2") format("woff2"),
+    url("./fonts/barlow-latin-700.woff") format("woff");
+}
+
+//  -- SECONDARY
+@font-face {
+  font-family: "Caveat";
+  font-style: cursive;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Caveat Regular"), local("Caveat-Regular"),
+    url("./fonts/caveat-v7-latin-regular.woff2") format("woff2"),
+    url("./fonts/caveat-v7-latin-regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Caveat";
+  font-style: cursive;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Caveat Bold"), local("Caveat-Bold"),
+    url("./fonts/caveat-v7-latin-700.woff2") format("woff2"),
+    url("./fonts/caveat-v7-latin-700.woff") format("woff");
+}
+
+//  -- MONO
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Ubuntu Mono Regular "), local("Ubuntu Mono-Regular"),
+    url("./fonts/ubuntu-mono-latin-400.woff2") format("woff2"),
+    url("./fonts/ubuntu-mono-latin-400.woff") format("woff");
+}
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Ubuntu Mono Bold "), local("Ubuntu Mono-Bold"),
+    url("./fonts/ubuntu-mono-latin-700.woff2") format("woff2"),
+    url("./fonts/ubuntu-mono-latin-700.woff") format("woff");
+}
 
 // VARIABLES
 $gradient-col-1: #2c5364;
 $gradient-col-2: #203a43;
 $gradient-col-3: #0f2027;
-$family-primary: "Raleway", sans-serif;
-$family-secondary: "Shadows Into Light", cursive;
+$family-primary: "Barlow", sans-serif;
+$family-secondary: "Caveat", cursive;
 $family-code: "Ubuntu Mono", monospace;
-$navbar-item-color: hsl(0, 0%, 100%);
+$navbar-item-color: #fff;
+$footer-item-color: $navbar-item-color;
+$navbar-background-color: linear-gradient(
+  to right,
+  rgba($gradient-col-1, 1),
+  rgba($gradient-col-2, 1),
+  rgba($gradient-col-3, 1)
+);
+$navbar-item-hover-background-color: transparent;
+$navbar-item-hover-color: darken($navbar-item-color, 50%);
+
+html {
+  scroll-behavior: smooth;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 
 body {
   background-color: whitesmoke;
 }
 .hero.is-large {
   height: 90vh;
+}
+.navbar {
+  background-image: $navbar-background-color;
 }
 .footer-link {
   color: hsl(0, 0%, 100%);
@@ -26,23 +114,28 @@ body {
 .is-grad {
   background: $gradient-col-3;
   background: -webkit-linear-gradient(
-    to right,
-    rgba($gradient-col-1, 1),
-    rgba($gradient-col-2, 1),
-    rgba($gradient-col-3, 1)
+    to right bottom,
+    rgba($gradient-col-1, 0.9),
+    rgba($gradient-col-2, 0.9),
+    rgba($gradient-col-3, 0.9)
   );
   background: -moz-linear-gradient(
     to right,
-    rgba($gradient-col-1, 1),
-    rgba($gradient-col-2, 1),
-    rgba($gradient-col-3, 1)
+    rgba($gradient-col-1, 0.9),
+    rgba($gradient-col-2, 0.9),
+    rgba($gradient-col-3, 0.9)
   );
   background: linear-gradient(
     to right,
-    rgba($gradient-col-1, 1),
-    rgba($gradient-col-2, 1),
-    rgba($gradient-col-3, 1)
+    rgba($gradient-col-1, 0.9),
+    rgba($gradient-col-2, 0.9),
+    rgba($gradient-col-3, 0.9)
   );
+}
+.svgIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: #fff;
 }
 .project-grid {
   display: grid;
