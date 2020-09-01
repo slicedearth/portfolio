@@ -4,41 +4,41 @@
     "image": "./images/projects/githubFinder.png",
     "image_alt": "GitHub Finder Project",
     "githubURL": "https://github.com/slicedearth/githubfinder",
-    "description": "React website that uses the GitHub API to search for users and display information from their profile."
+    "description": "Website that uses the GitHub API to search for users and display information from their profile. Built with React."
   },
   {
     "title": "WearIt React",
     "image": "./images/projects/wearitReact.png",
     "image_alt": "WearIt React Project",
     "githubURL": "https://github.com/slicedearth/marketing-assessment",
-    "description": "Clothing store website built with React featuring a contact form and newsletter signup via Mailchimp."
+    "description": "Clothing store website featuring a contact form and newsletter signup via Mailchimp. Built with React."
   },
   {
     "title": "WearIt EJS",
     "image": "./images/projects/wearitEJS.png",
     "image_alt": "WearIt EJS Project",
     "githubURL": "https://github.com/slicedearth/ejs-site",
-    "description": "Clothing store website with a dark mode toggle, built with EJS and Express."
+    "description": "Clothing store website featuring a dark mode toggle with the ability to submit testimonials. Built with EJS and Express."
   },
   {
     "title": "ReVue MongoDB",
     "image": "./images/projects/revueMongoDB.png",
     "image_alt": "ReVue MongoDB Project",
     "githubURL": "https://github.com/slicedearth/api-challenge/tree/Assessment",
-    "description": "Music review website built with Vue and MongoDB."
+    "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express and MongoDB."
   },
   {
     "title": "ReVue SQLite",
     "image": "./images/projects/revueSQLite.png",
     "image_alt": "ReVue SQLite Project",
     "githubURL": "https://github.com/slicedearth/vue_assessment",
-    "description": "Music review website built with Vue and SQLite."
+    "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express, SQLite and Sequelize."
   },
   {
     "title": "Portfolio",
     "image": "./images/projects/portfolio.png",
     "image_alt": "Portfolio Project",
     "githubURL": "https://github.com/slicedearth/portfolio",
-    "description": "Personal portfolio website built with Gatsby and Bulma."
+    "description": "Personal portfolio website that allows me to showcase my web projects. Built with Gatsby and Bulma. "
   }
 ]
