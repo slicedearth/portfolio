@@ -9,6 +9,7 @@ module.exports = {
     title: "Abymar",
     description:
       "Personal portfolio website that showcases projects and skills.",
+    siteUrl: "https://abymar.com",
   },
   plugins: [
     `gatsby-plugin-preact`,

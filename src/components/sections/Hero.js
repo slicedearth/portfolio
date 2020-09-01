@@ -7,7 +7,7 @@ import contactIcon from "../../icons/envelope.svg"
 
 export default function Hero() {
   return (
-    <section className="hero is-grad is-medium">
+    <section className="hero is-grad is-medium is-dark">
       <Particles id="tsparticles" params={tsparticlesConfig} />
       <div className="hero-body">
         <div className="container has-text-centered">

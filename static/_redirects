@@ -1,0 +1,2 @@
+# Redirect default Netlify domain to custom domain
+https://abymar.netlify.app/* https://www.abymar.com/:splat 301!
