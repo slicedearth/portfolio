@@ -5,7 +5,7 @@ export default function Projects() {
   const data = useStaticQuery(
     graphql`
       query {
-        allProject {
+        allProjectsJson {
           nodes {
             id
             title
@@ -14,8 +14,8 @@ export default function Projects() {
             image_alt
             image {
               childImageSharp {
-                fluid(maxWidth: 1000) {
-                  ...GatsbyImageSharpFluid
+                fluid(maxWidth: 680, quality: 100) {
+                  ...GatsbyImageSharpFluid_withWebp
                 }
               }
             }
@@ -32,8 +32,8 @@ export default function Projects() {
       <div className="columns is-centered">
         <div className="column is-four-fifths">
           <div className="project-grid">
-            {data.allProject.nodes.map(project => (
-              <ProjectItem {...project} key={project.title} />
+            {data.allProjectsJson.nodes.map((project, index) => (
+              <ProjectItem {...project} key={index} />
             ))}
           </div>
         </div>

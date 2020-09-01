@@ -2,7 +2,7 @@
   "name": "gatsby-portfolio",
   "private": true,
   "description": "A personal portfolio built with Gatsby",
-  "version": "0.6.0",
+  "version": "0.8.0",
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
@@ -25,6 +25,7 @@
     "gatsby-plugin-sass": "^2.3.12",
     "gatsby-plugin-sharp": "2.6.26",
     "gatsby-source-filesystem": "^2.3.24",
+    "gatsby-transformer-json": "^2.4.11",
     "gatsby-transformer-sharp": "^2.5.12",
     "node-sass": "^4.14.1",
     "preact": "^10.4.8",

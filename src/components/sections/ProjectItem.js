@@ -10,8 +10,7 @@ export default function ProjectItem({
   return (
     <div className="project-item">
       <figure className="image mb-3">
-        <Img fluid={image.childImageSharp.fluid} alt={image_alt} />
-        {/* <img src={githubFinderIMG} alt="" /> */}
+        {image && <Img fluid={image.childImageSharp.fluid} alt={image_alt} />}
       </figure>
       <p className="title is-size-4 has-text-centered">{title}</p>
       <p className="has-text-centered subtitle is-size-6">{description}</p>
