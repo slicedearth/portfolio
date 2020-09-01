@@ -92,13 +92,13 @@ export default function Hero() {
       />
       <div className="hero-body">
         <div className="container has-text-centered">
-          <h1 className="is-size-1 hero-title has-text-weight-bold is-family-secondary has-text-white">
+          <h1 className="is-size-1 hero-title has-text-weight-bold is-family-secondary has-text-white animate__animated animate__bounceInDown animate__slow">
             Hey, I'm Aser
           </h1>
-          <h2 className="subtitle is-size-2 is-family-primary has-text-white">
+          <h2 className="subtitle is-size-2 is-family-primary has-text-white animate__animated animate__bounceIn animate__delay-2s">
             Junior Web Developer
           </h2>
-          <div className="buttons are-medium is-centered">
+          <div className="buttons are-medium is-centered pt-5 animate__animated animate__fadeInUp animate__delay-2s">
             <a
               className="button is-dark is-size-5 has-text-weight-semibold"
               href="https://www.github.com/slicedearth"
