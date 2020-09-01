@@ -26,7 +26,7 @@ export default function Projects() {
   )
   return (
     <section id="projects" className="section section-padding">
-      <h3 className="is-size-3 has-text-centered pb-3 has-text-weight-bold">
+      <h3 className="is-size-2 has-text-centered pb-3 has-text-weight-bold">
         Projects
       </h3>
       <div className="columns is-centered">
