@@ -7,6 +7,7 @@ module.exports = {
   /* Your site config here */
   siteMetadata: {
     title: "Abymar",
+    description: "Personal portfolio site.",
   },
   plugins: [
     `gatsby-plugin-preact`,
