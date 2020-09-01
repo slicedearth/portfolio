@@ -78,7 +78,7 @@ $family-code: "Ubuntu Mono", monospace;
 $navbar-item-color: #fff;
 $footer-item-color: $navbar-item-color;
 $navbar-background-color: linear-gradient(
-  to right,
+  to right bottom,
   rgba($gradient-col-1, 1),
   rgba($gradient-col-2, 1),
   rgba($gradient-col-3, 1)
@@ -86,6 +86,7 @@ $navbar-background-color: linear-gradient(
 $navbar-item-hover-background-color: transparent;
 $navbar-item-hover-color: darken($navbar-item-color, 50%);
 
+// SMOOTH SCROLL
 html {
   scroll-behavior: smooth;
 }
@@ -95,55 +96,74 @@ html {
   }
 }
 
+// BODY
 body {
   background-color: whitesmoke;
 }
+
+// NAVBAR
+.navbar {
+  background-image: $navbar-background-color;
+}
+.navbar-brand {
+  text-shadow: 2px 2px #333;
+}
+
+// 404 HEADINGS
 h1.error-head {
   font-size: 4rem;
 }
 h2.error-subhead {
   font-size: 3rem;
 }
-.navbar {
-  background-image: $navbar-background-color;
-}
-.footer-link {
-  color: hsl(0, 0%, 100%);
-  font-weight: 600;
-  &:hover {
-    color: #f1f1f1f1;
-  }
-}
+
+// GRADIENT
 .is-grad {
   background: $gradient-col-3;
   background: -webkit-linear-gradient(
     to right bottom,
-    rgba($gradient-col-1, 0.9),
-    rgba($gradient-col-2, 0.9),
-    rgba($gradient-col-3, 0.9)
+    rgba($gradient-col-1, 1),
+    rgba($gradient-col-2, 1),
+    rgba($gradient-col-3, 1)
   );
   background: -moz-linear-gradient(
     to right bottom,
-    rgba($gradient-col-1, 0.9),
-    rgba($gradient-col-2, 0.9),
-    rgba($gradient-col-3, 0.9)
+    rgba($gradient-col-1, 1),
+    rgba($gradient-col-2, 1),
+    rgba($gradient-col-3, 1)
   );
   background: linear-gradient(
     to right bottom,
-    rgba($gradient-col-1, 0.9),
-    rgba($gradient-col-2, 0.9),
-    rgba($gradient-col-3, 0.9)
+    rgba($gradient-col-1, 1),
+    rgba($gradient-col-2, 1),
+    rgba($gradient-col-3, 1)
   );
+}
+
+// HERO
+.hero {
+  position: relative;
+  z-index: 0;
+}
+#tsparticles {
+  position: absolute;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+}
+.hero-title {
+  text-shadow: 2px 2px #333;
 }
 .svgIcon {
   width: 1.25rem;
   height: 1.25rem;
   fill: #fff;
 }
+
+// PROJECTS
 .project-grid {
   display: grid;
   grid-gap: 2rem;
-  // grid-template-columns: repeat(1fr);
 }
 @media screen and (min-width: 769px) {
   .project-grid {
@@ -163,6 +183,15 @@ h2.error-subhead {
   border-radius: 6px;
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
     0 0px 0 1px rgba(10, 10, 10, 0.02);
+}
+
+// FOOTER
+.footer-link {
+  color: $footer-item-color;
+  font-weight: 600;
+  &:hover {
+    color: darken($footer-item-color, 50%);
+  }
 }
 
 // BULMA IMPORT
