@@ -98,8 +98,11 @@ html {
 body {
   background-color: whitesmoke;
 }
-.hero.is-large {
-  height: 90vh;
+h1.error-head {
+  font-size: 4rem;
+}
+h2.error-subhead {
+  font-size: 3rem;
 }
 .navbar {
   background-image: $navbar-background-color;
@@ -120,13 +123,13 @@ body {
     rgba($gradient-col-3, 0.9)
   );
   background: -moz-linear-gradient(
-    to right,
+    to right bottom,
     rgba($gradient-col-1, 0.9),
     rgba($gradient-col-2, 0.9),
     rgba($gradient-col-3, 0.9)
   );
   background: linear-gradient(
-    to right,
+    to right bottom,
     rgba($gradient-col-1, 0.9),
     rgba($gradient-col-2, 0.9),
     rgba($gradient-col-3, 0.9)

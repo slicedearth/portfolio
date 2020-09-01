@@ -10,6 +10,12 @@ module.exports = {
     title: "Abymar",
   },
   plugins: [
+    `gatsby-plugin-preact`,
+    `gatsby-plugin-netlify`,
+    `gatsby-plugin-netlify-cache`,
+    `gatsby-plugin-react-helmet`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -18,10 +24,11 @@ module.exports = {
       },
     },
     `gatsby-plugin-sass`,
-    `gatsby-plugin-netlify`,
-    `gatsby-plugin-netlify-cache`,
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
-    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-purgecss`,
+      options: {
+        printRejected: true,
+      },
+    },
   ],
 }
