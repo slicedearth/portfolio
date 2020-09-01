@@ -1,0 +1,77 @@
+[
+  {
+    "title": "HTML",
+    "icon": "./images/skills/html5-plain.svg",
+    "icon_alt": "HTML Icon"
+  },
+  {
+    "title": "CSS",
+    "icon": "./images/skills/css3-plain.svg",
+    "icon_alt": "CSS Icon"
+  },
+  {
+    "title": "JavaScript",
+    "icon": "./images/skills/javascript-plain.svg",
+    "icon_alt": "JavaScript Icon"
+  },
+  {
+    "title": "Sass",
+    "icon": "./images/skills/sass-original.svg",
+    "icon_alt": "Sass Icon"
+  },
+  {
+    "title": "MongoDB ",
+    "icon": "./images/skills/mongodb-plain.svg",
+    "icon_alt": "MongoDB Icon"
+  },
+  {
+    "title": "MySQL",
+    "icon": "./images/skills/mysql-plain.svg",
+    "icon_alt": "MySQL Icon"
+  },
+  {
+    "title": "Git",
+    "icon": "./images/skills/git-plain.svg",
+    "icon_alt": "Git Icon"
+  },
+  {
+    "title": "Docker",
+    "icon": "./images/skills/docker-plain.svg",
+    "icon_alt": "Docker Icon"
+  },
+  {
+    "title": "Bootstrap",
+    "icon": "./images/skills/bootstrap-plain.svg",
+    "icon_alt": "Bootstrap Icon"
+  },
+  {
+    "title": "Bulma",
+    "icon": "./images/skills/bulma.svg",
+    "icon_alt": "Bulma Icon"
+  },
+  {
+    "title": "Node JS",
+    "icon": "./images/skills/nodejs-plain.svg",
+    "icon_alt": "Node JS Icon"
+  },
+  {
+    "title": "Express",
+    "icon": "./images/skills/express-original.svg",
+    "icon_alt": "Express Icon"
+  },
+  {
+    "title": "React",
+    "icon": "./images/skills/react-original.svg",
+    "icon_alt": "React Icon"
+  },
+  {
+    "title": "Vue",
+    "icon": "./images/skills/vuejs-original.svg",
+    "icon_alt": "Vue Icon"
+  },
+  {
+    "title": "Gatsby",
+    "icon": "./images/skills/gatsby.svg",
+    "icon_alt": "Gatsby Icon"
+  }
+]
