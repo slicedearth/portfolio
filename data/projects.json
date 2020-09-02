@@ -10,28 +10,28 @@
     "title": "WearIt React",
     "image": "./images/projects/wearitReact.png",
     "image_alt": "WearIt React Project",
-    "githubURL": "https://github.com/slicedearth/marketing-assessment",
+    "githubURL": "https://github.com/slicedearth/wearit-react",
     "description": "Clothing store website featuring a contact form and newsletter signup via Mailchimp. Built with React."
   },
   {
     "title": "WearIt EJS",
     "image": "./images/projects/wearitEJS.png",
     "image_alt": "WearIt EJS Project",
-    "githubURL": "https://github.com/slicedearth/ejs-site",
+    "githubURL": "https://github.com/slicedearth/wearit-ejs",
     "description": "Clothing store website featuring a dark mode toggle with the ability to submit testimonials. Built with EJS and Express."
   },
   {
     "title": "ReVue MongoDB",
     "image": "./images/projects/revueMongoDB.png",
     "image_alt": "ReVue MongoDB Project",
-    "githubURL": "https://github.com/slicedearth/api-challenge/tree/Assessment",
+    "githubURL": "https://github.com/slicedearth/revue-mongodb/",
     "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express and MongoDB."
   },
   {
     "title": "ReVue SQLite",
     "image": "./images/projects/revueSQLite.png",
     "image_alt": "ReVue SQLite Project",
-    "githubURL": "https://github.com/slicedearth/vue_assessment",
+    "githubURL": "https://github.com/slicedearth/revue-sqlite",
     "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express, SQLite and Sequelize."
   },
   {
