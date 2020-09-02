@@ -19,7 +19,7 @@ export default function Hero() {
           </h2>
           <div className="buttons are-medium is-centered animate__animated animate__fadeInUp animate__delay-2s">
             <a
-              className="button is-dark is-size-5 has-text-weight-semibold"
+              className="button is-dark is-size-5 has-text-weight-semibold has-text-white"
               href="https://www.github.com/slicedearth"
               rel="noopener noreferrer"
               target="_blank"
@@ -30,8 +30,8 @@ export default function Hero() {
               <span>GitHub Profile</span>
             </a>
             <Link
-              className="button is-dark is-size-5 has-text-weight-semibold"
-              to="/#contact"
+              className="button is-dark is-size-5 has-text-weight-semibold has-text-white"
+              to="/contact"
             >
               <span className="icon is-large">
                 <img className="svgIcon" src={contactIcon} alt="Contact Icon" />
