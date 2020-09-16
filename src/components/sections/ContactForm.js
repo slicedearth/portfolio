@@ -13,17 +13,18 @@ export default function ContactForm() {
             data-netlify="true"
             data-netlify-honeypot="bot-field"
           >
-            <input type="hidden" name="bot-field" />
             <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="bot-field" />
             <div className="field">
               <label htmlFor="nameInput" className="label">
                 Name
                 <div className="control">
                   <input
                     className="input"
-                    id="name"
+                    id="nameInput"
                     type="text"
-                    placeholder="Name"
+                    placeholder="Your Name"
+                    name="name"
                   />
                 </div>
               </label>
@@ -37,7 +38,8 @@ export default function ContactForm() {
                     className="input"
                     id="emailInput"
                     type="email"
-                    placeholder="Email Address"
+                    placeholder="Your Email Address"
+                    name="email"
                   />
                 </div>
               </label>
@@ -49,7 +51,8 @@ export default function ContactForm() {
                   <textarea
                     className="textarea"
                     id="messageInput"
-                    placeholder="Message"
+                    placeholder="Your Message"
+                    name="message"
                   ></textarea>
                 </div>
               </label>
