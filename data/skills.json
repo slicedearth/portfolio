@@ -20,26 +20,6 @@
     "icon_alt": "Sass Icon"
   },
   {
-    "title": "MongoDB ",
-    "icon": "./images/skills/mongodb-plain.svg",
-    "icon_alt": "MongoDB Icon"
-  },
-  {
-    "title": "MySQL",
-    "icon": "./images/skills/mysql-plain.svg",
-    "icon_alt": "MySQL Icon"
-  },
-  {
-    "title": "Git",
-    "icon": "./images/skills/git-plain.svg",
-    "icon_alt": "Git Icon"
-  },
-  {
-    "title": "Docker",
-    "icon": "./images/skills/docker-plain.svg",
-    "icon_alt": "Docker Icon"
-  },
-  {
     "title": "Bootstrap",
     "icon": "./images/skills/bootstrap-plain.svg",
     "icon_alt": "Bootstrap Icon"
@@ -50,9 +30,9 @@
     "icon_alt": "Bulma Icon"
   },
   {
-    "title": "Node JS",
+    "title": "Node.js",
     "icon": "./images/skills/nodejs-plain.svg",
-    "icon_alt": "Node JS Icon"
+    "icon_alt": "Node.js Icon"
   },
   {
     "title": "Express",
@@ -73,5 +53,25 @@
     "title": "Gatsby",
     "icon": "./images/skills/gatsby.svg",
     "icon_alt": "Gatsby Icon"
+  },
+  {
+    "title": "MongoDB ",
+    "icon": "./images/skills/mongodb-plain.svg",
+    "icon_alt": "MongoDB Icon"
+  },
+  {
+    "title": "MySQL",
+    "icon": "./images/skills/mysql-plain.svg",
+    "icon_alt": "MySQL Icon"
+  },
+  {
+    "title": "Git",
+    "icon": "./images/skills/git-plain.svg",
+    "icon_alt": "Git Icon"
+  },
+  {
+    "title": "Docker",
+    "icon": "./images/skills/docker-plain.svg",
+    "icon_alt": "Docker Icon"
   }
 ]

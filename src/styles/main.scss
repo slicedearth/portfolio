@@ -75,7 +75,8 @@ $gradient-col-3: #0f2027;
 $family-primary: "Barlow", sans-serif;
 $family-secondary: "Caveat", cursive;
 $family-code: "Ubuntu Mono", monospace;
-$navbar-item-color: #fff;
+$link-color: #fff;
+$navbar-item-color: $link-color;
 $footer-item-color: $navbar-item-color;
 $navbar-background-color: linear-gradient(
   to right bottom,
@@ -84,7 +85,7 @@ $navbar-background-color: linear-gradient(
   rgba($gradient-col-3, 1)
 );
 $navbar-item-hover-background-color: transparent;
-$navbar-item-hover-color: darken($navbar-item-color, 50%);
+$navbar-item-hover-color: $link-color;
 
 // SMOOTH SCROLL
 html {
@@ -176,7 +177,7 @@ h2.error-subhead {
   }
 }
 .project-item {
-  background: white;
+  background: #fff;
   padding: 1.25rem;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -187,7 +188,7 @@ h2.error-subhead {
 
 // ABOUT
 .card-box {
-  background: white;
+  background: #fff;
   padding: 1.25rem;
   border-radius: 6px;
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
@@ -199,7 +200,7 @@ h2.error-subhead {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 .skill-item {
-  background: white;
+  background: #fff;
   padding: 1.25rem;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -223,10 +224,13 @@ h2.error-subhead {
   color: $footer-item-color;
   font-weight: 600;
   &:hover {
-    color: darken($footer-item-color, 50%);
+    color: $link-color;
+    text-decoration: underline;
   }
 }
-
+.navbar-end .navbar-item:hover {
+  text-decoration: underline;
+}
 // BULMA IMPORT
 @import "~bulma/bulma.sass";
 
