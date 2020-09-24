@@ -20,7 +20,7 @@ export default function ProjectItem({
         rel="noopener noreferrer"
         target="_blank"
       >
-        View on GitHub
+        View Code on GitHub
       </a>
     </div>
   )
