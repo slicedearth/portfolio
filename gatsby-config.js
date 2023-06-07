@@ -14,7 +14,11 @@ module.exports = {
       "Personal portfolio website that showcases projects and skills.",
     siteUrl: "https://abymar.com",
   },
+  // flags: {
+  //   DEV_SSR: true,
+  // },
   plugins: [
+    `gatsby-plugin-image`,
     `gatsby-plugin-netlify`,
     `gatsby-plugin-react-helmet`,
     {

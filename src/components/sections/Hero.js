@@ -1,17 +1,21 @@
-import React, {useCallback} from "react"
+import React, { useCallback } from "react"
 import { Link } from "gatsby"
 import Particles from "react-particles"
 import tsparticlesConfig from "./tsparticles-config.json"
-import { loadFull } from "tsparticles"; 
+import { loadFull } from "tsparticles"
 import ghIcon from "../../icons/github-original.svg"
 import contactIcon from "../../icons/envelope.svg"
 export default function Hero() {
   const particlesInit = useCallback(async engine => {
-    await loadFull(engine);
-  }, []);
+    await loadFull(engine)
+  }, [])
   return (
     <section className="hero is-grad is-medium is-dark">
-      <Particles id="tsparticles" options={tsparticlesConfig} init={particlesInit} />
+      <Particles
+        id="tsparticles"
+        options={tsparticlesConfig}
+        init={particlesInit}
+      />
       <div className="hero-body">
         <div className="container has-text-centered">
           <h1 className="is-size-1 hero-title has-text-weight-bold is-family-secondary has-text-white animate__animated animate__bounceInDown animate__slow">

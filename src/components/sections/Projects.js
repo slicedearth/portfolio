@@ -4,7 +4,7 @@ import ProjectItem from "./ProjectItem"
 export default function Projects() {
   const data = useStaticQuery(
     graphql`
-      query {
+      {
         allProjectsJson {
           nodes {
             id
@@ -14,9 +14,7 @@ export default function Projects() {
             image_alt
             image {
               childImageSharp {
-                fluid(maxWidth: 680, quality: 100) {
-                  ...GatsbyImageSharpFluid_withWebp
-                }
+                gatsbyImageData(width: 680, quality: 100, layout: CONSTRAINED)
               }
             }
           }

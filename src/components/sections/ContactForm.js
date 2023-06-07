@@ -12,6 +12,7 @@ export default function ContactForm() {
             method="post"
             data-netlify="true"
             data-netlify-honeypot="bot-field"
+            data-netlify-recaptcha="true"
           >
             <input type="hidden" name="form-name" value="contact" />
             <input type="hidden" name="bot-field" />
@@ -24,7 +25,8 @@ export default function ContactForm() {
                     id="nameInput"
                     type="text"
                     placeholder="Your Name"
-                    name="name" required
+                    name="name"
+                    required
                   />
                 </div>
               </label>
@@ -39,7 +41,8 @@ export default function ContactForm() {
                     id="emailInput"
                     type="email"
                     placeholder="Your Email Address"
-                    name="email" required
+                    name="email"
+                    required
                   />
                 </div>
               </label>
@@ -52,7 +55,8 @@ export default function ContactForm() {
                     className="textarea"
                     id="messageInput"
                     placeholder="Your Message"
-                    name="message" required
+                    name="message"
+                    required
                   ></textarea>
                 </div>
               </label>
