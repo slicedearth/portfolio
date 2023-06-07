@@ -12,7 +12,6 @@ export default function ContactForm() {
             method="post"
             data-netlify="true"
             data-netlify-honeypot="bot-field"
-            data-netlify-recaptcha="true"
           >
             <input type="hidden" name="form-name" value="contact" />
             <input type="hidden" name="bot-field" />
@@ -61,12 +60,11 @@ export default function ContactForm() {
                 </div>
               </label>
             </div>
-            <div data-netlify-recaptcha="true"></div>
             <div className="field">
               <div className="control">
                 <button
                   type="submit"
-                  className="button is-dark is-fullwidth  has-text-weight-semibold"
+                  className="button is-dark is-fullwidth has-text-weight-semibold"
                 >
                   Submit
                 </button>
