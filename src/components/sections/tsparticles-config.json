@@ -8,6 +8,7 @@
     },
     "enable": true
   },
+  "fullScreen": false,
   "detectRetina": true,
   "fpsLimit": 60,
   "interactivity": {
@@ -79,7 +80,7 @@
       "enable": true,
       "outMode": "bounce",
       "random": false,
-      "speed": 4,
+      "speed": 2,
       "straight": false
     },
     "number": {
@@ -151,5 +152,6 @@
       "value": 10
     }
   },
-  "pauseOnBlur": true
+  "pauseOnBlur": true,
+  "pauseOnOutsideViewport": true
 }

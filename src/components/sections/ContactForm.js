@@ -57,7 +57,7 @@ export default function ContactForm() {
                 </div>
               </label>
             </div>
-
+            <div data-netlify-recaptcha="true"></div>
             <div className="field">
               <div className="control">
                 <button

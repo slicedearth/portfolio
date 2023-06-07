@@ -1,12 +1,12 @@
 import React from "react"
 import Layout from "../components/Layout/Layout"
 import { Link } from "gatsby"
-import SEO from "../components/SEO"
+import Seo from "../components/SEO"
 
 export default function NotFound() {
   return (
     <Layout>
-      <SEO title="404: Not Found" />
+      <Seo title="404: Not Found" />
       <section className="section is-large nf-body">
         <div className="columns is-centered mt-6">
           <div className="column has-text-centered is-four-fifths">
