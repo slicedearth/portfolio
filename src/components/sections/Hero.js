@@ -1,6 +1,6 @@
 import React, {useCallback} from "react"
 import { Link } from "gatsby"
-import Particles from "preact-particles"
+import Particles from "react-particles"
 import tsparticlesConfig from "./tsparticles-config.json"
 import { loadFull } from "tsparticles"; 
 import ghIcon from "../../icons/github-original.svg"

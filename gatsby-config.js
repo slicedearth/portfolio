@@ -15,7 +15,6 @@ module.exports = {
     siteUrl: "https://abymar.com",
   },
   plugins: [
-    `gatsby-plugin-preact`,
     `gatsby-plugin-netlify`,
     `gatsby-plugin-react-helmet`,
     {
