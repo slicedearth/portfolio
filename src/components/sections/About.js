@@ -28,18 +28,23 @@ export default function About() {
         <div className="column is-four-fifths">
           <div className="card-box mb-3">
             <p className="is-size-4 has-text-centered">
-              I am based in{" "}
+              I am a
               <span className="has-text-weight-semibold">
+                {" "}
+                project manager{" "}
+              </span>
+              and
+              <span className="has-text-weight-semibold"> web developer </span>
+              based in
+              <span className="has-text-weight-semibold">
+                {" "}
                 Melbourne, Australia
-              </span>{" "}
-              and have recently completed a{" "}
-              <span className="has-text-weight-semibold">
-                Diploma of Website Development
               </span>
               .
             </p>
             <p className="is-size-4 has-text-centered">
-              I am proficient with the following web technologies...
+              I have experience with the following web technologies and
+              platforms:
             </p>
           </div>
           <div className="skill-grid">

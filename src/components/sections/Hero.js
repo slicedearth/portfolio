@@ -21,8 +21,8 @@ export default function Hero() {
           <h1 className="is-size-1 hero-title has-text-weight-bold is-family-secondary has-text-white animate__animated animate__bounceInDown animate__slow">
             Hey, I'm Aser
           </h1>
-          <h2 className="subtitle is-size-2 is-family-primary has-text-white animate__animated animate__bounceIn animate__delay-2s">
-            Web Developer
+          <h2 className="subtitle is-size-3 is-family-primary has-text-white animate__animated animate__bounceIn animate__delay-2s">
+            Project Manager/Web Developer
           </h2>
           <div className="buttons are-medium is-centered animate__animated animate__fadeInUp animate__delay-2s">
             <a

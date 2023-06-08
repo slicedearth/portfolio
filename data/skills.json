@@ -15,6 +15,11 @@
     "icon_alt": "JavaScript Icon"
   },
   {
+    "title": "TypeScript",
+    "icon": "./images/skills/typescript-plain.svg",
+    "icon_alt": "TypeScript Icon"
+  },
+  {
     "title": "Sass",
     "icon": "./images/skills/sass-original.svg",
     "icon_alt": "Sass Icon"
@@ -55,6 +60,11 @@
     "icon_alt": "Gatsby Icon"
   },
   {
+    "title": "NextJS",
+    "icon": "./images/skills/nextjs-original.svg",
+    "icon_alt": "NextJS Icon"
+  },
+  {
     "title": "MongoDB ",
     "icon": "./images/skills/mongodb-plain.svg",
     "icon_alt": "MongoDB Icon"
@@ -65,6 +75,10 @@
     "icon_alt": "MySQL Icon"
   },
   {
+    "title": "Firebase",
+    "icon": "./images/skills/firebase-plain.svg"
+  },
+  {
     "title": "Git",
     "icon": "./images/skills/git-plain.svg",
     "icon_alt": "Git Icon"
@@ -73,5 +87,15 @@
     "title": "Docker",
     "icon": "./images/skills/docker-plain.svg",
     "icon_alt": "Docker Icon"
+  },
+  {
+    "title": "Magento 2",
+    "icon": "./images/skills/magento-original.svg",
+    "icon_alt": "Magento 2 Icon"
+  },
+  {
+    "title": "WordPress",
+    "icon": "./images/skills/wordpress-plain.svg",
+    "icon_alt": "WordPress Icon"
   }
 ]
