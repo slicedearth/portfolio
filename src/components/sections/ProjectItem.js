@@ -1,5 +1,7 @@
 import React from "react"
 import { GatsbyImage } from "gatsby-plugin-image"
+import ghIcon from "../../icons/github-original.svg"
+
 export default function ProjectItem({
   title,
   image,
@@ -25,7 +27,10 @@ export default function ProjectItem({
         rel="noopener noreferrer"
         target="_blank"
       >
-        View Code on GitHub
+        <span className="icon is-large">
+                <img className="svgIcon" src={ghIcon} alt="GitHub Icon" />
+              </span>
+              <span>View on GitHub</span>
       </a>
     </div>
   )

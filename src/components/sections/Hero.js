@@ -1,10 +1,8 @@
 import React, { useCallback } from "react"
-import { Link } from "gatsby"
 import Particles from "react-particles"
 import tsparticlesConfig from "./tsparticles-config.json"
 import { loadFull } from "tsparticles"
 import ghIcon from "../../icons/github-original.svg"
-import contactIcon from "../../icons/envelope.svg"
 export default function Hero() {
   const particlesInit = useCallback(async engine => {
     await loadFull(engine)
@@ -36,15 +34,6 @@ export default function Hero() {
               </span>
               <span>GitHub Profile</span>
             </a>
-            <Link
-              className="button is-dark is-size-5 has-text-weight-semibold has-text-white"
-              to="/contact"
-            >
-              <span className="icon is-large">
-                <img className="svgIcon" src={contactIcon} alt="Contact Icon" />
-              </span>
-              <span>Get In Touch</span>
-            </Link>
           </div>
         </div>
       </div>
