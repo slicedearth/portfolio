@@ -60,9 +60,9 @@
     "icon_alt": "Gatsby Icon"
   },
   {
-    "title": "NextJS",
+    "title": "Next.js",
     "icon": "./images/skills/nextjs-original.svg",
-    "icon_alt": "NextJS Icon"
+    "icon_alt": "Next.js Icon"
   },
   {
     "title": "MongoDB ",
@@ -76,7 +76,8 @@
   },
   {
     "title": "Firebase",
-    "icon": "./images/skills/firebase-plain.svg"
+    "icon": "./images/skills/firebase-plain.svg",
+    "icon_alt": "Firebase Icon"
   },
   {
     "title": "Git",

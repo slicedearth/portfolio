@@ -63,12 +63,6 @@ export default function Header() {
           >
             About Me
           </Link>
-          <Link
-            to="/contact"
-            className="navbar-item has-text-centered-touch has-text-weight-bold"
-          >
-            Contact
-          </Link>
         </div>
       </div>
     </nav>

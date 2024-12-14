@@ -1,9 +1,8 @@
 import React from "react"
-
 export default function Footer() {
   return (
     <footer className="footer is-grad has-text-white has-text-centered">
-      <p>&copy; slicedearth 2023</p>
+      <p>&copy; slicedearth 2024</p>
       <p>
         Built with{" "}
         <a
