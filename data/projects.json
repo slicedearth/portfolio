@@ -1,5 +1,12 @@
 [
   {
+    "title": "WHOISleuth",
+    "image": "./images/projects/whoisleuth.png",
+    "image_alt": "WHOISleuth Project",
+    "githubURL": "https://github.com/slicedearth/whoisleuth",
+    "description": "Domain, IP and ASN lookup tool using the IANA RDAP bootstrap and live WHOIS, with bulk CSV scanning, typosquat detection and Certificate Transparency search. Built with Node.js and Express."
+  },
+  {
     "title": "GitHub Finder",
     "image": "./images/projects/githubFinder.png",
     "image_alt": "GitHub Finder Project",
@@ -28,17 +35,10 @@
     "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express and MongoDB."
   },
   {
-    "title": "ReVue SQLite",
-    "image": "./images/projects/revueSQLite.png",
-    "image_alt": "ReVue SQLite Project",
-    "githubURL": "https://github.com/slicedearth/revue-sqlite",
-    "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express, SQLite and Sequelize."
-  },
-  {
     "title": "Portfolio",
     "image": "./images/projects/portfolio.png",
     "image_alt": "Portfolio Project",
     "githubURL": "https://github.com/slicedearth/portfolio",
-    "description": "Personal portfolio website that allows me to showcase my web projects. Built with Gatsby and Bulma. "
+    "description": "Personal portfolio website that allows me to showcase my web projects. Built with Gatsby and Tailwind CSS."
   }
 ]

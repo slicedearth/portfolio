@@ -20,34 +20,37 @@ export default function About() {
     `
   )
   return (
-    <section id="about" className="section section-padding">
-      <h3 className="is-size-2 has-text-centered pb-3 has-text-weight-bold">
-        About Me
-      </h3>
-      <div className="columns is-centered">
-        <div className="column is-four-fifths">
-          <div className="card-box mb-3">
-            <p className="is-size-4 has-text-centered">
+    <section id="about" className="bg-bg px-4 py-20">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12 text-center lg:mb-16">
+          <p className="text-sm font-semibold tracking-widest text-accent uppercase">
+            Who I Am
+          </p>
+          <h3 className="mt-2 text-4xl font-bold text-white">About Me</h3>
+          <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-accent-2"></div>
+        </div>
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="rounded-xl border border-white/10 bg-surface p-6">
+            <p className="text-center text-xl text-gray-200 lg:text-left">
               I am a
-              <span className="has-text-weight-semibold">
+              <span className="font-semibold text-white">
                 {" "}
                 project manager{" "}
               </span>
               and
-              <span className="has-text-weight-semibold"> web developer </span>
+              <span className="font-semibold text-white"> web developer </span>
               based in
-              <span className="has-text-weight-semibold">
+              <span className="font-semibold text-white">
                 {" "}
                 Melbourne, Australia
               </span>
               .
             </p>
-            <p className="is-size-4 has-text-centered">
-              I have experience with the following web technologies and
-              platforms:
+            <p className="mt-2 text-center text-xl text-gray-200 lg:text-left">
+              Tools I work with:
             </p>
           </div>
-          <div className="skill-grid">
+          <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
             {data.allSkillsJson.nodes.map(skill => (
               <Skilltem {...skill} key={skill.title} />
             ))}

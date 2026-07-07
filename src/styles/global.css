@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@source "../pages/**/*.js";
+@source "../components/**/*.js";
+@source "../html.js";
+
+@theme {
+  --font-primary: "Barlow", sans-serif;
+  --font-secondary: "Caveat", cursive;
+  --font-code: "Ubuntu Mono", monospace;
+
+  --color-bg: #030712;
+  --color-surface: #1a1830;
+  --color-surface-hover: #242142;
+  --color-accent: #22d3ee;
+  --color-accent-dark: #06b6d4;
+  --color-accent-2: #a855f7;
+
+  --animate-fade-in-up: fade-in-up 0.7s ease-out both;
+  --animate-bounce-slow: bounce-slow 2.5s ease-in-out infinite;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(0.5rem);
+  }
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Barlow Regular "), local("Barlow-Regular"),
+    url("./fonts/barlow-latin-400.woff2") format("woff2"),
+    url("./fonts/barlow-latin-400.woff") format("woff");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: local("Barlow SemiBold "), local("Barlow-SemiBold"),
+    url("./fonts/barlow-latin-600.woff2") format("woff2"),
+    url("./fonts/barlow-latin-600.woff") format("woff");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Barlow Bold "), local("Barlow-Bold"),
+    url("./fonts/barlow-latin-700.woff2") format("woff2"),
+    url("./fonts/barlow-latin-700.woff") format("woff");
+}
+@font-face {
+  font-family: "Caveat";
+  font-style: cursive;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Caveat Bold"), local("Caveat-Bold"),
+    url("./fonts/caveat-v7-latin-700.woff2") format("woff2"),
+    url("./fonts/caveat-v7-latin-700.woff") format("woff");
+}
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Ubuntu Mono Regular "), local("Ubuntu Mono-Regular"),
+    url("./fonts/ubuntu-mono-latin-400.woff2") format("woff2"),
+    url("./fonts/ubuntu-mono-latin-400.woff") format("woff");
+}
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Ubuntu Mono Bold "), local("Ubuntu Mono-Bold"),
+    url("./fonts/ubuntu-mono-latin-700.woff2") format("woff2"),
+    url("./fonts/ubuntu-mono-latin-700.woff") format("woff");
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background-color: var(--color-bg);
+  color: #e5e7eb;
+  font-family: var(--font-primary);
+}

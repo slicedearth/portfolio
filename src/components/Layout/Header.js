@@ -1,6 +1,19 @@
 import React, { useState } from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 
+function NavLink({ to, children, onClick }) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className="group relative font-bold text-gray-300 transition-colors hover:text-white"
+    >
+      {children}
+      <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full"></span>
+    </Link>
+  )
+}
+
 export default function Header() {
   const [isActive, setisActive] = useState(false)
 
@@ -17,52 +30,62 @@ export default function Header() {
   )
   return (
     <nav
-      className="navbar is-fixed-top"
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-md"
       role="navigation"
       aria-label="main navigation"
     >
-      <div className="navbar-brand">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
-          className="navbar-item is-family-secondary has-text-weight-bold is-size-4"
+          className="bg-gradient-to-r from-accent to-accent-2 bg-clip-text font-secondary text-2xl font-bold text-transparent"
           to="/"
         >
           {data.site.siteMetadata.title}
         </Link>
 
-        <div
+        <button
           onClick={() => {
             setisActive(!isActive)
           }}
-          role="button"
-          className={`navbar-burger burger ${isActive ? "is-active" : ""}`}
-          data-target="navMenu"
+          type="button"
+          className="flex flex-col items-center justify-center gap-1.5 sm:hidden"
           aria-label="menu"
-          aria-expanded="false"
-          aria-hidden="true"
+          aria-expanded={isActive}
         >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
+          <span
+            className={`block h-0.5 w-6 bg-gray-300 transition-transform ${
+              isActive ? "translate-y-2 rotate-45" : ""
+            }`}
+          ></span>
+          <span
+            className={`block h-0.5 w-6 bg-gray-300 transition-opacity ${
+              isActive ? "opacity-0" : ""
+            }`}
+          ></span>
+          <span
+            className={`block h-0.5 w-6 bg-gray-300 transition-transform ${
+              isActive ? "-translate-y-2 -rotate-45" : ""
+            }`}
+          ></span>
+        </button>
+
+        <div className="hidden items-center gap-8 sm:flex">
+          <NavLink to="/#projects">Projects</NavLink>
+          <NavLink to="/#about">About Me</NavLink>
         </div>
       </div>
 
       <div
-        id="navMenu"
-        className={`navbar-menu ${isActive ? "is-active" : ""}`}
+        className={`overflow-hidden transition-[max-height,opacity] duration-300 sm:hidden ${
+          isActive ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+        }`}
       >
-        <div className="navbar-end">
-          <Link
-            to="/#projects"
-            className="navbar-item has-text-centered-touch has-text-weight-bold"
-          >
+        <div className="flex flex-col items-center gap-4 pb-4">
+          <NavLink to="/#projects" onClick={() => setisActive(false)}>
             Projects
-          </Link>
-          <Link
-            to="/#about"
-            className="navbar-item has-text-centered-touch has-text-weight-bold"
-          >
+          </NavLink>
+          <NavLink to="/#about" onClick={() => setisActive(false)}>
             About Me
-          </Link>
+          </NavLink>
         </div>
       </div>
     </nav>

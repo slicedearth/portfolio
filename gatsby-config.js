@@ -7,20 +7,15 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 module.exports = {
-  /* Your site config here */
   siteMetadata: {
     title: "Abymar",
     description:
-      "Personal portfolio website that showcases projects and skills.",
+      "Portfolio of a Melbourne-based project manager and web developer, featuring projects built with React, Vue, Node.js and more.",
     siteUrl: "https://abymar.com",
   },
-  // flags: {
-  //   DEV_SSR: true,
-  // },
   plugins: [
     `gatsby-plugin-image`,
     `gatsby-plugin-netlify`,
-    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {
@@ -46,13 +41,6 @@ module.exports = {
       },
     },
     `gatsby-transformer-json`,
-    `gatsby-plugin-preload-fonts`,
-    `gatsby-plugin-sass`,
-    {
-      resolve: `gatsby-plugin-purgecss`,
-      options: {
-        printRejected: true,
-      },
-    },
+    `gatsby-plugin-postcss`,
   ],
 }

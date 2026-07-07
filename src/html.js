@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 
 export default function HTML(props) {
   return (
@@ -13,7 +12,7 @@ export default function HTML(props) {
         />
         {props.headComponents}
       </head>
-      <body className="has-navbar-fixed-top" {...props.bodyAttributes}>
+      <body {...props.bodyAttributes}>
         {props.preBodyComponents}
         <div
           key={`body`}
@@ -24,13 +23,4 @@ export default function HTML(props) {
       </body>
     </html>
   )
-}
-
-HTML.propTypes = {
-  htmlAttributes: PropTypes.object,
-  headComponents: PropTypes.array,
-  bodyAttributes: PropTypes.object,
-  preBodyComponents: PropTypes.array,
-  body: PropTypes.string,
-  postBodyComponents: PropTypes.array,
 }
