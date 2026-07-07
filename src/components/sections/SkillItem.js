@@ -1,11 +1,15 @@
 import React from "react"
 export default function Skilltem({ title, icon, icon_alt }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-md bg-white p-5 text-center shadow-[0_0.5em_1em_-0.125em_rgba(10,10,10,0.1),0_0_0_1px_rgba(10,10,10,0.02)]">
+    <div className="group flex items-center gap-2.5 rounded-full border border-white/10 bg-surface py-2 pr-4 pl-2 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface-hover">
       {icon && (
-        <img className="h-16 w-16" src={icon.publicURL} alt={icon_alt} />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 p-1.5">
+          <img className="h-full w-full" src={icon.publicURL} alt={icon_alt} />
+        </div>
       )}
-      <p className="pt-3 text-base font-medium">{title}</p>
+      <p className="text-sm font-medium whitespace-nowrap text-gray-200">
+        {title}
+      </p>
     </div>
   )
 }

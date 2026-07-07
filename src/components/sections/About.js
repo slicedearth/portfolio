@@ -20,27 +20,41 @@ export default function About() {
     `
   )
   return (
-    <section id="about" className="py-16 px-4">
-      <h3 className="pb-6 text-center text-4xl font-bold">About Me</h3>
-      <div className="mx-auto max-w-4xl">
-        <div className="mb-6 rounded-md bg-white p-6 shadow-[0_0.5em_1em_-0.125em_rgba(10,10,10,0.1),0_0_0_1px_rgba(10,10,10,0.02)]">
-          <p className="text-center text-xl">
-            I am a
-            <span className="font-semibold"> project manager </span>
-            and
-            <span className="font-semibold"> web developer </span>
-            based in
-            <span className="font-semibold"> Melbourne, Australia</span>.
+    <section id="about" className="bg-bg px-4 py-20">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-12 text-center lg:mb-16">
+          <p className="text-sm font-semibold tracking-widest text-accent uppercase">
+            Who I Am
           </p>
-          <p className="mt-2 text-center text-xl">
-            I have experience with the following web technologies and
-            platforms:
-          </p>
+          <h3 className="mt-2 text-4xl font-bold text-white">About Me</h3>
+          <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-accent-2"></div>
         </div>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,2fr))] gap-4">
-          {data.allSkillsJson.nodes.map(skill => (
-            <Skilltem {...skill} key={skill.title} />
-          ))}
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div className="rounded-xl border border-white/10 bg-surface p-6">
+            <p className="text-center text-xl text-gray-200 lg:text-left">
+              I am a
+              <span className="font-semibold text-white">
+                {" "}
+                project manager{" "}
+              </span>
+              and
+              <span className="font-semibold text-white"> web developer </span>
+              based in
+              <span className="font-semibold text-white">
+                {" "}
+                Melbourne, Australia
+              </span>
+              .
+            </p>
+            <p className="mt-2 text-center text-xl text-gray-200 lg:text-left">
+              Tools I work with:
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
+            {data.allSkillsJson.nodes.map(skill => (
+              <Skilltem {...skill} key={skill.title} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

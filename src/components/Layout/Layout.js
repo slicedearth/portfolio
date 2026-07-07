@@ -5,9 +5,9 @@ import "../../styles/global.css"
 
 export default function Layout({ children }) {
   return (
-    <div>
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="pt-16">{children}</div>
+      <main className="flex flex-1 flex-col pt-16">{children}</main>
       <Footer />
     </div>
   )

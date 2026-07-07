@@ -4,13 +4,15 @@ import Projects from "../components/sections/Projects"
 import About from "../components/sections/About"
 import Hero from "../components/sections/Hero"
 import Seo from "../components/SEO"
+
 export default function Home() {
   return (
     <Layout>
-      <Seo title="Home" />
       <Hero />
       <Projects />
       <About />
     </Layout>
   )
 }
+
+export const Head = () => <Seo title="Home" />

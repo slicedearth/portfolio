@@ -1,56 +1,19 @@
 {
   "backgroundMask": {
-    "cover": {
-      "color": {
-        "value": "#f5f5f5"
-      },
-      "opacity": 0.1
-    },
-    "enable": true
+    "enable": false
   },
   "fullScreen": false,
   "detectRetina": true,
   "fpsLimit": 60,
-  "interactivity": {
-    "detectsOn": "canvas",
-    "modes": {
-      "bubble": {
-        "distance": 400,
-        "duration": 2,
-        "opacity": 1,
-        "size": 40,
-        "speed": 3
-      },
-      "connect": {
-        "distance": 80,
-        "lineLinked": {
-          "opacity": 0.5
-        },
-        "radius": 60
-      },
-      "grab": {
-        "distance": 400,
-        "lineLinked": {
-          "opacity": 1
-        }
-      },
-      "push": {
-        "quantity": 4
-      },
-      "remove": {
-        "quantity": 4
-      },
-      "repulse": {
-        "distance": 200,
-        "duration": 0.4
-      }
-    }
-  },
   "particles": {
     "color": {
       "value": "#ffffff"
     },
-    "lineLinked": {
+    "collisions": {
+      "enable": true,
+      "mode": "bounce"
+    },
+    "links": {
       "blink": false,
       "color": "#000",
       "consent": false,
@@ -95,14 +58,9 @@
       "value": 0.8
     },
     "shape": {
-      "character": {
-        "fill": false,
-        "font": "Verdana",
-        "style": "",
-        "value": "*",
-        "weight": "400"
-      },
-      "image": [
+      "type": "image",
+      "options": {
+        "image": [
         {
           "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiB2aWV3Qm94PSIwIDAgMTI4IDEyOCI+PHBhdGggZmlsbD0iI0U0NEQyNiIgZD0iTTkuMDMyIDJsMTAuMDA1IDExMi4wOTMgNDQuODk2IDEyLjQwMSA0NS4wMi0xMi4zODcgMTAuMDE1LTExMi4xMDdoLTEwOS45MzZ6bTg5LjEyNiAyNi41MzlsLS42MjcgNy4xNzItLjI3NiAzLjI4OWgtNTIuNjY1MDAwMDAwMDAwMDA2bDEuMjU3IDE0aDUwLjE1NjAwMDAwMDAwMDAwNmwtLjMzNiAzLjQ3MS0zLjIzMyAzNi4xMTktLjIzOCAyLjI3LTI4LjE5NiA3Ljc0OXYuMDAybC0uMDM0LjAxOC0yOC4xNzctNy40MjMtMS45MTMtMjEuMjA2aDEzLjgxNTAwMDAwMDAwMDAwMWwuOTc5IDEwLjkxOSAxNS4yODcgNC4wODFoLjA0M3YtLjU0NmwxNS4zNTUtMy44NzUgMS42MDQtMTcuNTc5aC00Ny42OThsLTMuMzgzLTM4LjExNy0uMzI5LTMuODgzaDY4LjkzOWwtLjMzIDMuNTM5eiIvPjwvc3ZnPg==",
           "width": 32,
@@ -158,15 +116,8 @@
           "width": 32,
           "height": 32
         }
-      ],
-      "polygon": {
-        "nb_sides": 5
-      },
-      "stroke": {
-        "color": "#000000",
-        "width": 0
-      },
-      "type": "image"
+        ]
+      }
     },
     "size": {
       "value": 10

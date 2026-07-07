@@ -35,6 +35,11 @@
     "icon_alt": "Bulma Icon"
   },
   {
+    "title": "Tailwind CSS",
+    "icon": "./images/skills/tailwindcss-original.svg",
+    "icon_alt": "Tailwind CSS Icon"
+  },
+  {
     "title": "Node.js",
     "icon": "./images/skills/nodejs-plain.svg",
     "icon_alt": "Node.js Icon"

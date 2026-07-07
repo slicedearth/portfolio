@@ -1,6 +1,19 @@
 import React, { useState } from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 
+function NavLink({ to, children, onClick }) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className="group relative font-bold text-gray-300 transition-colors hover:text-white"
+    >
+      {children}
+      <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full"></span>
+    </Link>
+  )
+}
+
 export default function Header() {
   const [isActive, setisActive] = useState(false)
 
@@ -17,13 +30,13 @@ export default function Header() {
   )
   return (
     <nav
-      className="fixed inset-x-0 top-0 z-50 bg-gradient-to-br from-gradient-1 via-gradient-2 to-gradient-3"
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-md"
       role="navigation"
       aria-label="main navigation"
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
-          className="font-secondary text-2xl font-bold text-white [text-shadow:2px_2px_#333]"
+          className="bg-gradient-to-r from-accent to-accent-2 bg-clip-text font-secondary text-2xl font-bold text-transparent"
           to="/"
         >
           {data.site.siteMetadata.title}
@@ -39,53 +52,42 @@ export default function Header() {
           aria-expanded={isActive}
         >
           <span
-            className={`block h-0.5 w-6 bg-white transition-transform ${
+            className={`block h-0.5 w-6 bg-gray-300 transition-transform ${
               isActive ? "translate-y-2 rotate-45" : ""
             }`}
           ></span>
           <span
-            className={`block h-0.5 w-6 bg-white transition-opacity ${
+            className={`block h-0.5 w-6 bg-gray-300 transition-opacity ${
               isActive ? "opacity-0" : ""
             }`}
           ></span>
           <span
-            className={`block h-0.5 w-6 bg-white transition-transform ${
+            className={`block h-0.5 w-6 bg-gray-300 transition-transform ${
               isActive ? "-translate-y-2 -rotate-45" : ""
             }`}
           ></span>
         </button>
 
-        <div className="hidden items-center gap-6 sm:flex">
-          <Link
-            to="/#projects"
-            className="font-bold text-white hover:underline"
-          >
-            Projects
-          </Link>
-          <Link to="/#about" className="font-bold text-white hover:underline">
-            About Me
-          </Link>
+        <div className="hidden items-center gap-8 sm:flex">
+          <NavLink to="/#projects">Projects</NavLink>
+          <NavLink to="/#about">About Me</NavLink>
         </div>
       </div>
 
-      {isActive && (
-        <div className="flex flex-col items-center gap-4 pb-4 sm:hidden">
-          <Link
-            to="/#projects"
-            className="font-bold text-white hover:underline"
-            onClick={() => setisActive(false)}
-          >
+      <div
+        className={`overflow-hidden transition-[max-height,opacity] duration-300 sm:hidden ${
+          isActive ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-4 pb-4">
+          <NavLink to="/#projects" onClick={() => setisActive(false)}>
             Projects
-          </Link>
-          <Link
-            to="/#about"
-            className="font-bold text-white hover:underline"
-            onClick={() => setisActive(false)}
-          >
+          </NavLink>
+          <NavLink to="/#about" onClick={() => setisActive(false)}>
             About Me
-          </Link>
+          </NavLink>
         </div>
-      )}
+      </div>
     </nav>
   )
 }

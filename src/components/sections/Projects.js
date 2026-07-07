@@ -23,8 +23,14 @@ export default function Projects() {
     `
   )
   return (
-    <section id="projects" className="py-16 px-4">
-      <h3 className="pb-6 text-center text-4xl font-bold">Projects</h3>
+    <section id="projects" className="bg-surface/40 px-4 py-20">
+      <div className="mb-12 text-center">
+        <p className="text-sm font-semibold tracking-widest text-accent uppercase">
+          My Work
+        </p>
+        <h3 className="mt-2 text-4xl font-bold text-white">Projects</h3>
+        <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-accent-2"></div>
+      </div>
       <div className="mx-auto max-w-5xl">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {data.allProjectsJson.nodes.map((project, index) => (
