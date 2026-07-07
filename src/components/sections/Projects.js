@@ -23,17 +23,13 @@ export default function Projects() {
     `
   )
   return (
-    <section id="projects" className="section section-padding">
-      <h3 className="is-size-2 has-text-centered pb-3 has-text-weight-bold">
-        Projects
-      </h3>
-      <div className="columns is-centered">
-        <div className="column is-four-fifths">
-          <div className="project-grid">
-            {data.allProjectsJson.nodes.map((project, index) => (
-              <ProjectItem {...project} key={index} />
-            ))}
-          </div>
+    <section id="projects" className="py-16 px-4">
+      <h3 className="pb-6 text-center text-4xl font-bold">Projects</h3>
+      <div className="mx-auto max-w-5xl">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {data.allProjectsJson.nodes.map((project, index) => (
+            <ProjectItem {...project} key={index} />
+          ))}
         </div>
       </div>
     </section>

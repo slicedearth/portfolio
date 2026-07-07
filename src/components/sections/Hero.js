@@ -8,33 +8,30 @@ export default function Hero() {
     await loadFull(engine)
   }, [])
   return (
-    <section className="hero is-grad is-medium is-dark">
+    <section className="relative z-0 bg-gradient-to-br from-gradient-1 via-gradient-2 to-gradient-3 py-24">
       <Particles
         id="tsparticles"
+        className="absolute inset-0 -z-10"
         options={tsparticlesConfig}
         init={particlesInit}
       />
-      <div className="hero-body">
-        <div className="container has-text-centered">
-          <h1 className="is-size-1 hero-title has-text-weight-bold is-family-secondary has-text-white animate__animated animate__bounceInDown animate__slow">
-            Hey, I'm Aser
-          </h1>
-          <h2 className="subtitle is-size-3 is-family-primary has-text-white animate__animated animate__bounceIn animate__delay-2s">
-            Project Manager/Web Developer
-          </h2>
-          <div className="buttons are-medium is-centered animate__animated animate__fadeInUp animate__delay-2s">
-            <a
-              className="button is-dark is-size-5 has-text-weight-semibold has-text-white"
-              href="https://www.github.com/slicedearth"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <span className="icon is-large">
-                <img className="svgIcon" src={ghIcon} alt="GitHub Icon" />
-              </span>
-              <span>GitHub Profile</span>
-            </a>
-          </div>
+      <div className="mx-auto max-w-3xl px-4 text-center">
+        <h1 className="animate__animated animate__bounceInDown animate__slow font-secondary text-6xl font-bold text-white [text-shadow:2px_2px_#333]">
+          Hey, I'm Aser
+        </h1>
+        <h2 className="animate__animated animate__bounceIn animate__delay-2s mt-4 font-primary text-3xl text-white">
+          Project Manager/Web Developer
+        </h2>
+        <div className="animate__animated animate__fadeInUp animate__delay-2s mt-8">
+          <a
+            className="inline-flex items-center gap-3 rounded-md bg-black/80 px-6 py-3 text-lg font-semibold text-white transition-colors hover:bg-black"
+            href="https://www.github.com/slicedearth"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <img className="h-5 w-5" src={ghIcon} alt="GitHub Icon" />
+            <span>GitHub Profile</span>
+          </a>
         </div>
       </div>
     </section>

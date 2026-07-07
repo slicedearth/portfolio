@@ -7,23 +7,16 @@ export default function NotFound() {
   return (
     <Layout>
       <Seo title="404: Not Found" />
-      <section className="section is-large nf-body">
-        <div className="columns is-centered mt-6">
-          <div className="column has-text-centered is-four-fifths">
-            <h1 className="title has-text-weight-bold is-family-code error-head is-size-1-touch">
-              404
-            </h1>
-            <h2 className="subtitle is-family-code error-subhead is-size-2-touch">
-              Page Not Found!
-            </h2>
-            <Link
-              role="button"
-              className="button is-dark has-text-weight-semibold is-large"
-              href="/"
-            >
-              Go Back
-            </Link>
-          </div>
+      <section className="py-24 px-4">
+        <div className="mx-auto mt-12 max-w-4xl text-center">
+          <h1 className="font-code text-6xl font-bold">404</h1>
+          <h2 className="mt-2 font-code text-4xl">Page Not Found!</h2>
+          <Link
+            to="/"
+            className="mt-8 inline-block rounded-md bg-black/80 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-black"
+          >
+            Go Back
+          </Link>
         </div>
       </section>
     </Layout>

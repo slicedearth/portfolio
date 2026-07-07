@@ -1,7 +1,7 @@
 import React from "react"
 export default function Footer() {
   return (
-    <footer className="footer is-grad has-text-white has-text-centered">
+    <footer className="bg-gradient-to-br from-gradient-1 via-gradient-2 to-gradient-3 px-4 py-8 text-center text-white">
       <p>&copy; slicedearth 2024</p>
       <p>
         Built with{" "}
@@ -9,18 +9,18 @@ export default function Footer() {
           href="https://gatsbyjs.com/"
           rel="noopener noreferrer"
           target="_blank"
-          className="footer-link"
+          className="font-semibold hover:underline"
         >
           Gatsby
         </a>{" "}
         &{" "}
         <a
-          href="https://bulma.io"
+          href="https://tailwindcss.com"
           rel="noopener noreferrer"
           target="_blank"
-          className="footer-link"
+          className="font-semibold hover:underline"
         >
-          Bulma
+          Tailwind CSS
         </a>
       </p>
     </footer>

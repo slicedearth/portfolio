@@ -8,7 +8,7 @@ Personal portfolio site that features my projects, skills and a contact form.
 ## Built With
 
 - [Gatsby](https://gatsbyjs.com/)
-- [Bulma](https://bulma.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
 - [Animate.css](https://animate.style/)
 - [tsParticles](https://particles.matteobruni.it/)
 - [Netlify Forms](https://netlify.com/products/forms/)

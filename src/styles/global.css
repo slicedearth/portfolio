@@ -1,0 +1,93 @@
+@import "tailwindcss";
+@import "animate.css/animate.min.css";
+
+@source "../pages/**/*.js";
+@source "../components/**/*.js";
+@source "../html.js";
+
+@theme {
+  --font-primary: "Barlow", sans-serif;
+  --font-secondary: "Caveat", cursive;
+  --font-code: "Ubuntu Mono", monospace;
+  --color-gradient-1: #2c5364;
+  --color-gradient-2: #203a43;
+  --color-gradient-3: #0f2027;
+}
+
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Barlow Regular "), local("Barlow-Regular"),
+    url("./fonts/barlow-latin-400.woff2") format("woff2"),
+    url("./fonts/barlow-latin-400.woff") format("woff");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: local("Barlow SemiBold "), local("Barlow-SemiBold"),
+    url("./fonts/barlow-latin-600.woff2") format("woff2"),
+    url("./fonts/barlow-latin-600.woff") format("woff");
+}
+@font-face {
+  font-family: "Barlow";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Barlow Bold "), local("Barlow-Bold"),
+    url("./fonts/barlow-latin-700.woff2") format("woff2"),
+    url("./fonts/barlow-latin-700.woff") format("woff");
+}
+@font-face {
+  font-family: "Caveat";
+  font-style: cursive;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Caveat Regular"), local("Caveat-Regular"),
+    url("./fonts/caveat-v7-latin-regular.woff2") format("woff2"),
+    url("./fonts/caveat-v7-latin-regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Caveat";
+  font-style: cursive;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Caveat Bold"), local("Caveat-Bold"),
+    url("./fonts/caveat-v7-latin-700.woff2") format("woff2"),
+    url("./fonts/caveat-v7-latin-700.woff") format("woff");
+}
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Ubuntu Mono Regular "), local("Ubuntu Mono-Regular"),
+    url("./fonts/ubuntu-mono-latin-400.woff2") format("woff2"),
+    url("./fonts/ubuntu-mono-latin-400.woff") format("woff");
+}
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Ubuntu Mono Bold "), local("Ubuntu Mono-Bold"),
+    url("./fonts/ubuntu-mono-latin-700.woff2") format("woff2"),
+    url("./fonts/ubuntu-mono-latin-700.woff") format("woff");
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: #f5f5f5;
+  font-family: var(--font-primary);
+}

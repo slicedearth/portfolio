@@ -20,38 +20,27 @@ export default function About() {
     `
   )
   return (
-    <section id="about" className="section section-padding">
-      <h3 className="is-size-2 has-text-centered pb-3 has-text-weight-bold">
-        About Me
-      </h3>
-      <div className="columns is-centered">
-        <div className="column is-four-fifths">
-          <div className="card-box mb-3">
-            <p className="is-size-4 has-text-centered">
-              I am a
-              <span className="has-text-weight-semibold">
-                {" "}
-                project manager{" "}
-              </span>
-              and
-              <span className="has-text-weight-semibold"> web developer </span>
-              based in
-              <span className="has-text-weight-semibold">
-                {" "}
-                Melbourne, Australia
-              </span>
-              .
-            </p>
-            <p className="is-size-4 has-text-centered">
-              I have experience with the following web technologies and
-              platforms:
-            </p>
-          </div>
-          <div className="skill-grid">
-            {data.allSkillsJson.nodes.map(skill => (
-              <Skilltem {...skill} key={skill.title} />
-            ))}
-          </div>
+    <section id="about" className="py-16 px-4">
+      <h3 className="pb-6 text-center text-4xl font-bold">About Me</h3>
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-6 rounded-md bg-white p-6 shadow-[0_0.5em_1em_-0.125em_rgba(10,10,10,0.1),0_0_0_1px_rgba(10,10,10,0.02)]">
+          <p className="text-center text-xl">
+            I am a
+            <span className="font-semibold"> project manager </span>
+            and
+            <span className="font-semibold"> web developer </span>
+            based in
+            <span className="font-semibold"> Melbourne, Australia</span>.
+          </p>
+          <p className="mt-2 text-center text-xl">
+            I have experience with the following web technologies and
+            platforms:
+          </p>
+        </div>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,2fr))] gap-4">
+          {data.allSkillsJson.nodes.map(skill => (
+            <Skilltem {...skill} key={skill.title} />
+          ))}
         </div>
       </div>
     </section>

@@ -10,8 +10,8 @@ export default function ProjectItem({
   githubURL,
 }) {
   return (
-    <div className="project-item">
-      <figure className="image mb-3">
+    <div className="flex flex-col rounded-md bg-white p-5 shadow-[0_0.5em_1em_-0.125em_rgba(10,10,10,0.1),0_0_0_1px_rgba(10,10,10,0.02)]">
+      <figure className="mb-3">
         {image && (
           <GatsbyImage
             image={image.childImageSharp.gatsbyImageData}
@@ -19,18 +19,18 @@ export default function ProjectItem({
           />
         )}
       </figure>
-      <p className="title is-size-4 has-text-centered">{title}</p>
-      <p className="has-text-centered subtitle is-size-6">{description}</p>
+      <p className="text-center text-xl font-semibold">{title}</p>
+      <p className="mt-1 mb-3 flex-1 text-center text-sm text-gray-600">
+        {description}
+      </p>
       <a
-        className="button is-dark is-fullwidth  has-text-weight-semibold"
+        className="mt-auto flex items-center justify-center gap-3 rounded-md bg-black/80 px-4 py-2 font-semibold text-white transition-colors hover:bg-black"
         href={githubURL}
         rel="noopener noreferrer"
         target="_blank"
       >
-        <span className="icon is-large">
-                <img className="svgIcon" src={ghIcon} alt="GitHub Icon" />
-              </span>
-              <span>View on GitHub</span>
+        <img className="h-5 w-5" src={ghIcon} alt="GitHub Icon" />
+        <span>View on GitHub</span>
       </a>
     </div>
   )

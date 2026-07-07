@@ -47,12 +47,6 @@ module.exports = {
     },
     `gatsby-transformer-json`,
     `gatsby-plugin-preload-fonts`,
-    `gatsby-plugin-sass`,
-    {
-      resolve: `gatsby-plugin-purgecss`,
-      options: {
-        printRejected: true,
-      },
-    },
+    `gatsby-plugin-postcss`,
   ],
 }
