@@ -9,13 +9,13 @@
     "description": "Domain, IP and ASN lookup tool using the IANA RDAP bootstrap and live WHOIS, with bulk CSV scanning, typosquat detection and Certificate Transparency search. Built with Node.js and Express."
   },
   {
-    "id": "github-finder",
+    "id": "forty-life",
     "order": 2,
-    "title": "GitHub Finder",
-    "image": "githubFinder.png",
-    "image_alt": "GitHub Finder Project",
-    "githubURL": "https://github.com/slicedearth/githubfinder",
-    "description": "Website that uses the GitHub API to search for users and display information from their profile. Built with React."
+    "title": "Forty Life",
+    "image": "fortyLife.png",
+    "image_alt": "Forty Life Project",
+    "githubURL": "https://github.com/slicedearth/forty-life",
+    "description": "Touch-friendly life counter for Magic: The Gathering with a seating-aware rotating layout, live commander art via Scryfall, and full Commander-pod tracking for poison, commander damage, monarch and initiative. Built with Svelte and Tailwind CSS."
   },
   {
     "id": "wearit-react",
