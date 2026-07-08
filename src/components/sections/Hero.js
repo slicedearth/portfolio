@@ -9,10 +9,12 @@ import tsparticlesConfig from "./tsparticles-config.json"
 import ghIcon from "../../icons/github-original.svg"
 
 const initParticles = async engine => {
-  await loadBasic(engine)
-  await loadImageShape(engine)
-  await loadRotateUpdater(engine)
-  await loadInteractivityPlugin(engine)
+  await Promise.all([
+    loadBasic(engine),
+    loadImageShape(engine),
+    loadRotateUpdater(engine),
+    loadInteractivityPlugin(engine),
+  ])
   await loadParticlesCollisionsInteraction(engine)
 }
 
@@ -24,7 +26,7 @@ export default function Hero() {
       <ParticlesProvider init={initParticles}>
         <Particles
           id="tsparticles"
-          className="absolute inset-0 -z-10"
+          className="animate-fade-in absolute inset-0 -z-10"
           options={tsparticlesConfig}
         />
       </ParticlesProvider>

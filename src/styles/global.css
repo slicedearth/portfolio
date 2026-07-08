@@ -17,6 +17,7 @@
   --color-accent-2: #a855f7;
 
   --animate-fade-in-up: fade-in-up 0.7s ease-out both;
+  --animate-fade-in: fade-in 1s ease-out both;
   --animate-bounce-slow: bounce-slow 2.5s ease-in-out infinite;
 }
 
@@ -28,6 +29,14 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 @keyframes bounce-slow {

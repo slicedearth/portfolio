@@ -3,6 +3,8 @@
  *
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
+const adapter = require("gatsby-adapter-netlify").default
+
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
@@ -13,9 +15,9 @@ module.exports = {
       "Portfolio of a Melbourne-based project manager and web developer, featuring projects built with React, Vue, Node.js and more.",
     siteUrl: "https://abymar.com",
   },
+  adapter: adapter(),
   plugins: [
     `gatsby-plugin-image`,
-    `gatsby-plugin-netlify`,
     {
       resolve: `gatsby-plugin-google-gtag`,
       options: {

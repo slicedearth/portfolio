@@ -2,7 +2,7 @@ import React from "react"
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-surface px-4 py-10 text-center text-gray-400">
-      <p>&copy; slicedearth 2024</p>
+      <p>&copy; slicedearth {new Date().getFullYear()}</p>
       <p className="mt-1">
         Built with{" "}
         <a
