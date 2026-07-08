@@ -1,0 +1,62 @@
+---
+import "../styles/global.css"
+import Header from "../components/layout/Header.astro"
+import Footer from "../components/layout/Footer.astro"
+
+interface Props {
+  title: string
+  description?: string
+  pathname?: string
+}
+
+const siteTitle = "Abymar"
+const siteDescription =
+  "Portfolio of a Melbourne-based project manager and web developer, featuring projects built with React, Vue, Node.js and more."
+const siteUrl = "https://abymar.com"
+
+const { title, description = siteDescription, pathname } = Astro.props
+const canonical = pathname ? `${siteUrl}${pathname}` : undefined
+const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{siteTitle} | {title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+
+    {
+      gaId && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+          <script define:vars={{ gaId }}>
+            window.dataLayer = window.dataLayer || []
+            function gtag() {
+              dataLayer.push(arguments)
+            }
+            gtag("js", new Date())
+            gtag("config", gaId, { cookie_expires: 0 })
+          </script>
+        </>
+      )
+    }
+  </head>
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <Header />
+      <main class="flex flex-1 flex-col pt-16">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

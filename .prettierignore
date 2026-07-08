@@ -1,4 +1,5 @@
-.cache
+dist
+.astro
+.netlify
 package.json
 package-lock.json
-public
