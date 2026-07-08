@@ -1,0 +1,163 @@
+[
+  {
+    "id": "html",
+    "order": 1,
+    "title": "HTML",
+    "icon": "html5-plain.svg",
+    "icon_alt": "HTML Icon"
+  },
+  {
+    "id": "css",
+    "order": 2,
+    "title": "CSS",
+    "icon": "css3-plain.svg",
+    "icon_alt": "CSS Icon"
+  },
+  {
+    "id": "javascript",
+    "order": 3,
+    "title": "JavaScript",
+    "icon": "javascript-plain.svg",
+    "icon_alt": "JavaScript Icon"
+  },
+  {
+    "id": "typescript",
+    "order": 4,
+    "title": "TypeScript",
+    "icon": "typescript-plain.svg",
+    "icon_alt": "TypeScript Icon"
+  },
+  {
+    "id": "sass",
+    "order": 5,
+    "title": "Sass",
+    "icon": "sass-original.svg",
+    "icon_alt": "Sass Icon"
+  },
+  {
+    "id": "bootstrap",
+    "order": 6,
+    "title": "Bootstrap",
+    "icon": "bootstrap-plain.svg",
+    "icon_alt": "Bootstrap Icon"
+  },
+  {
+    "id": "bulma",
+    "order": 7,
+    "title": "Bulma",
+    "icon": "bulma.svg",
+    "icon_alt": "Bulma Icon"
+  },
+  {
+    "id": "tailwind-css",
+    "order": 8,
+    "title": "Tailwind CSS",
+    "icon": "tailwindcss-original.svg",
+    "icon_alt": "Tailwind CSS Icon"
+  },
+  {
+    "id": "nodejs",
+    "order": 9,
+    "title": "Node.js",
+    "icon": "nodejs-plain.svg",
+    "icon_alt": "Node.js Icon"
+  },
+  {
+    "id": "express",
+    "order": 10,
+    "title": "Express",
+    "icon": "express-original.svg",
+    "icon_alt": "Express Icon"
+  },
+  {
+    "id": "react",
+    "order": 11,
+    "title": "React",
+    "icon": "react-original.svg",
+    "icon_alt": "React Icon"
+  },
+  {
+    "id": "svelte",
+    "order": 12,
+    "title": "Svelte",
+    "icon": "svelte-original.svg",
+    "icon_alt": "Vue Icon"
+  },
+  {
+    "id": "vue",
+    "order": 13,
+    "title": "Vue",
+    "icon": "vuejs-original.svg",
+    "icon_alt": "Vue Icon"
+  },
+  {
+    "id": "astro",
+    "order": 14,
+    "title": "Astro",
+    "icon": "astro-original.svg",
+    "icon_alt": "Vue Icon"
+  },
+  {
+    "id": "gatsby",
+    "order": 15,
+    "title": "Gatsby",
+    "icon": "gatsby.svg",
+    "icon_alt": "Gatsby Icon"
+  },
+  {
+    "id": "nextjs",
+    "order": 16,
+    "title": "Next.js",
+    "icon": "nextjs-original.svg",
+    "icon_alt": "Next.js Icon"
+  },
+  {
+    "id": "mongodb",
+    "order": 17,
+    "title": "MongoDB",
+    "icon": "mongodb-plain.svg",
+    "icon_alt": "MongoDB Icon"
+  },
+  {
+    "id": "mysql",
+    "order": 18,
+    "title": "MySQL",
+    "icon": "mysql-plain.svg",
+    "icon_alt": "MySQL Icon"
+  },
+  {
+    "id": "firebase",
+    "order": 19,
+    "title": "Firebase",
+    "icon": "firebase-plain.svg",
+    "icon_alt": "Firebase Icon"
+  },
+  {
+    "id": "git",
+    "order": 20,
+    "title": "Git",
+    "icon": "git-plain.svg",
+    "icon_alt": "Git Icon"
+  },
+  {
+    "id": "docker",
+    "order": 21,
+    "title": "Docker",
+    "icon": "docker-plain.svg",
+    "icon_alt": "Docker Icon"
+  },
+  {
+    "id": "magento-2",
+    "order": 22,
+    "title": "Magento 2",
+    "icon": "magento-original.svg",
+    "icon_alt": "Magento 2 Icon"
+  },
+  {
+    "id": "wordpress",
+    "order": 23,
+    "title": "WordPress",
+    "icon": "wordpress-plain.svg",
+    "icon_alt": "WordPress Icon"
+  }
+]

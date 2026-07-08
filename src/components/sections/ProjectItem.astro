@@ -1,0 +1,38 @@
+---
+import { Image } from "astro:assets"
+import ghIcon from "../../assets/icons/github-original.svg"
+
+interface Props {
+  title: string
+  image: ImageMetadata
+  imageAlt: string
+  description: string
+  githubURL: string
+}
+
+const { title, image, imageAlt, description, githubURL } = Astro.props
+---
+
+<div class="flex flex-col rounded-xl border border-white/10 bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40">
+  <figure class="mb-3 overflow-hidden rounded-lg border border-white/10">
+    <div class="flex items-center gap-1.5 bg-slate-800 px-3 py-2">
+      <span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-green-400"></span>
+    </div>
+    <Image src={image} alt={imageAlt} width={680} quality={100} loading="lazy" />
+  </figure>
+  <p class="text-center text-xl font-semibold text-white">{title}</p>
+  <p class="mt-1 mb-3 flex-1 text-center text-sm text-gray-400">
+    {description}
+  </p>
+  <a
+    class="mt-auto flex items-center justify-center gap-3 rounded-full border border-white/10 bg-slate-800 px-4 py-2 font-semibold text-white transition-all duration-300 hover:border-accent/50 hover:bg-slate-700 hover:shadow-lg hover:shadow-accent/10"
+    href={githubURL}
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <img class="h-5 w-5" src={ghIcon.src} alt="GitHub Icon" loading="lazy" />
+    <span>View on GitHub</span>
+  </a>
+</div>

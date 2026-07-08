@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content"
+import SkillItem from "./SkillItem.astro"
+
+const skills = (await getCollection("skills")).sort(
+  (a, b) => a.data.order - b.data.order
+)
+const icons = import.meta.glob<{ default: ImageMetadata }>(
+  "../../assets/images/skills/*.svg",
+  { eager: true }
+)
+---
+
+<section id="about" class="bg-bg px-4 py-20">
+  <div class="mx-auto max-w-5xl">
+    <div class="mb-12 text-center lg:mb-16">
+      <p class="text-sm font-semibold tracking-widest text-accent uppercase">
+        Who I Am
+      </p>
+      <h3 class="mt-2 text-4xl font-bold text-white">About Me</h3>
+      <div class="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-accent-2"></div>
+    </div>
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+      <div class="rounded-xl border border-white/10 bg-surface p-6">
+        <p class="text-center text-xl text-gray-200 lg:text-left">
+          I am a
+          <span class="font-semibold text-white"> project manager </span>
+          and
+          <span class="font-semibold text-white"> web developer </span>
+          based in
+          <span class="font-semibold text-white"> Melbourne, Australia</span>.
+        </p>
+        <p class="mt-2 text-center text-xl text-gray-200 lg:text-left">
+          Tools I work with:
+        </p>
+      </div>
+      <div class="flex flex-wrap justify-center gap-3 lg:justify-start">
+        {
+          skills.map(skill => (
+            <SkillItem
+              title={skill.data.title}
+              icon={
+                icons[`../../assets/images/skills/${skill.data.icon}`].default
+              }
+              iconAlt={skill.data.icon_alt}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
