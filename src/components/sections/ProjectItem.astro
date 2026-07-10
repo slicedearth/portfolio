@@ -31,6 +31,7 @@ const { title, image, imageAlt, description, githubURL } = Astro.props
     href={githubURL}
     rel="noopener noreferrer"
     target="_blank"
+    data-project-github-link={title}
   >
     <img class="h-5 w-5" src={ghIcon.src} alt="GitHub Icon" loading="lazy" />
     <span>View on GitHub</span>

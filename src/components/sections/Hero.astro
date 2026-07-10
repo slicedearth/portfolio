@@ -23,6 +23,7 @@ import Particles from "./Particles.svelte"
         href="https://www.github.com/slicedearth"
         rel="noopener noreferrer"
         target="_blank"
+        data-github-profile-link
       >
         <img class="h-5 w-5" src={ghIcon.src} alt="GitHub Icon" loading="eager" />
         <span>GitHub Profile</span>
@@ -40,3 +41,12 @@ import Particles from "./Particles.svelte"
     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
   </svg>
 </section>
+
+<script>
+  document.querySelector("[data-github-profile-link]")?.addEventListener("click", () => {
+    window.gtag?.("event", "select_content", {
+      content_type: "github_profile_link",
+      item_id: "hero",
+    })
+  })
+</script>

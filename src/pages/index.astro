@@ -1,11 +1,27 @@
 ---
+import { getCollection } from "astro:content"
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/sections/Hero.astro"
 import Projects from "../components/sections/Projects.astro"
 import About from "../components/sections/About.astro"
+
+const skills = (await getCollection("skills")).sort(
+  (a, b) => a.data.order - b.data.order
+)
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Aser",
+  jobTitle: "Project Manager / Web Developer",
+  url: "https://abymar.com/",
+  sameAs: ["https://www.github.com/slicedearth"],
+  knowsAbout: skills.map(skill => skill.data.title),
+}
 ---
 
-<Layout title="Home">
+<Layout title="Project Manager & Web Developer" pathname={Astro.url.pathname}>
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   <Hero />
   <Projects />
   <About />
