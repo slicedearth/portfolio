@@ -7,7 +7,8 @@
     "image_alt": "WHOISleuth domain intelligence overview",
     "githubURL": "https://github.com/slicedearth/whoisleuth",
     "deployedURL": "https://whoisleuth.com/",
-    "description": "Domain intelligence console for registration, DNS, certificate and web evidence. Built with SvelteKit and Node.js."
+    "description": "Domain intelligence console for registration, DNS, certificate and web evidence. Built with SvelteKit and Node.js.",
+    "tags": ["SvelteKit", "TypeScript", "Node.js"]
   },
   {
     "id": "breach-gazette",
@@ -17,7 +18,8 @@
     "image_alt": "Breach Gazette public breach notifications overview",
     "githubURL": "https://github.com/slicedearth/breachgazette",
     "deployedURL": "https://breachgazette.netlify.app/",
-    "description": "Official breach notifications, statistics and regulatory updates in one public data site. Built with Python and Astro."
+    "description": "Official breach notifications, statistics and regulatory updates in one public data site. Built with Python and Astro.",
+    "tags": ["Python", "Astro", "Public data"]
   },
   {
     "id": "control-current",
@@ -27,7 +29,8 @@
     "image_alt": "ControlCurrent browser security planning overview",
     "githubURL": "https://github.com/slicedearth/controlcurrent",
     "deployedURL": "https://slicedearth.github.io/controlcurrent/",
-    "description": "Helps web teams choose security features that work across the browsers they need to support. Built with Astro and TypeScript."
+    "description": "Helps web teams choose security features that work across the browsers they need to support. Built with Astro and TypeScript.",
+    "tags": ["Astro", "TypeScript", "Web security"]
   },
   {
     "id": "forty-life",
@@ -37,16 +40,18 @@
     "image_alt": "Forty Life multiplayer game setup",
     "githubURL": "https://github.com/slicedearth/forty-life",
     "deployedURL": "https://forty-life.netlify.app/",
-    "description": "Magic: The Gathering life counter with rotating layouts, commander art and multiplayer tracking. Built with Svelte."
+    "description": "Magic: The Gathering life counter with rotating layouts, commander art and multiplayer tracking. Built with Svelte.",
+    "tags": ["Svelte", "TypeScript", "PWA"]
   },
   {
     "id": "revue-mongodb",
     "order": 5,
     "title": "ReVue MongoDB",
     "image": "revueMongoDB.png",
-    "image_alt": "ReVue MongoDB review application",
+    "image_alt": "ReVue album review homepage with top-rated albums",
     "githubURL": "https://github.com/slicedearth/revue-mongodb",
-    "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express and MongoDB."
+    "description": "Music review app for browsing albums and publishing reviews with user accounts and moderation. Built with Vue, TypeScript and MongoDB.",
+    "tags": ["Vue", "TypeScript", "MongoDB"]
   },
   {
     "id": "portfolio",
@@ -55,6 +60,7 @@
     "image": "portfolio.png",
     "image_alt": "Aser's portfolio website",
     "githubURL": "https://github.com/slicedearth/portfolio",
-    "description": "Personal portfolio website that allows me to showcase my web projects. Built with Astro and Tailwind CSS."
+    "description": "Personal portfolio website that allows me to showcase my web projects. Built with Astro and Tailwind CSS.",
+    "tags": ["Astro", "Tailwind CSS", "Svelte"]
   }
 ]

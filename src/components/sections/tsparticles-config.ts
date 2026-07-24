@@ -46,7 +46,7 @@ export const tsparticlesConfig: ISourceOptions = {
       enable: true,
       outMode: "bounce",
       random: false,
-      speed: 2,
+      speed: 1.35,
       straight: false,
     },
     number: {
@@ -55,10 +55,10 @@ export const tsparticlesConfig: ISourceOptions = {
         area: 800,
       },
       limit: 0,
-      value: 50,
+      value: 42,
     },
     opacity: {
-      value: 0.8,
+      value: 0.65,
     },
     shape: {
       type: "image",
@@ -128,7 +128,7 @@ export const tsparticlesConfig: ISourceOptions = {
       },
     },
     size: {
-      value: 10,
+      value: 9,
     },
   },
   pauseOnBlur: true,
