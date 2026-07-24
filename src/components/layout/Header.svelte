@@ -2,19 +2,21 @@
   let isActive = $state(false)
 
   const links = [
-    { href: "/#projects", label: "Projects" },
-    { href: "/#about", label: "About Me" },
+    { href: "/#projects", number: "01", label: "Projects" },
+    { href: "/#about", number: "02", label: "About" },
   ]
 </script>
 
 <nav
-  class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-md"
+  class="fixed inset-x-0 top-0 z-50 border-b border-line/70 bg-bg/90 backdrop-blur-xl"
   aria-label="main navigation"
 >
-  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+  <div
+    class="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8"
+  >
     <a
       href="/"
-      class="bg-gradient-to-r from-accent to-accent-2 bg-clip-text font-secondary text-2xl font-bold text-transparent"
+      class="font-secondary text-3xl font-bold text-accent transition-colors hover:text-white"
     >
       Abymar
     </a>
@@ -22,49 +24,54 @@
     <button
       onclick={() => (isActive = !isActive)}
       type="button"
-      class="flex flex-col items-center justify-center gap-1.5 sm:hidden"
-      aria-label="menu"
+      class="flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md border border-line bg-surface sm:hidden"
+      aria-label="Toggle navigation"
       aria-expanded={isActive}
     >
       <span
-        class="block h-0.5 w-6 bg-gray-300 transition-transform {isActive
+        class="block h-0.5 w-5 bg-gray-200 transition-transform motion-reduce:transition-none {isActive
           ? 'translate-y-2 rotate-45'
           : ''}"
       ></span>
       <span
-        class="block h-0.5 w-6 bg-gray-300 transition-opacity {isActive ? 'opacity-0' : ''}"
+        class="block h-0.5 w-5 bg-gray-200 transition-opacity motion-reduce:transition-none {isActive
+          ? 'opacity-0'
+          : ''}"
       ></span>
       <span
-        class="block h-0.5 w-6 bg-gray-300 transition-transform {isActive
+        class="block h-0.5 w-5 bg-gray-200 transition-transform motion-reduce:transition-none {isActive
           ? '-translate-y-2 -rotate-45'
           : ''}"
       ></span>
     </button>
 
-    <div class="hidden items-center gap-8 sm:flex">
+    <div class="hidden items-center gap-7 sm:flex">
       {#each links as link}
-        <a href={link.href} class="group relative font-bold text-gray-300 transition-colors hover:text-white">
-          {link.label}
-          <span class="absolute -bottom-1 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full"></span>
+        <a
+          href={link.href}
+          class="group flex items-baseline gap-2 font-code text-sm text-gray-300 transition-colors hover:text-white"
+        >
+          <span class="text-accent">{link.number}</span>
+          <span>{link.label}</span>
         </a>
       {/each}
     </div>
   </div>
 
   <div
-    class="overflow-hidden transition-[max-height,opacity] duration-300 sm:hidden {isActive
+    class="overflow-hidden border-line bg-surface transition-[max-height,opacity,border-width] duration-300 motion-reduce:transition-none sm:hidden {isActive
       ? 'max-h-40 opacity-100'
-      : 'max-h-0 opacity-0'}"
+      : 'max-h-0 border-t-0 opacity-0'}"
   >
-    <div class="flex flex-col items-center gap-4 pb-4">
+    <div class="flex flex-col px-5 py-4">
       {#each links as link}
         <a
           href={link.href}
           onclick={() => (isActive = false)}
-          class="group relative font-bold text-gray-300 transition-colors hover:text-white"
+          class="flex items-center gap-3 border-b border-line/70 py-3 font-code text-gray-200 last:border-b-0"
         >
-          {link.label}
-          <span class="absolute -bottom-1 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full"></span>
+          <span class="text-accent">{link.number}</span>
+          <span>{link.label}</span>
         </a>
       {/each}
     </div>

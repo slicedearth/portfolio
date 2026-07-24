@@ -3,38 +3,98 @@ import { getCollection } from "astro:content"
 import ProjectItem from "./ProjectItem.astro"
 
 const projects = (await getCollection("projects")).sort(
-  (a, b) => a.data.order - b.data.order
+  (a, b) => a.data.order - b.data.order,
 )
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "../../assets/images/projects/*.png",
-  { eager: true }
+  { eager: true },
 )
+
+const [featuredProject, ...remainingProjects] = projects
+const pairedProjects = remainingProjects.slice(0, 2)
+const supportingProjects = remainingProjects.slice(2)
+
+const imageFor = (filename: string) =>
+  images[`../../assets/images/projects/${filename}`].default
 ---
 
-<section id="projects" class="bg-surface/40 px-4 py-20">
-  <div class="mb-12 text-center">
-    <p class="text-sm font-semibold tracking-widest text-accent uppercase">
-      My Work
-    </p>
-    <h2 class="mt-2 text-4xl font-bold text-white">Projects</h2>
-    <div class="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-accent-2"></div>
-  </div>
-  <div class="mx-auto max-w-5xl">
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+<section
+  id="projects"
+  class="border-b border-line/70 bg-surface/35 px-5 py-24 sm:px-8 lg:py-28"
+>
+  <div class="mx-auto max-w-6xl">
+    <header
+      class="mb-12 grid gap-5 border-t border-line pt-5 md:grid-cols-[1fr_minmax(18rem,0.65fr)] md:items-end"
+    >
+      <div>
+        <p class="font-code text-sm text-accent uppercase">
+          01 / Selected work
+        </p>
+        <h2 class="mt-3 max-w-2xl text-4xl font-bold text-white sm:text-5xl">
+          Projects built to be used.
+        </h2>
+      </div>
+      <p class="max-w-xl leading-relaxed text-muted md:justify-self-end">
+        Practical products spanning domain intelligence, public data, browser
+        security and interactive tools.
+      </p>
+    </header>
+
+    <div class="space-y-6">
       {
-        projects.map(project => (
+        featuredProject && (
           <ProjectItem
-            title={project.data.title}
-            image={
-              images[`../../assets/images/projects/${project.data.image}`]
-                .default
-            }
-            imageAlt={project.data.image_alt}
-            description={project.data.description}
-            githubURL={project.data.githubURL}
+            title={featuredProject.data.title}
+            image={imageFor(featuredProject.data.image)}
+            imageAlt={featuredProject.data.image_alt}
+            description={featuredProject.data.description}
+            tags={featuredProject.data.tags}
+            githubURL={featuredProject.data.githubURL}
+            deployedURL={featuredProject.data.deployedURL}
+            variant="featured"
           />
-        ))
+        )
       }
+
+      <div class="grid gap-6 md:grid-cols-2">
+        {
+          pairedProjects.map(project => (
+            <ProjectItem
+              title={project.data.title}
+              image={imageFor(project.data.image)}
+              imageAlt={project.data.image_alt}
+              description={project.data.description}
+              tags={project.data.tags}
+              githubURL={project.data.githubURL}
+              deployedURL={project.data.deployedURL}
+            />
+          ))
+        }
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          supportingProjects.map((project, index) => (
+            <div
+              class:list={[
+                "h-full",
+                index === supportingProjects.length - 1 &&
+                  "md:col-span-2 lg:col-span-1",
+              ]}
+            >
+              <ProjectItem
+                title={project.data.title}
+                image={imageFor(project.data.image)}
+                imageAlt={project.data.image_alt}
+                description={project.data.description}
+                tags={project.data.tags}
+                githubURL={project.data.githubURL}
+                deployedURL={project.data.deployedURL}
+              />
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
@@ -42,13 +102,14 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 <script>
   document.getElementById("projects")?.addEventListener("click", event => {
     const link = (event.target as HTMLElement).closest<HTMLElement>(
-      "[data-project-github-link]"
+      "[data-project-link]",
     )
-    const project = link?.dataset.projectGithubLink
-    if (!project) return
+    const project = link?.dataset.projectLink
+    const destination = link?.dataset.projectDestination
+    if (!project || !destination) return
 
     window.gtag?.("event", "select_content", {
-      content_type: "project_github_link",
+      content_type: `project_${destination}_link`,
       item_id: project,
     })
   })

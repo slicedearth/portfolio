@@ -7,33 +7,107 @@ interface Props {
   image: ImageMetadata
   imageAlt: string
   description: string
+  tags: string[]
   githubURL: string
+  deployedURL?: string
+  variant?: "featured" | "standard"
 }
 
-const { title, image, imageAlt, description, githubURL } = Astro.props
+const {
+  title,
+  image,
+  imageAlt,
+  description,
+  tags,
+  githubURL,
+  deployedURL,
+  variant = "standard",
+} = Astro.props
+
+const isFeatured = variant === "featured"
 ---
 
-<div class="flex flex-col rounded-xl border border-white/10 bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40">
-  <figure class="mb-3 overflow-hidden rounded-lg border border-white/10">
-    <div class="flex items-center gap-1.5 bg-slate-800 px-3 py-2">
-      <span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-green-400"></span>
-    </div>
-    <Image src={image} alt={imageAlt} width={680} quality={100} loading="lazy" />
-  </figure>
-  <p class="text-center text-xl font-semibold text-white">{title}</p>
-  <p class="mt-1 mb-3 flex-1 text-center text-sm text-gray-400">
-    {description}
-  </p>
-  <a
-    class="mt-auto flex items-center justify-center gap-3 rounded-full border border-white/10 bg-slate-800 px-4 py-2 font-semibold text-white transition-all duration-300 hover:border-accent/50 hover:bg-slate-700 hover:shadow-lg hover:shadow-accent/10"
-    href={githubURL}
-    rel="noopener noreferrer"
-    target="_blank"
-    data-project-github-link={title}
+<article
+  class:list={[
+    "group overflow-hidden rounded-lg border border-line bg-card transition-[border-color,transform,box-shadow] duration-300 hover:border-accent/60 motion-reduce:transition-none",
+    isFeatured
+      ? "lg:grid lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.85fr)]"
+      : "flex h-full flex-col",
+  ]}
+>
+  <figure
+    class:list={[
+      "overflow-hidden border-line bg-bg",
+      isFeatured
+        ? "aspect-video border-b lg:aspect-auto lg:min-h-[25rem] lg:border-r lg:border-b-0"
+        : "aspect-video border-b",
+    ]}
   >
-    <img class="h-5 w-5" src={ghIcon.src} alt="GitHub Icon" loading="lazy" />
-    <span>View on GitHub</span>
-  </a>
-</div>
+    <Image
+      src={image}
+      alt={imageAlt}
+      width={isFeatured ? 1200 : 680}
+      quality={100}
+      loading="lazy"
+      class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-[1.015] motion-reduce:transition-none"
+    />
+  </figure>
+
+  <div class:list={["flex flex-1 flex-col", isFeatured ? "p-6 sm:p-8" : "p-5"]}>
+    {
+      isFeatured && (
+        <p class="mb-3 font-code text-sm text-accent uppercase">
+          Featured project
+        </p>
+      )
+    }
+    <h3
+      class:list={[
+        "font-semibold text-white",
+        isFeatured ? "text-3xl" : "text-2xl",
+      ]}
+    >
+      {title}
+    </h3>
+    <p class="mt-3 flex-1 leading-relaxed text-muted">{description}</p>
+
+    <ul class="mt-5 flex flex-wrap gap-2" aria-label={`${title} technologies`}>
+      {
+        tags.map(tag => (
+          <li class="rounded-sm border border-line bg-bg/50 px-2.5 py-1 font-code text-xs text-gray-300">
+            {tag}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-6 flex flex-wrap gap-2">
+      {
+        deployedURL && (
+          <a
+            class="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 font-semibold text-bg transition-colors hover:bg-white motion-reduce:transition-none"
+            href={deployedURL}
+            rel="noopener noreferrer"
+            target="_blank"
+            data-project-link={title}
+            data-project-destination="website"
+          >
+            <span>Website</span>
+            <span aria-hidden="true">&#8599;</span>
+          </a>
+        )
+      }
+      <a
+        class="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-md border border-line bg-surface px-4 py-2 font-semibold text-white transition-colors hover:border-accent hover:bg-surface-hover motion-reduce:transition-none"
+        href={githubURL}
+        rel="noopener noreferrer"
+        target="_blank"
+        data-project-link={title}
+        data-project-destination="github"
+      >
+        <img class="h-4 w-4" src={ghIcon.src} alt="" loading="lazy" />
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</article>

@@ -28,11 +28,11 @@
     "icon_alt": "TypeScript Icon"
   },
   {
-    "id": "sass",
+    "id": "python",
     "order": 5,
-    "title": "Sass",
-    "icon": "sass-original.svg",
-    "icon_alt": "Sass Icon"
+    "title": "Python",
+    "icon": "python-original.svg",
+    "icon_alt": "Python Icon"
   },
   {
     "id": "tailwind-css",
@@ -67,7 +67,7 @@
     "order": 10,
     "title": "Svelte",
     "icon": "svelte-original.svg",
-    "icon_alt": "Vue Icon"
+    "icon_alt": "Svelte Icon"
   },
   {
     "id": "vue",
@@ -81,7 +81,7 @@
     "order": 12,
     "title": "Astro",
     "icon": "astro-original.svg",
-    "icon_alt": "Vue Icon"
+    "icon_alt": "Astro Icon"
   },
   {
     "id": "nextjs",

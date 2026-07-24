@@ -6,7 +6,7 @@ import Projects from "../components/sections/Projects.astro"
 import About from "../components/sections/About.astro"
 
 const skills = (await getCollection("skills")).sort(
-  (a, b) => a.data.order - b.data.order
+  (a, b) => a.data.order - b.data.order,
 )
 
 const personSchema = {

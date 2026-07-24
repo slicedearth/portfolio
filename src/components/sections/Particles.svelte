@@ -25,5 +25,9 @@
 </script>
 
 {#if ready}
-  <Particles id="tsparticles" class="animate-fade-in absolute inset-0 -z-10" options={tsparticlesConfig} />
+  <Particles
+    id="tsparticles"
+    class="animate-fade-in absolute inset-0 -z-10 opacity-45"
+    options={tsparticlesConfig}
+  />
 {/if}

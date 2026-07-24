@@ -8,16 +8,18 @@
   --font-secondary: "Caveat", cursive;
   --font-code: "Ubuntu Mono", monospace;
 
-  --color-bg: #030712;
-  --color-surface: #1a1830;
-  --color-surface-hover: #242142;
-  --color-accent: #22d3ee;
-  --color-accent-dark: #06b6d4;
-  --color-accent-2: #a855f7;
+  --color-bg: #07090d;
+  --color-surface: #10141b;
+  --color-surface-hover: #171d26;
+  --color-card: #121820;
+  --color-line: #2a3441;
+  --color-muted: #98a4b3;
+  --color-accent: #5eead4;
+  --color-accent-dark: #34d3b8;
+  --color-accent-2: #f3c969;
 
   --animate-fade-in-up: fade-in-up 0.7s ease-out both;
   --animate-fade-in: fade-in 1s ease-out both;
-  --animate-bounce-slow: bounce-slow 2.5s ease-in-out infinite;
 }
 
 @keyframes fade-in-up {
@@ -38,22 +40,14 @@
     opacity: 1;
   }
 }
-@keyframes bounce-slow {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(0.5rem);
-  }
-}
-
 @font-face {
   font-family: "Barlow";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: local("Barlow Regular "), local("Barlow-Regular"),
+  src:
+    local("Barlow Regular "),
+    local("Barlow-Regular"),
     url("/fonts/barlow-latin-400.woff2") format("woff2"),
     url("/fonts/barlow-latin-400.woff") format("woff");
 }
@@ -62,7 +56,9 @@
   font-style: normal;
   font-display: swap;
   font-weight: 600;
-  src: local("Barlow SemiBold "), local("Barlow-SemiBold"),
+  src:
+    local("Barlow SemiBold "),
+    local("Barlow-SemiBold"),
     url("/fonts/barlow-latin-600.woff2") format("woff2"),
     url("/fonts/barlow-latin-600.woff") format("woff");
 }
@@ -71,7 +67,9 @@
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: local("Barlow Bold "), local("Barlow-Bold"),
+  src:
+    local("Barlow Bold "),
+    local("Barlow-Bold"),
     url("/fonts/barlow-latin-700.woff2") format("woff2"),
     url("/fonts/barlow-latin-700.woff") format("woff");
 }
@@ -80,7 +78,9 @@
   font-style: cursive;
   font-display: swap;
   font-weight: 700;
-  src: local("Caveat Bold"), local("Caveat-Bold"),
+  src:
+    local("Caveat Bold"),
+    local("Caveat-Bold"),
     url("/fonts/caveat-v7-latin-700.woff2") format("woff2"),
     url("/fonts/caveat-v7-latin-700.woff") format("woff");
 }
@@ -89,7 +89,9 @@
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: local("Ubuntu Mono Regular "), local("Ubuntu Mono-Regular"),
+  src:
+    local("Ubuntu Mono Regular "),
+    local("Ubuntu Mono-Regular"),
     url("/fonts/ubuntu-mono-latin-400.woff2") format("woff2"),
     url("/fonts/ubuntu-mono-latin-400.woff") format("woff");
 }
@@ -98,7 +100,9 @@
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: local("Ubuntu Mono Bold "), local("Ubuntu Mono-Bold"),
+  src:
+    local("Ubuntu Mono Bold "),
+    local("Ubuntu Mono-Bold"),
     url("/fonts/ubuntu-mono-latin-700.woff2") format("woff2"),
     url("/fonts/ubuntu-mono-latin-700.woff") format("woff");
 }
@@ -106,6 +110,11 @@
 html {
   scroll-behavior: smooth;
 }
+
+[id] {
+  scroll-margin-top: 4rem;
+}
+
 @media screen and (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -121,6 +130,18 @@ html {
 
 body {
   background-color: var(--color-bg);
-  color: #e5e7eb;
+  min-width: 20rem;
+  color: #e8edf3;
   font-family: var(--font-primary);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
 }

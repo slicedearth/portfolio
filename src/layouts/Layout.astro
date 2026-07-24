@@ -11,12 +11,17 @@ interface Props {
 
 const siteTitle = "Abymar"
 const siteDescription =
-  "Portfolio of a Melbourne-based project manager and web developer, featuring projects built with React, Vue, Node.js and more."
+  "A portfolio of practical tools for security, public data and the web."
 const siteUrl = "https://abymar.com"
 
 const { title, description = siteDescription, pathname } = Astro.props
 const canonical = pathname ? `${siteUrl}${pathname}` : undefined
 const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
+const analyticsScript = gaId
+  ? `window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag("js",new Date());window.gtag("config",${JSON.stringify(
+      gaId,
+    )},{cookie_expires:0});`
+  : undefined
 ---
 
 <html lang="en">
@@ -32,11 +37,18 @@ const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
       type="font/woff2"
       crossorigin
     />
+    <link
+      rel="preload"
+      href="/fonts/barlow-latin-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <title>{siteTitle} | {title}</title>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={`${siteTitle} | ${title}`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     {canonical && <meta property="og:url" content={canonical} />}
@@ -48,19 +60,13 @@ const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
 
     {
       gaId && (
-        <>
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
-          <script define:vars={{ gaId }}>
-            window.dataLayer = window.dataLayer || []
-            function gtag() {
-              dataLayer.push(arguments)
-            }
-            gtag("js", new Date())
-            gtag("config", gaId, { cookie_expires: 0 })
-          </script>
-        </>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+        />
       )
     }
+    {analyticsScript && <script is:inline set:html={analyticsScript} />}
   </head>
   <body>
     <div class="flex min-h-screen flex-col">

@@ -4,53 +4,63 @@
     "order": 1,
     "title": "WHOISleuth",
     "image": "whoisleuth.png",
-    "image_alt": "WHOISleuth Project",
+    "image_alt": "WHOISleuth domain intelligence overview",
     "githubURL": "https://github.com/slicedearth/whoisleuth",
-    "description": "Domain, IP and ASN lookup tool using the IANA RDAP bootstrap and live WHOIS, with bulk CSV scanning, typosquat detection and Certificate Transparency search. Built with Node.js and Express."
+    "deployedURL": "https://whoisleuth.com/",
+    "description": "Domain intelligence console for registration, DNS, certificate and web evidence. Built with SvelteKit and Node.js.",
+    "tags": ["SvelteKit", "TypeScript", "Node.js"]
+  },
+  {
+    "id": "breach-gazette",
+    "order": 2,
+    "title": "Breach Gazette",
+    "image": "breachGazette.png",
+    "image_alt": "Breach Gazette public breach notifications overview",
+    "githubURL": "https://github.com/slicedearth/breachgazette",
+    "deployedURL": "https://breachgazette.netlify.app/",
+    "description": "Official breach notifications, statistics and regulatory updates in one public data site. Built with Python and Astro.",
+    "tags": ["Python", "Astro", "Public data"]
+  },
+  {
+    "id": "control-current",
+    "order": 3,
+    "title": "ControlCurrent",
+    "image": "controlCurrent.png",
+    "image_alt": "ControlCurrent browser security planning overview",
+    "githubURL": "https://github.com/slicedearth/controlcurrent",
+    "deployedURL": "https://slicedearth.github.io/controlcurrent/",
+    "description": "Helps web teams choose security features that work across the browsers they need to support. Built with Astro and TypeScript.",
+    "tags": ["Astro", "TypeScript", "Web security"]
   },
   {
     "id": "forty-life",
-    "order": 2,
+    "order": 4,
     "title": "Forty Life",
     "image": "fortyLife.png",
-    "image_alt": "Forty Life Project",
+    "image_alt": "Forty Life multiplayer game setup",
     "githubURL": "https://github.com/slicedearth/forty-life",
-    "description": "Touch-friendly life counter for Magic: The Gathering with a seating-aware rotating layout, live commander art via Scryfall, and full Commander-pod tracking for poison, commander damage, monarch and initiative. Built with Svelte and Tailwind CSS."
-  },
-  {
-    "id": "wearit-react",
-    "order": 3,
-    "title": "WearIt React",
-    "image": "wearitReact.png",
-    "image_alt": "WearIt React Project",
-    "githubURL": "https://github.com/slicedearth/wearit-react",
-    "description": "Clothing store website featuring a contact form and newsletter signup via Mailchimp. Built with React."
-  },
-  {
-    "id": "wearit-ejs",
-    "order": 4,
-    "title": "WearIt EJS",
-    "image": "wearitEJS.png",
-    "image_alt": "WearIt EJS Project",
-    "githubURL": "https://github.com/slicedearth/wearit-ejs",
-    "description": "Clothing store website featuring a dark mode toggle with the ability to submit testimonials. Built with EJS and Express."
+    "deployedURL": "https://forty-life.netlify.app/",
+    "description": "Magic: The Gathering life counter with rotating layouts, commander art and multiplayer tracking. Built with Svelte.",
+    "tags": ["Svelte", "TypeScript", "PWA"]
   },
   {
     "id": "revue-mongodb",
     "order": 5,
     "title": "ReVue MongoDB",
     "image": "revueMongoDB.png",
-    "image_alt": "ReVue MongoDB Project",
-    "githubURL": "https://github.com/slicedearth/revue-mongodb/",
-    "description": "Website that allows authenticated users to submit, edit or remove reviews. Built with Vue, Express and MongoDB."
+    "image_alt": "ReVue album review homepage with top-rated albums",
+    "githubURL": "https://github.com/slicedearth/revue-mongodb",
+    "description": "Music review app for browsing albums and publishing reviews with user accounts and moderation. Built with Vue, TypeScript and MongoDB.",
+    "tags": ["Vue", "TypeScript", "MongoDB"]
   },
   {
     "id": "portfolio",
     "order": 6,
     "title": "Portfolio",
     "image": "portfolio.png",
-    "image_alt": "Portfolio Project",
+    "image_alt": "Aser's portfolio website",
     "githubURL": "https://github.com/slicedearth/portfolio",
-    "description": "Personal portfolio website that allows me to showcase my web projects. Built with Astro and Tailwind CSS."
+    "description": "Personal portfolio website that allows me to showcase my web projects. Built with Astro and Tailwind CSS.",
+    "tags": ["Astro", "Tailwind CSS", "Svelte"]
   }
 ]
