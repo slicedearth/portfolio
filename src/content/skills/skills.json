@@ -28,11 +28,11 @@
     "icon_alt": "TypeScript Icon"
   },
   {
-    "id": "sass",
+    "id": "python",
     "order": 5,
-    "title": "Sass",
-    "icon": "sass-original.svg",
-    "icon_alt": "Sass Icon"
+    "title": "Python",
+    "icon": "python-original.svg",
+    "icon_alt": "Python Icon"
   },
   {
     "id": "tailwind-css",

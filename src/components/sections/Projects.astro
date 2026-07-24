@@ -17,7 +17,10 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
       My Work
     </p>
     <h2 class="mt-2 text-4xl font-bold text-white">Projects</h2>
-    <div class="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-accent-2"></div>
+    <div
+      class="mx-auto mt-4 h-1 w-16 rounded-full bg-gradient-to-r from-accent to-accent-2"
+    >
+    </div>
   </div>
   <div class="mx-auto max-w-5xl">
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -32,6 +35,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
             imageAlt={project.data.image_alt}
             description={project.data.description}
             githubURL={project.data.githubURL}
+            deployedURL={project.data.deployedURL}
           />
         ))
       }
@@ -42,13 +46,14 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 <script>
   document.getElementById("projects")?.addEventListener("click", event => {
     const link = (event.target as HTMLElement).closest<HTMLElement>(
-      "[data-project-github-link]"
+      "[data-project-link]"
     )
-    const project = link?.dataset.projectGithubLink
-    if (!project) return
+    const project = link?.dataset.projectLink
+    const destination = link?.dataset.projectDestination
+    if (!project || !destination) return
 
     window.gtag?.("event", "select_content", {
-      content_type: "project_github_link",
+      content_type: `project_${destination}_link`,
       item_id: project,
     })
   })

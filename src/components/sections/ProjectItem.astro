@@ -8,32 +8,65 @@ interface Props {
   imageAlt: string
   description: string
   githubURL: string
+  deployedURL?: string
 }
 
-const { title, image, imageAlt, description, githubURL } = Astro.props
+const {
+  title,
+  image,
+  imageAlt,
+  description,
+  githubURL,
+  deployedURL,
+} = Astro.props
 ---
 
-<div class="flex flex-col rounded-xl border border-white/10 bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40">
+<article
+  class="flex flex-col rounded-xl border border-white/10 bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+>
   <figure class="mb-3 overflow-hidden rounded-lg border border-white/10">
     <div class="flex items-center gap-1.5 bg-slate-800 px-3 py-2">
       <span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
       <span class="h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
       <span class="h-2.5 w-2.5 rounded-full bg-green-400"></span>
     </div>
-    <Image src={image} alt={imageAlt} width={680} quality={100} loading="lazy" />
+    <Image
+      src={image}
+      alt={imageAlt}
+      width={680}
+      quality={100}
+      loading="lazy"
+    />
   </figure>
   <p class="text-center text-xl font-semibold text-white">{title}</p>
   <p class="mt-1 mb-3 flex-1 text-center text-sm text-gray-400">
     {description}
   </p>
-  <a
-    class="mt-auto flex items-center justify-center gap-3 rounded-full border border-white/10 bg-slate-800 px-4 py-2 font-semibold text-white transition-all duration-300 hover:border-accent/50 hover:bg-slate-700 hover:shadow-lg hover:shadow-accent/10"
-    href={githubURL}
-    rel="noopener noreferrer"
-    target="_blank"
-    data-project-github-link={title}
-  >
-    <img class="h-5 w-5" src={ghIcon.src} alt="GitHub Icon" loading="lazy" />
-    <span>View on GitHub</span>
-  </a>
-</div>
+  <div class="mt-auto grid gap-2">
+    {
+      deployedURL && (
+        <a
+          class="flex items-center justify-center rounded-full bg-accent px-4 py-2 font-semibold text-slate-950 transition-all duration-300 hover:bg-cyan-300 hover:shadow-lg hover:shadow-accent/20"
+          href={deployedURL}
+          rel="noopener noreferrer"
+          target="_blank"
+          data-project-link={title}
+          data-project-destination="website"
+        >
+          Visit website
+        </a>
+      )
+    }
+    <a
+      class="flex items-center justify-center gap-3 rounded-full border border-white/10 bg-slate-800 px-4 py-2 font-semibold text-white transition-all duration-300 hover:border-accent/50 hover:bg-slate-700 hover:shadow-lg hover:shadow-accent/10"
+      href={githubURL}
+      rel="noopener noreferrer"
+      target="_blank"
+      data-project-link={title}
+      data-project-destination="github"
+    >
+      <img class="h-5 w-5" src={ghIcon.src} alt="" loading="lazy" />
+      <span>View on GitHub</span>
+    </a>
+  </div>
+</article>
