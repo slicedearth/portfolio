@@ -61,7 +61,7 @@ const deferredJavaScript = javascriptFiles.filter(
     !optionalSceneJavaScript.includes(file),
 )
 const inlineJavaScriptTotal = [
-  ...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi),
+  ...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi),
 ]
   .filter(
     ([, attributes]) =>
