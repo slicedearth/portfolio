@@ -1,6 +1,7 @@
 import { readFile, readdir, stat } from "node:fs/promises"
 import { extname, join, normalize } from "node:path"
 import { gzipSync } from "node:zlib"
+import { parse } from "parse5"
 
 const limits = {
   css: 70 * 1024,
@@ -35,9 +36,21 @@ const walk = async directory => {
 await walk("dist")
 
 const html = await readFile("dist/index.html", "utf8")
+const scriptElements = []
+const collectScriptElements = node => {
+  if (node.nodeName === "script") scriptElements.push(node)
+  for (const child of node.childNodes ?? []) collectScriptElements(child)
+}
+collectScriptElements(parse(html))
+
+const attributeValue = (element, name) =>
+  element.attrs?.find(attribute => attribute.name === name)?.value
+const scriptText = element =>
+  (element.childNodes ?? []).map(node => node.value ?? "").join("")
 const initialScriptPaths = new Set(
-  [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+\.js(?:\?[^"']*)?)/g)]
-    .map(([, source]) => source)
+  scriptElements
+    .map(element => attributeValue(element, "src"))
+    .filter(source => source?.match(/\.js(?:\?|$)/))
     .filter(source => source.startsWith("/"))
     .map(source => normalize(join("dist", source.split("?")[0]))),
 )
@@ -60,15 +73,13 @@ const deferredJavaScript = javascriptFiles.filter(
     !initialScriptPaths.has(normalize(file.path)) &&
     !optionalSceneJavaScript.includes(file),
 )
-const inlineJavaScriptTotal = [
-  ...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi),
-]
+const inlineJavaScriptTotal = scriptElements
   .filter(
-    ([, attributes]) =>
-      !/\bsrc\s*=/.test(attributes) &&
-      !/\btype=["']application\/ld\+json["']/.test(attributes),
+    element =>
+      !attributeValue(element, "src") &&
+      attributeValue(element, "type")?.toLowerCase() !== "application/ld+json",
   )
-  .reduce((total, [, , source]) => total + Buffer.byteLength(source), 0)
+  .reduce((total, element) => total + Buffer.byteLength(scriptText(element)), 0)
 const initialJavaScriptTotal =
   inlineJavaScriptTotal +
   initialJavaScript.reduce((total, file) => total + file.size, 0)
