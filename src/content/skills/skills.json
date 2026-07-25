@@ -1,142 +1,32 @@
 [
   {
-    "id": "html",
-    "order": 1,
-    "title": "HTML",
-    "icon": "html5-plain.svg",
-    "icon_alt": "HTML Icon"
-  },
-  {
-    "id": "css",
-    "order": 2,
-    "title": "CSS",
-    "icon": "css3-plain.svg",
-    "icon_alt": "CSS Icon"
-  },
-  {
-    "id": "javascript",
-    "order": 3,
-    "title": "JavaScript",
-    "icon": "javascript-plain.svg",
-    "icon_alt": "JavaScript Icon"
-  },
-  {
     "id": "typescript",
-    "order": 4,
-    "title": "TypeScript",
-    "icon": "typescript-plain.svg",
-    "icon_alt": "TypeScript Icon"
-  },
-  {
-    "id": "python",
-    "order": 5,
-    "title": "Python",
-    "icon": "python-original.svg",
-    "icon_alt": "Python Icon"
-  },
-  {
-    "id": "tailwind-css",
-    "order": 6,
-    "title": "Tailwind CSS",
-    "icon": "tailwindcss-original.svg",
-    "icon_alt": "Tailwind CSS Icon"
-  },
-  {
-    "id": "nodejs",
-    "order": 7,
-    "title": "Node.js",
-    "icon": "nodejs-plain.svg",
-    "icon_alt": "Node.js Icon"
-  },
-  {
-    "id": "express",
-    "order": 8,
-    "title": "Express",
-    "icon": "express-original.svg",
-    "icon_alt": "Express Icon"
-  },
-  {
-    "id": "react",
-    "order": 9,
-    "title": "React",
-    "icon": "react-original.svg",
-    "icon_alt": "React Icon"
+    "order": 1,
+    "title": "TypeScript"
   },
   {
     "id": "svelte",
-    "order": 10,
-    "title": "Svelte",
-    "icon": "svelte-original.svg",
-    "icon_alt": "Svelte Icon"
+    "order": 2,
+    "title": "Svelte"
   },
   {
-    "id": "vue",
-    "order": 11,
-    "title": "Vue",
-    "icon": "vuejs-original.svg",
-    "icon_alt": "Vue Icon"
+    "id": "python",
+    "order": 3,
+    "title": "Python"
+  },
+  {
+    "id": "nodejs",
+    "order": 4,
+    "title": "Node.js"
   },
   {
     "id": "astro",
-    "order": 12,
-    "title": "Astro",
-    "icon": "astro-original.svg",
-    "icon_alt": "Astro Icon"
+    "order": 5,
+    "title": "Astro"
   },
   {
-    "id": "nextjs",
-    "order": 13,
-    "title": "Next.js",
-    "icon": "nextjs-original.svg",
-    "icon_alt": "Next.js Icon"
-  },
-  {
-    "id": "mongodb",
-    "order": 14,
-    "title": "MongoDB",
-    "icon": "mongodb-plain.svg",
-    "icon_alt": "MongoDB Icon"
-  },
-  {
-    "id": "mysql",
-    "order": 15,
-    "title": "MySQL",
-    "icon": "mysql-plain.svg",
-    "icon_alt": "MySQL Icon"
-  },
-  {
-    "id": "firebase",
-    "order": 16,
-    "title": "Firebase",
-    "icon": "firebase-plain.svg",
-    "icon_alt": "Firebase Icon"
-  },
-  {
-    "id": "git",
-    "order": 17,
-    "title": "Git",
-    "icon": "git-plain.svg",
-    "icon_alt": "Git Icon"
-  },
-  {
-    "id": "docker",
-    "order": 18,
-    "title": "Docker",
-    "icon": "docker-plain.svg",
-    "icon_alt": "Docker Icon"
-  },
-  {
-    "id": "magento-2",
-    "order": 19,
-    "title": "Magento 2",
-    "icon": "magento-original.svg",
-    "icon_alt": "Magento 2 Icon"
-  },
-  {
-    "id": "wordpress",
-    "order": 20,
-    "title": "WordPress",
-    "icon": "wordpress-plain.svg",
-    "icon_alt": "WordPress Icon"
+    "id": "playwright",
+    "order": 6,
+    "title": "Playwright"
   }
 ]

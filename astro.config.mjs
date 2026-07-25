@@ -1,17 +1,22 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config"
+import sitemap from "@astrojs/sitemap"
+import tailwindcss from "@tailwindcss/vite"
 
-import svelte from '@astrojs/svelte';
-
-import netlify from '@astrojs/netlify';
-
-import tailwindcss from '@tailwindcss/vite';
-
-// https://astro.build/config
 export default defineConfig({
-  integrations: [svelte()],
-  adapter: netlify(),
+  site: "https://www.slicedearth.dev",
+  integrations: [sitemap()],
   vite: {
-    plugins: [tailwindcss()]
-  }
-});
+    plugins: [tailwindcss()],
+    build: {
+      assetsInlineLimit: 0,
+      chunkSizeWarningLimit: 560,
+    },
+    server: {
+      strictPort: true,
+    },
+    preview: {
+      strictPort: true,
+    },
+  },
+})

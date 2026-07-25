@@ -1,69 +1,84 @@
 ---
-import ghIcon from "../../assets/icons/github-original.svg"
-import Particles from "./Particles.svelte"
+import { ArrowDown, ArrowUpRight } from "@lucide/astro"
+import GithubLogo from "../icons/GithubLogo.astro"
+import SlicedEarth from "./SlicedEarth.astro"
 ---
 
 <section
-  class="relative z-0 flex min-h-[calc(82svh-4rem)] overflow-hidden border-b border-line/70 bg-bg px-5 sm:px-8"
+  class="relative flex min-h-[calc(82dvh-4rem)] items-center overflow-hidden border-b border-line bg-bg px-5 py-12 sm:min-h-[calc(92dvh-4.5rem)] sm:px-8 sm:py-20 lg:py-24"
 >
-  <Particles client:load />
+  <SlicedEarth />
   <div
-    class="mx-auto flex w-full max-w-6xl flex-col justify-center py-20 sm:py-24"
+    class="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(7,10,14,0.98)_0%,rgba(7,10,14,0.88)_34%,rgba(7,10,14,0.42)_62%,rgba(7,10,14,0.08)_100%)] sm:bg-[linear-gradient(90deg,rgba(7,10,14,0.94)_0%,rgba(7,10,14,0.78)_34%,rgba(7,10,14,0.24)_63%,rgba(7,10,14,0.04)_100%)]"
+    aria-hidden="true"
   >
-    <div class="max-w-4xl">
-      <p class="animate-fade-in-up font-code text-sm text-accent uppercase">
-        Project delivery / Web development
+  </div>
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-bg to-transparent"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="hero-raster pointer-events-none absolute inset-0 z-[1]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    class="relative z-[2] mx-auto w-full max-w-7xl min-[375px]:-translate-y-8 sm:translate-y-0"
+  >
+    <div class="max-w-3xl">
+      <p
+        class="animate-fade-in-up flex items-center gap-3 font-code text-xs text-accent uppercase sm:text-sm"
+      >
+        <span class="h-px w-8 bg-accent" aria-hidden="true"></span>
+        Software engineering / Project delivery
       </p>
       <h1
-        class="animate-fade-in-up mt-5 font-secondary text-[clamp(3.75rem,10vw,7.5rem)] leading-[0.8] font-bold text-white [animation-delay:100ms]"
+        class="hero-title animate-fade-in-up mt-5 font-secondary text-[clamp(2.75rem,14vw,3.5rem)] leading-[0.9] font-bold text-white sm:mt-6 sm:text-[clamp(4rem,9vw,7rem)] [animation-delay:100ms]"
       >
         Hey, I'm Aser.
       </h1>
       <p
-        class="animate-fade-in-up mt-9 max-w-3xl text-3xl leading-tight font-semibold text-gray-200 sm:text-4xl lg:text-5xl [animation-delay:180ms]"
+        class="animate-fade-in-up mt-9 max-w-2xl text-[1.625rem] leading-tight font-semibold text-gray-100 sm:mt-7 sm:text-3xl lg:text-4xl [animation-delay:180ms]"
       >
-        I build practical tools for security, public data and the web.
+        I build and deliver software for security, public data and the web.
       </p>
       <div
-        class="animate-fade-in-up mt-9 flex flex-wrap gap-3 [animation-delay:260ms]"
+        class="animate-fade-in-up mt-9 flex flex-col items-start gap-3 min-[375px]:flex-row min-[375px]:items-center min-[375px]:gap-2 sm:gap-3 [animation-delay:260ms]"
       >
         <a
-          class="inline-flex min-h-12 items-center justify-center rounded-md bg-accent px-5 py-3 font-semibold text-bg transition-colors hover:bg-white motion-reduce:transition-none"
+          class="inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-accent px-5 py-3 font-semibold text-bg transition-[background-color,transform] hover:bg-accent-dark active:translate-y-px min-[375px]:gap-1.5 min-[375px]:px-3 min-[375px]:text-sm sm:gap-2 sm:px-5 sm:text-base motion-reduce:transition-none"
           href="#projects"
         >
-          Explore projects
+          <span>Explore projects</span>
+          <ArrowDown
+            class="min-[375px]:h-4 min-[375px]:w-4 sm:h-[18px] sm:w-[18px]"
+            aria-hidden="true"
+            size={18}
+            stroke-width={1.8}
+          />
         </a>
         <a
-          class="inline-flex min-h-12 items-center justify-center gap-3 rounded-md border border-line bg-surface px-5 py-3 font-semibold text-white transition-colors hover:border-accent hover:bg-surface-hover motion-reduce:transition-none"
-          href="https://www.github.com/slicedearth"
-          rel="noopener noreferrer"
+          class="inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-gray-500/60 bg-bg/80 px-5 py-3 font-semibold text-white transition-[background-color,border-color,transform] hover:border-gray-300 hover:bg-surface active:translate-y-px min-[375px]:gap-1.5 min-[375px]:px-3 min-[375px]:text-sm sm:gap-2 sm:px-5 sm:text-base motion-reduce:transition-none"
+          href="https://github.com/slicedearth"
+          rel="me noopener noreferrer"
           target="_blank"
-          data-github-profile-link
+          data-analytics-type="github_profile_link"
+          data-analytics-item="hero"
         >
-          <img class="h-5 w-5" src={ghIcon.src} alt="" loading="eager" />
+          <GithubLogo
+            class="h-[19px] w-[19px] min-[375px]:h-4 min-[375px]:w-4 sm:h-[19px] sm:w-[19px]"
+          />
           <span>GitHub profile</span>
+          <ArrowUpRight
+            class="min-[375px]:h-3.5 min-[375px]:w-3.5 sm:h-4 sm:w-4"
+            aria-hidden="true"
+            size={16}
+            stroke-width={1.8}
+          />
         </a>
       </div>
     </div>
-
-    <ul
-      class="mt-16 hidden grid-cols-3 border-y border-line font-code text-xs text-muted uppercase sm:grid"
-      aria-label="Areas of focus"
-    >
-      <li class="py-4">Security tools</li>
-      <li class="border-x border-line px-5 py-4 text-center">Public data</li>
-      <li class="py-4 text-right">Interactive web</li>
-    </ul>
   </div>
 </section>
-
-<script>
-  document
-    .querySelector("[data-github-profile-link]")
-    ?.addEventListener("click", () => {
-      window.gtag?.("event", "select_content", {
-        content_type: "github_profile_link",
-        item_id: "hero",
-      })
-    })
-</script>

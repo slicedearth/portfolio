@@ -1,25 +1,22 @@
 @import "tailwindcss";
 
 @source "../**/*.astro";
-@source "../**/*.svelte";
 
 @theme {
-  --font-primary: "Barlow", sans-serif;
-  --font-secondary: "Caveat", cursive;
-  --font-code: "Ubuntu Mono", monospace;
+  --font-primary: "Archivo", sans-serif;
+  --font-secondary: "Kalam", cursive;
+  --font-code: "IBM Plex Mono", monospace;
 
-  --color-bg: #07090d;
-  --color-surface: #10141b;
-  --color-surface-hover: #171d26;
-  --color-card: #121820;
-  --color-line: #2a3441;
-  --color-muted: #98a4b3;
+  --color-bg: #070a0e;
+  --color-surface: #0d1218;
+  --color-surface-hover: #151c23;
+  --color-card: #10171e;
+  --color-line: #28323a;
+  --color-muted: #a1abb2;
   --color-accent: #5eead4;
   --color-accent-dark: #34d3b8;
-  --color-accent-2: #f3c969;
 
-  --animate-fade-in-up: fade-in-up 0.7s ease-out both;
-  --animate-fade-in: fade-in 1s ease-out both;
+  --animate-fade-in-up: fade-in-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes fade-in-up {
@@ -32,79 +29,77 @@
     transform: translateY(0);
   }
 }
-@keyframes fade-in {
-  from {
-    opacity: 0;
+html[data-reveal-motion="ready"] [data-reveal] {
+  opacity: 0;
+  transform: translateY(0.75rem);
+}
+
+html[data-reveal-motion="ready"] [data-reveal][data-reveal-state="visible"] {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 750ms ease,
+    transform 750ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.brand-mark > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  .brand-mark .brand-layer {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  to {
-    opacity: 1;
+
+  .brand-link:is(:hover, :focus-visible) .brand-layer-top {
+    transform: translateY(-1.5px);
+  }
+
+  .brand-link:is(:hover, :focus-visible) .brand-layer-middle {
+    transform: translateX(1.25px);
+  }
+
+  .brand-link:is(:hover, :focus-visible) .brand-layer-lower {
+    transform: translate(-1.25px, 1px);
+  }
+
+  .brand-link:is(:hover, :focus-visible) .brand-layer-base {
+    transform: translateY(1.5px);
   }
 }
+
 @font-face {
-  font-family: "Barlow";
+  font-family: "Archivo";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url("/fonts/archivo-latin-variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Kalam";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("/fonts/kalam-latin-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src:
-    local("Barlow Regular "),
-    local("Barlow-Regular"),
-    url("/fonts/barlow-latin-400.woff2") format("woff2"),
-    url("/fonts/barlow-latin-400.woff") format("woff");
+  src: url("/fonts/ibm-plex-mono-latin-400.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Barlow";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 600;
-  src:
-    local("Barlow SemiBold "),
-    local("Barlow-SemiBold"),
-    url("/fonts/barlow-latin-600.woff2") format("woff2"),
-    url("/fonts/barlow-latin-600.woff") format("woff");
-}
-@font-face {
-  font-family: "Barlow";
+  font-family: "IBM Plex Mono";
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src:
-    local("Barlow Bold "),
-    local("Barlow-Bold"),
-    url("/fonts/barlow-latin-700.woff2") format("woff2"),
-    url("/fonts/barlow-latin-700.woff") format("woff");
-}
-@font-face {
-  font-family: "Caveat";
-  font-style: cursive;
-  font-display: swap;
-  font-weight: 700;
-  src:
-    local("Caveat Bold"),
-    local("Caveat-Bold"),
-    url("/fonts/caveat-v7-latin-700.woff2") format("woff2"),
-    url("/fonts/caveat-v7-latin-700.woff") format("woff");
-}
-@font-face {
-  font-family: "Ubuntu Mono";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src:
-    local("Ubuntu Mono Regular "),
-    local("Ubuntu Mono-Regular"),
-    url("/fonts/ubuntu-mono-latin-400.woff2") format("woff2"),
-    url("/fonts/ubuntu-mono-latin-400.woff") format("woff");
-}
-@font-face {
-  font-family: "Ubuntu Mono";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src:
-    local("Ubuntu Mono Bold "),
-    local("Ubuntu Mono-Bold"),
-    url("/fonts/ubuntu-mono-latin-700.woff2") format("woff2"),
-    url("/fonts/ubuntu-mono-latin-700.woff") format("woff");
+  src: url("/fonts/ibm-plex-mono-latin-700.woff2") format("woff2");
 }
 
 html {
@@ -131,9 +126,51 @@ html {
 body {
   background-color: var(--color-bg);
   min-width: 20rem;
-  color: #e8edf3;
+  overflow-x: hidden;
+  color: #e5eaee;
   font-family: var(--font-primary);
   text-rendering: optimizeLegibility;
+}
+
+.hero-raster {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(94, 234, 212, 0.055) 1px,
+    transparent 1px
+  );
+  background-position: center;
+  background-size: 100% 5px;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 30%,
+    #000 58%,
+    rgba(0, 0, 0, 0.7) 88%,
+    transparent 100%
+  );
+  opacity: 0.38;
+}
+
+.section-grid {
+  background-image:
+    linear-gradient(to right, rgba(161, 171, 178, 0.014) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(161, 171, 178, 0.012) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 128px 128px;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
+}
+
+.hero-title {
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 ::selection {

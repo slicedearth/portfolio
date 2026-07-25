@@ -1,5 +1,74 @@
 ---
-import Header from "./Header.svelte"
+import { Menu, X } from "@lucide/astro"
+import Logo from "../brand/Logo.astro"
+
+const links = [
+  { href: "/#projects", label: "Projects" },
+  { href: "/#about", label: "About" },
+]
 ---
 
-<Header client:load />
+<header
+  class="fixed inset-x-0 top-0 z-50 border-b border-line/80 bg-bg/90 backdrop-blur-xl"
+>
+  <nav
+    class="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 sm:px-8"
+    aria-label="Primary"
+  >
+    <a
+      href="/"
+      class="brand-link rounded-sm transition-opacity hover:opacity-90 motion-reduce:transition-none"
+      aria-label="slicedearth home"
+    >
+      <Logo />
+    </a>
+
+    <div class="hidden items-center gap-7 sm:flex">
+      {
+        links.map(link => (
+          <a
+            href={link.href}
+            class="font-code text-sm text-gray-300 transition-colors hover:text-white motion-reduce:transition-none"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <details class="group relative sm:hidden" data-mobile-nav>
+      <summary
+        class="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-md border border-line bg-surface text-white transition-colors marker:hidden hover:border-accent motion-reduce:transition-none [&::-webkit-details-marker]:hidden"
+        aria-label="Toggle navigation"
+      >
+        <Menu
+          class="group-open:hidden"
+          aria-hidden="true"
+          size={21}
+          stroke-width={1.8}
+        />
+        <X
+          class="hidden group-open:block"
+          aria-hidden="true"
+          size={21}
+          stroke-width={1.8}
+        />
+      </summary>
+      <div
+        class="absolute top-[calc(100%+0.75rem)] right-0 w-[min(18rem,calc(100vw-2.5rem))] overflow-hidden rounded-md border border-line bg-surface p-2 shadow-2xl shadow-black/35"
+      >
+        {
+          links.map(link => (
+            <a
+              href={link.href}
+              class="flex min-h-12 items-center border-b border-line/70 px-3 font-code text-gray-200 transition-colors last:border-b-0 hover:bg-surface-hover hover:text-white motion-reduce:transition-none"
+              data-mobile-nav-link
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+    </details>
+  </nav>
+</header>

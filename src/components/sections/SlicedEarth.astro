@@ -1,0 +1,127 @@
+---
+import { Image } from "astro:assets"
+import heroPoster from "../../assets/brand/hero-slicedearth.webp"
+---
+
+<div
+  class="sliced-earth pointer-events-none absolute inset-0 z-0 overflow-hidden"
+  data-sliced-earth
+  aria-hidden="true"
+>
+  <Image
+    src={heroPoster}
+    alt=""
+    layout="full-width"
+    loading="eager"
+    fetchpriority="high"
+    quality={84}
+    sizes="(max-width: 639px) 155vw, 100vw"
+    class="sliced-earth__poster absolute inset-0 h-full w-full scale-[1.55] object-contain object-[68%_center] sm:scale-100 sm:object-contain sm:object-center"
+    data-hero-image
+  />
+  <canvas
+    class="sliced-earth__canvas absolute inset-0 h-full w-full"
+    data-earth-canvas></canvas>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-sliced-earth]")
+  const canvas = root?.querySelector<HTMLCanvasElement>("[data-earth-canvas]")
+
+  if (root && canvas) {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
+    const posterAspectRatio = 16 / 9
+    const wideCanvas =
+      window.matchMedia("(min-width: 768px)").matches &&
+      root.clientWidth / root.clientHeight >= posterAspectRatio
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean }
+      }
+    ).connection
+
+    if (!reducedMotion && wideCanvas && !connection?.saveData) {
+      let disposed = false
+      let disposeScene: (() => void) | undefined
+      let idleRequest: number | undefined
+      let startTimer: number | undefined
+
+      const start = async () => {
+        if (disposed || !root.isConnected) return
+
+        const { mountSlicedEarthScene } = await import("./sliced-earth-scene")
+        if (disposed || !root.isConnected) return
+
+        disposeScene = await mountSlicedEarthScene({
+          canvas,
+          root,
+          onReady: () => {
+            root.dataset.earthReady = "true"
+          },
+        })
+      }
+
+      const scheduleStart = () => {
+        startTimer = window.setTimeout(() => {
+          if ("requestIdleCallback" in window) {
+            idleRequest = window.requestIdleCallback(() => void start(), {
+              timeout: 2000,
+            })
+          } else {
+            void start()
+          }
+        }, 2500)
+      }
+
+      if (document.readyState === "complete") {
+        scheduleStart()
+      } else {
+        window.addEventListener("load", scheduleStart, { once: true })
+      }
+
+      const dispose = () => {
+        disposed = true
+        window.removeEventListener("load", scheduleStart)
+        if (startTimer !== undefined) window.clearTimeout(startTimer)
+        if (idleRequest !== undefined && "cancelIdleCallback" in window) {
+          window.cancelIdleCallback(idleRequest)
+        }
+        disposeScene?.()
+      }
+
+      document.addEventListener("astro:before-swap", dispose, { once: true })
+    }
+  }
+</script>
+
+<style>
+  .sliced-earth {
+    background: #070a0e;
+  }
+
+  .sliced-earth__poster,
+  .sliced-earth__canvas {
+    transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sliced-earth__canvas {
+    opacity: 0;
+  }
+
+  .sliced-earth[data-earth-ready="true"] .sliced-earth__canvas {
+    opacity: 1;
+  }
+
+  .sliced-earth[data-earth-ready="true"] .sliced-earth__poster {
+    opacity: 0;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    .sliced-earth__poster,
+    .sliced-earth__canvas {
+      transition: none;
+    }
+  }
+</style>
