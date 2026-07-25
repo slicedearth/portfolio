@@ -64,6 +64,7 @@ type Location = {
 }
 
 const globeRadius = 2.18
+const posterAspectRatio = 16 / 9
 const accent = 0x5eead4
 const bandDefinitions = [
   { latitudeTop: 90, latitudeBottom: 25, offset: 0.3 },
@@ -548,8 +549,8 @@ export const mountSlicedEarthScene = async ({
   let frame = 0
   let visible = true
   let lastRender = 0
-  // Hold the exact poster frame until its crossfade has completed.
-  const sceneStartTime = performance.now() + 1000
+  // The canvas begins moving beneath the aligned poster during the crossfade.
+  const sceneStartTime = performance.now()
 
   const resize = () => {
     const width = root.clientWidth
@@ -557,16 +558,26 @@ export const mountSlicedEarthScene = async ({
     if (width === 0 || height === 0) return
 
     renderer.setSize(width, height, false)
-    camera.aspect = width / height
+
+    const rootAspectRatio = width / height
+    const viewportWidth =
+      rootAspectRatio >= posterAspectRatio ? height * posterAspectRatio : width
+    const viewportHeight =
+      rootAspectRatio >= posterAspectRatio ? height : width / posterAspectRatio
+    const viewportX = (width - viewportWidth) / 2
+    const viewportY = (height - viewportHeight) / 2
+
+    renderer.setScissorTest(false)
+    renderer.clear()
+    renderer.setViewport(viewportX, viewportY, viewportWidth, viewportHeight)
+    renderer.setScissor(viewportX, viewportY, viewportWidth, viewportHeight)
+    renderer.setScissorTest(true)
+
+    camera.aspect = posterAspectRatio
     camera.updateProjectionMatrix()
 
-    if (camera.aspect >= 1.55) {
-      model.position.set(2.15, -0.24, 0)
-      model.scale.setScalar(1.02)
-    } else {
-      model.position.set(1.05, -0.2, 0)
-      model.scale.setScalar(0.9)
-    }
+    model.position.set(2.15, -0.24, 0)
+    model.scale.setScalar(1.02)
 
     camera.lookAt(model.position.x * 0.16, -0.16, 0)
   }
