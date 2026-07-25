@@ -45,8 +45,7 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
     if (!reducedMotion && wideCanvas && !connection?.saveData) {
       let disposed = false
       let disposeScene: (() => void) | undefined
-      let idleRequest: number | undefined
-      let startTimer: number | undefined
+      let startFrame: number | undefined
 
       const start = async () => {
         if (disposed || !root.isConnected) return
@@ -63,31 +62,12 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
         })
       }
 
-      const scheduleStart = () => {
-        startTimer = window.setTimeout(() => {
-          if ("requestIdleCallback" in window) {
-            idleRequest = window.requestIdleCallback(() => void start(), {
-              timeout: 2000,
-            })
-          } else {
-            void start()
-          }
-        }, 2500)
-      }
-
-      if (document.readyState === "complete") {
-        scheduleStart()
-      } else {
-        window.addEventListener("load", scheduleStart, { once: true })
-      }
+      // Let the poster paint once, then begin loading the animated scene.
+      startFrame = window.requestAnimationFrame(() => void start())
 
       const dispose = () => {
         disposed = true
-        window.removeEventListener("load", scheduleStart)
-        if (startTimer !== undefined) window.clearTimeout(startTimer)
-        if (idleRequest !== undefined && "cancelIdleCallback" in window) {
-          window.cancelIdleCallback(idleRequest)
-        }
+        if (startFrame !== undefined) window.cancelAnimationFrame(startFrame)
         disposeScene?.()
       }
 
