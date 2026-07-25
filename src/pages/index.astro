@@ -13,15 +13,24 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Aser",
-  jobTitle: "Project Manager / Web Developer",
-  url: "https://abymar.com/",
-  sameAs: ["https://www.github.com/slicedearth"],
+  alternateName: "slicedearth",
+  jobTitle: "Software Engineer",
+  url: "https://slicedearth.dev/",
+  sameAs: ["https://github.com/slicedearth"],
   knowsAbout: skills.map(skill => skill.data.title),
 }
 ---
 
-<Layout title="Project Manager & Web Developer" pathname={Astro.url.pathname}>
-  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<Layout
+  title="Home"
+  description="Aser plans and builds software for security, public data and the web, combining hands-on engineering with project delivery."
+  pathname={Astro.url.pathname}
+>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(personSchema)}
+  />
   <Hero />
   <Projects />
   <About />

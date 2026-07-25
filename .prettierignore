@@ -1,5 +1,4 @@
 dist
 .astro
 .netlify
-package.json
 package-lock.json

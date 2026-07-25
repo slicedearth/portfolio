@@ -7,74 +7,96 @@ interface Props {
   title: string
   description?: string
   pathname?: string
+  noindex?: boolean
 }
 
-const siteTitle = "Abymar"
+const siteName = "slicedearth"
 const siteDescription =
-  "A portfolio of practical tools for security, public data and the web."
-const siteUrl = "https://abymar.com"
+  "Aser plans and builds software for security, public data and the web."
+const siteUrl = "https://slicedearth.dev"
 
-const { title, description = siteDescription, pathname } = Astro.props
-const canonical = pathname ? `${siteUrl}${pathname}` : undefined
+const {
+  title,
+  description = siteDescription,
+  pathname,
+  noindex = false,
+} = Astro.props
+const canonical = `${siteUrl}${pathname ?? Astro.url.pathname}`
+const pageTitle =
+  title === "Home"
+    ? `Aser - Software Engineer | ${siteName}`
+    : `${title} | ${siteName}`
+const robots = noindex ? "noindex, nofollow" : "index, follow"
 const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
-const analyticsScript = gaId
-  ? `window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag("js",new Date());window.gtag("config",${JSON.stringify(
-      gaId,
-    )},{cookie_expires:0});`
-  : undefined
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link
       rel="preload"
-      href="/fonts/caveat-v7-latin-700.woff2"
+      href="/fonts/archivo-latin-variable.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/barlow-latin-600.woff2"
+      href="/fonts/kalam-latin-700.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
 
-    <title>{siteTitle} | {title}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
-    {canonical && <link rel="canonical" href={canonical} />}
-    <meta property="og:title" content={`${siteTitle} | ${title}`} />
+    <meta name="theme-color" content="#070a0e" />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+    <meta
+      property="og:image:alt"
+      content="slicedearth portfolio for software engineering and project delivery"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
-
     {
       gaId && (
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-        />
+        <>
+          <meta name="google-analytics-id" content={gaId} />
+          <script is:inline defer src="/analytics.js" />
+        </>
       )
     }
-    {analyticsScript && <script is:inline set:html={analyticsScript} />}
   </head>
   <body>
     <div class="flex min-h-screen flex-col">
+      <a
+        href="#main-content"
+        class="fixed top-3 left-3 z-[60] -translate-y-20 rounded-md bg-accent px-4 py-2 font-semibold text-bg transition-transform focus:translate-y-0 motion-reduce:transition-none"
+      >
+        Skip to content
+      </a>
       <Header />
-      <main class="flex flex-1 flex-col pt-16">
+      <main id="main-content" class="flex flex-1 flex-col pt-18">
         <slot />
       </main>
       <Footer />
+      <script is:inline defer src="/mobile-nav.js"></script>
+      <script src="../scripts/reveal.ts"></script>
     </div>
   </body>
 </html>

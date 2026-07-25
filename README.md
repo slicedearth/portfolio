@@ -1,25 +1,52 @@
-# Abymar Portfolio
+# slicedearth portfolio
 
-[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5deac460-dd86-4578-898d-0f1a877a6b37/deploy-status)](https://app.netlify.com/sites/abymar/deploys)
+[![MIT Licence](https://img.shields.io/badge/Licence-MIT-blue.svg)](LICENSE.md)
 
-Personal portfolio site that features my projects and skills.
+The source for [slicedearth.dev](https://slicedearth.dev), my portfolio for
+software engineering and project delivery work.
 
-## Built With
+## Built with
 
 - [Astro](https://astro.build/)
-- [Svelte](https://svelte.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [tsParticles](https://particles.matteobruni.it/)
+- [Playwright](https://playwright.dev/)
+- [axe-core](https://github.com/dequelabs/axe-core)
+
+The site renders with Astro and uses native browser controls for navigation.
+The hero uses an optimised static terrain asset, avoiding a decorative runtime
+and keeping the same composition across desktop, tablet and mobile viewports.
+
+The featured project uses a static, responsive screenshot so it remains clear
+and lightweight across desktop, tablet and mobile layouts.
+
+Node.js 24 is used locally, in CI and for Netlify builds.
+
+When `PUBLIC_GA_TRACKING_ID` is configured, the site records page visits and
+named outbound project, case-study, repository and profile clicks. Advertising
+personalisation and Google Signals are disabled. Builds without the variable do
+not load analytics. The remote analytics library loads after the initial render
+or on the first interaction.
 
 ## Commands
 
-All commands are run from the root of the project, from a terminal:
+| Command                  | Action                                             |
+| :----------------------- | :------------------------------------------------- |
+| `npm install`            | Install dependencies                               |
+| `npm run dev`            | Start local development                            |
+| `npm run check`          | Check Astro components and TypeScript              |
+| `npm run build`          | Build the production site                          |
+| `npm run budget`         | Check HTML, font, CSS, JS and image budgets        |
+| `npm run security:check` | Check generated scripts against the production CSP |
+| `npm run test:e2e`       | Build and test the site in responsive browsers     |
+| `npm run test:e2e:built` | Test an existing production build                  |
+| `npm run brand:assets`   | Regenerate favicons and the social preview image   |
+| `npm run format:check`   | Check source formatting                            |
 
-| Command           | Action                                      |
-| :----------------- | :------------------------------------------ |
-| `npm install`       | Installs dependencies                       |
-| `npm run dev`       | Starts local dev server at `localhost:4321` |
-| `npm run build`     | Builds the production site to `./dist/`     |
-| `npm run preview`   | Previews the build locally before deploying |
-| `npm run astro ...` | Runs CLI commands like `astro check`        |
+The performance budget caps initial and deferred JavaScript, CSS, fonts, HTML
+and generated images, with an additional gzip limit for deferred JavaScript.
+
+## Licensing
+
+The portfolio source is available under the [MIT licence](LICENSE.md). Bundled
+font attribution is recorded in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
