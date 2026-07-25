@@ -1,9 +1,11 @@
 import AxeBuilder from "@axe-core/playwright"
 import { expect, test } from "@playwright/test"
+import sharp from "sharp"
 
 test("homepage presents the portfolio without accessibility violations", async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/")
 
   await expect(
@@ -34,32 +36,73 @@ test("homepage presents the portfolio without accessibility violations", async (
   expect(results.violations).toEqual([])
 })
 
-test("hero image remains lightweight and visible at every viewport", async ({
+test("hero selects an appropriate presentation for each viewport", async ({
   page,
-}) => {
+}, testInfo) => {
   const requestedAssets: string[] = []
   page.on("request", request => requestedAssets.push(request.url()))
 
   await page.goto("/")
 
+  const earth = page.locator("[data-sliced-earth]")
+  const canvas = earth.locator("[data-earth-canvas]")
   const terrain = page.locator("[data-hero-image]")
   await expect
-    .poll(() =>
-      terrain.evaluate(image =>
-        image instanceof HTMLImageElement ? image.naturalWidth : 0,
-      ),
+    .poll(
+      () =>
+        terrain.evaluate(image =>
+          image instanceof HTMLImageElement ? image.naturalWidth : 0,
+        ),
+      { timeout: 10_000 },
     )
     .toBeGreaterThan(0)
 
-  expect(requestedAssets.some(asset => asset.includes("three"))).toBe(false)
   expect(requestedAssets.some(asset => asset.endsWith(".webm"))).toBe(false)
   await expect(terrain).toHaveAttribute("loading", "eager")
   await expect(terrain).toHaveAttribute("fetchpriority", "high")
-  expect(await page.locator("canvas").count()).toBe(0)
-  expect((await terrain.screenshot()).length).toBeGreaterThan(5_000)
+
+  if (testInfo.project.name === "desktop") {
+    await expect(earth).toHaveAttribute("data-earth-ready", "true", {
+      timeout: 10_000,
+    })
+    await expect(canvas).toHaveCSS("opacity", "1")
+
+    const dimensions = await canvas.evaluate(element => {
+      const canvasElement = element as HTMLCanvasElement
+      return {
+        backingHeight: canvasElement.height,
+        backingWidth: canvasElement.width,
+        cssHeight: canvasElement.clientHeight,
+        cssWidth: canvasElement.clientWidth,
+      }
+    })
+    expect(dimensions.backingWidth).toBeGreaterThanOrEqual(
+      dimensions.cssWidth * 1.49,
+    )
+    expect(dimensions.backingHeight).toBeGreaterThanOrEqual(
+      dimensions.cssHeight * 1.49,
+    )
+
+    const canvasBounds = await canvas.boundingBox()
+    expect(canvasBounds).not.toBeNull()
+    const canvasImage = await page.screenshot({ clip: canvasBounds! })
+    const imageStats = await sharp(canvasImage).stats()
+    expect(
+      Math.max(...imageStats.channels.map(channel => channel.stdev)),
+    ).toBeGreaterThan(8)
+  } else {
+    await page.waitForTimeout(1_200)
+    await expect(earth).not.toHaveAttribute("data-earth-ready", "true")
+    await expect(canvas).toHaveCSS("opacity", "0")
+    expect(
+      requestedAssets.some(asset => /sliced-earth-scene|three/i.test(asset)),
+    ).toBe(false)
+    expect((await terrain.screenshot()).length).toBeGreaterThan(5_000)
+  }
 })
 
 test("featured project uses a static project image", async ({ page }) => {
+  await page.route(/sliced-earth-scene/, route => route.abort())
   await page.goto("/#projects")
 
   await expect(page.locator("html")).toHaveAttribute(
@@ -80,6 +123,7 @@ test("brand mark interaction reinforces the sliced layers", async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "Hover behaviour")
 
+  await page.route(/sliced-earth-scene/, route => route.abort())
   await page.goto("/")
 
   const homeLink = page.getByRole("link", { name: "slicedearth home" })
@@ -101,6 +145,7 @@ test("analytics queues immediately and loads remotely after interaction", async 
   await page.route("https://www.googletagmanager.com/**", route =>
     route.abort(),
   )
+  await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/")
 
   await expect(page.locator("[data-google-analytics]")).toHaveCount(0)
@@ -128,7 +173,14 @@ test("reduced motion retains the static hero", async ({ page }, testInfo) => {
   await page.goto("/")
   await page.waitForTimeout(1_200)
 
-  expect(requestedAssets.some(asset => asset.includes("three"))).toBe(false)
+  expect(
+    requestedAssets.some(asset => /sliced-earth-scene|three/i.test(asset)),
+  ).toBe(false)
+  await expect(page.locator("[data-sliced-earth]")).not.toHaveAttribute(
+    "data-earth-ready",
+    "true",
+  )
+  await expect(page.locator("[data-earth-canvas]")).toHaveCSS("opacity", "0")
   await expect(page.locator("[data-reveal]").first()).toBeVisible()
 })
 

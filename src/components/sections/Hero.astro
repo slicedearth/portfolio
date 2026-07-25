@@ -1,23 +1,13 @@
 ---
-import { Image } from "astro:assets"
 import { ArrowDown, ArrowUpRight } from "@lucide/astro"
-import heroImage from "../../assets/brand/hero-slicedearth.webp"
 import GithubLogo from "../icons/GithubLogo.astro"
+import SlicedEarth from "./SlicedEarth.astro"
 ---
 
 <section
   class="relative flex min-h-[calc(82dvh-4rem)] items-center overflow-hidden border-b border-line bg-bg px-5 py-12 sm:min-h-[calc(92dvh-4.5rem)] sm:px-8 sm:py-20 lg:py-24"
 >
-  <Image
-    src={heroImage}
-    alt=""
-    layout="full-width"
-    loading="eager"
-    fetchpriority="high"
-    quality={76}
-    class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-[70%_center] sm:object-[64%_center] lg:object-center"
-    data-hero-image
-  />
+  <SlicedEarth />
   <div
     class="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(7,10,14,0.98)_0%,rgba(7,10,14,0.88)_34%,rgba(7,10,14,0.42)_62%,rgba(7,10,14,0.08)_100%)] sm:bg-[linear-gradient(90deg,rgba(7,10,14,0.94)_0%,rgba(7,10,14,0.78)_34%,rgba(7,10,14,0.24)_63%,rgba(7,10,14,0.04)_100%)]"
     aria-hidden="true"
@@ -25,6 +15,11 @@ import GithubLogo from "../icons/GithubLogo.astro"
   </div>
   <div
     class="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-bg to-transparent"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="hero-raster pointer-events-none absolute inset-0 z-[1]"
     aria-hidden="true"
   >
   </div>

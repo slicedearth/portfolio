@@ -15,3 +15,9 @@ Version 1.1. The complete licence is available in
 - **IBM Plex Mono** - Copyright (c) 2017 IBM Corp. Reserved Font Name "Plex".
   Upstream:
   [Google Fonts: IBM Plex Mono](https://github.com/google/fonts/tree/main/ofl/ibmplexmono).
+
+## Geographic data
+
+The hero globe uses land polygons from
+[Natural Earth](https://www.naturalearthdata.com/), which makes its vector map
+data available in the public domain.

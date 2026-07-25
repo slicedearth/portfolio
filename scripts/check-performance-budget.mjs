@@ -10,6 +10,8 @@ const limits = {
   html: 90 * 1024,
   image: 550 * 1024,
   initialJavaScript: 70 * 1024,
+  optionalSceneGzip: 140 * 1024,
+  optionalSceneRaw: 560 * 1024,
   socialImage: 900 * 1024,
 }
 
@@ -50,8 +52,13 @@ const javascriptFiles = files.filter(file => extname(file.path) === ".js")
 const initialJavaScript = javascriptFiles.filter(file =>
   initialScriptPaths.has(normalize(file.path)),
 )
+const optionalSceneJavaScript = javascriptFiles.filter(file =>
+  file.path.includes("sliced-earth-scene."),
+)
 const deferredJavaScript = javascriptFiles.filter(
-  file => !initialScriptPaths.has(normalize(file.path)),
+  file =>
+    !initialScriptPaths.has(normalize(file.path)) &&
+    !optionalSceneJavaScript.includes(file),
 )
 const inlineJavaScriptTotal = [
   ...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi),
@@ -69,13 +76,21 @@ const deferredJavaScriptTotal = deferredJavaScript.reduce(
   (total, file) => total + file.size,
   0,
 )
-const deferredJavaScriptGzip = (
-  await Promise.all(
-    deferredJavaScript.map(
+const gzipTotal = async selectedFiles => {
+  const sizes = await Promise.all(
+    selectedFiles.map(
       async file => gzipSync(await readFile(file.path), { level: 9 }).length,
     ),
   )
-).reduce((total, size) => total + size, 0)
+  return sizes.reduce((total, size) => total + size, 0)
+}
+
+const deferredJavaScriptGzip = await gzipTotal(deferredJavaScript)
+const optionalSceneJavaScriptTotal = optionalSceneJavaScript.reduce(
+  (total, file) => total + file.size,
+  0,
+)
+const optionalSceneJavaScriptGzip = await gzipTotal(optionalSceneJavaScript)
 
 const failures = []
 const checkTotal = (name, total, limit) => {
@@ -97,6 +112,16 @@ checkTotal(
   "Deferred JavaScript (gzip)",
   deferredJavaScriptGzip,
   limits.deferredGzip,
+)
+checkTotal(
+  "Optional hero scene",
+  optionalSceneJavaScriptTotal,
+  limits.optionalSceneRaw,
+)
+checkTotal(
+  "Optional hero scene (gzip)",
+  optionalSceneJavaScriptGzip,
+  limits.optionalSceneGzip,
 )
 
 const cssTotal = files
@@ -148,6 +173,8 @@ console.log(
     `${Math.ceil(initialJavaScriptTotal / 1024)} KiB initial JS`,
     `${Math.ceil(deferredJavaScriptTotal / 1024)} KiB deferred JS`,
     `${Math.ceil(deferredJavaScriptGzip / 1024)} KiB deferred JS gzip`,
+    `${Math.ceil(optionalSceneJavaScriptTotal / 1024)} KiB optional hero JS`,
+    `${Math.ceil(optionalSceneJavaScriptGzip / 1024)} KiB optional hero JS gzip`,
     `${Math.ceil(cssTotal / 1024)} KiB CSS`,
     `${Math.ceil(fontTotal / 1024)} KiB fonts`,
   ].join(" "),

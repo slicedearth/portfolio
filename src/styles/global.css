@@ -132,6 +132,33 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+.hero-raster {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(94, 234, 212, 0.055) 1px,
+    transparent 1px
+  );
+  background-position: center;
+  background-size: 100% 5px;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 30%,
+    #000 58%,
+    rgba(0, 0, 0, 0.7) 88%,
+    transparent 100%
+  );
+  opacity: 0.38;
+}
+
+.section-grid {
+  background-image:
+    linear-gradient(to right, rgba(161, 171, 178, 0.014) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(161, 171, 178, 0.012) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 128px 128px;
+}
+
 h1,
 h2 {
   text-wrap: balance;

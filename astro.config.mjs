@@ -10,6 +10,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     build: {
       assetsInlineLimit: 0,
+      chunkSizeWarningLimit: 560,
     },
     server: {
       strictPort: true,

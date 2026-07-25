@@ -9,12 +9,15 @@ software engineering and project delivery work.
 
 - [Astro](https://astro.build/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Three.js](https://threejs.org/)
 - [Playwright](https://playwright.dev/)
 - [axe-core](https://github.com/dequelabs/axe-core)
 
 The site renders with Astro and uses native browser controls for navigation.
-The hero uses an optimised static terrain asset, avoiding a decorative runtime
-and keeping the same composition across desktop, tablet and mobile viewports.
+The hero starts with an optimised static image. On wide viewports, it
+progressively loads a matching Three.js scene with a sliced globe, restrained
+route movement and pointer interaction. Mobile devices, reduced-motion
+preferences and data-saving connections retain the static version.
 
 The featured project uses a static, responsive screenshot so it remains clear
 and lightweight across desktop, tablet and mobile layouts.
@@ -39,14 +42,15 @@ or on the first interaction.
 | `npm run security:check` | Check generated scripts against the production CSP |
 | `npm run test:e2e`       | Build and test the site in responsive browsers     |
 | `npm run test:e2e:built` | Test an existing production build                  |
-| `npm run brand:assets`   | Regenerate favicons and the social preview image   |
+| `npm run brand:assets`   | Regenerate Earth, favicon and social image assets  |
 | `npm run format:check`   | Check source formatting                            |
 
 The performance budget caps initial and deferred JavaScript, CSS, fonts, HTML
-and generated images, with an additional gzip limit for deferred JavaScript.
+and generated images. The optional desktop hero scene has separate raw and gzip
+limits so its cost cannot weaken the budgets for the rest of the site.
 
 ## Licensing
 
 The portfolio source is available under the [MIT licence](LICENSE.md). Bundled
-font attribution is recorded in
+font and geographic-data details are recorded in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
