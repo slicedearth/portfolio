@@ -1,2 +1,4 @@
-# Redirect default Netlify domain to custom domain
-https://abymar.netlify.app/* https://www.abymar.com/:splat 301!
+# Canonical host redirects
+https://slicedearth.netlify.app/* https://www.slicedearth.dev/:splat 301!
+https://abymar.com/* https://www.slicedearth.dev/:splat 301!
+https://www.abymar.com/* https://www.slicedearth.dev/:splat 301!

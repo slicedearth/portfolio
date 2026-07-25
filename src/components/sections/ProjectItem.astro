@@ -1,112 +1,204 @@
 ---
 import { Image } from "astro:assets"
-import ghIcon from "../../assets/icons/github-original.svg"
+import { ArrowUpRight, BookOpen, GitBranch } from "@lucide/astro"
 
 interface Props {
   title: string
+  eyebrow: string
   image: ImageMetadata
   imageAlt: string
   description: string
+  highlights: string[]
   tags: string[]
   githubURL: string
   deployedURL?: string
+  deployedLabel?: string
+  caseStudyURL?: string
+  caseStudyLabel?: string
   variant?: "featured" | "standard"
+  revealDelay?: number
 }
 
 const {
   title,
+  eyebrow,
   image,
   imageAlt,
   description,
+  highlights,
   tags,
   githubURL,
   deployedURL,
+  deployedLabel = "Open project",
+  caseStudyURL,
+  caseStudyLabel = "Read more",
   variant = "standard",
+  revealDelay = 0,
 } = Astro.props
 
 const isFeatured = variant === "featured"
+const primaryLink = deployedURL
+  ? {
+      href: deployedURL,
+      analyticsType: "project_website_link",
+    }
+  : caseStudyURL
+    ? {
+        href: caseStudyURL,
+        analyticsType: "project_case_study_link",
+      }
+    : {
+        href: githubURL,
+        analyticsType: "project_github_link",
+      }
+const actionCount =
+  1 + Number(Boolean(deployedURL)) + Number(Boolean(caseStudyURL))
 ---
 
 <article
+  data-project-card
+  data-reveal
+  data-reveal-delay={revealDelay || undefined}
   class:list={[
-    "group overflow-hidden rounded-lg border border-line bg-card transition-[border-color,transform,box-shadow] duration-300 hover:border-accent/60 motion-reduce:transition-none",
+    "group overflow-hidden rounded-md border border-line bg-card transition-[border-color,box-shadow] duration-500 ease-out hover:border-accent/50 hover:shadow-xl hover:shadow-bg/40 motion-reduce:transition-none",
     isFeatured
-      ? "lg:grid lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.85fr)]"
+      ? "lg:grid lg:grid-cols-[minmax(0,1.45fr)_minmax(21rem,0.85fr)]"
       : "flex h-full flex-col",
   ]}
 >
-  <figure
+  <a
+    href={primaryLink.href}
+    rel="noopener noreferrer"
+    target="_blank"
+    aria-label={`Open ${title}`}
+    data-analytics-type={primaryLink.analyticsType}
+    data-analytics-item={title}
     class:list={[
-      "overflow-hidden border-line bg-bg",
+      "block overflow-hidden border-line bg-bg focus-visible:outline-offset-[-2px]",
       isFeatured
-        ? "aspect-video border-b lg:aspect-auto lg:min-h-[25rem] lg:border-r lg:border-b-0"
+        ? "aspect-video border-b lg:aspect-auto lg:min-h-[31rem] lg:border-r lg:border-b-0"
         : "aspect-video border-b",
     ]}
   >
-    <Image
-      src={image}
-      alt={imageAlt}
-      width={isFeatured ? 1200 : 680}
-      quality={100}
-      loading="lazy"
-      class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-[1.015] motion-reduce:transition-none"
-    />
-  </figure>
+    <figure class="relative h-full overflow-hidden">
+      <Image
+        src={image}
+        alt={imageAlt}
+        width={isFeatured ? 1200 : 680}
+        layout="constrained"
+        quality={isFeatured ? 92 : 84}
+        loading="lazy"
+        class="h-full w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.015] motion-reduce:transition-none"
+      />
+    </figure>
+  </a>
 
-  <div class:list={["flex flex-1 flex-col", isFeatured ? "p-6 sm:p-8" : "p-5"]}>
-    {
-      isFeatured && (
-        <p class="mb-3 font-code text-sm text-accent uppercase">
-          Featured project
-        </p>
-      )
-    }
+  <div
+    class:list={[
+      "flex flex-1 flex-col",
+      isFeatured ? "p-4 sm:p-8" : "p-4 sm:p-5",
+    ]}
+  >
+    <p class="mb-2 font-code text-[0.8125rem] text-accent sm:mb-3 sm:text-sm">
+      {eyebrow}
+    </p>
     <h3
       class:list={[
         "font-semibold text-white",
-        isFeatured ? "text-3xl" : "text-2xl",
+        isFeatured ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl",
       ]}
     >
       {title}
     </h3>
-    <p class="mt-3 flex-1 leading-relaxed text-muted">{description}</p>
+    <p
+      class="mt-2 text-sm leading-6 text-muted sm:mt-3 sm:text-base sm:leading-relaxed"
+    >
+      {description}
+    </p>
 
-    <ul class="mt-5 flex flex-wrap gap-2" aria-label={`${title} technologies`}>
+    <div class="mt-4 flex-1 border-t border-line pt-4 sm:mt-6 sm:pt-5">
+      <p class="font-code text-sm text-gray-300">Key decisions</p>
+      <ul class="mt-2 space-y-2 sm:mt-3 sm:space-y-3">
+        {
+          highlights.map(highlight => (
+            <li class="border-l border-accent/60 pl-3 text-sm leading-5 text-gray-300 sm:leading-relaxed">
+              {highlight}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <ul
+      class="mt-4 flex flex-wrap gap-2 sm:mt-5"
+      aria-label={`${title} technologies and focus areas`}
+    >
       {
         tags.map(tag => (
-          <li class="rounded-sm border border-line bg-bg/50 px-2.5 py-1 font-code text-xs text-gray-300">
+          <li class="border border-line bg-bg/50 px-2 py-0.5 font-code text-xs text-gray-300 sm:px-2.5 sm:py-1">
             {tag}
           </li>
         ))
       }
     </ul>
 
-    <div class="mt-6 flex flex-wrap gap-2">
+    <div
+      class:list={[
+        "mt-5 grid grid-cols-1 gap-2 min-[360px]:grid-cols-2 sm:mt-6",
+        !isFeatured && actionCount === 3 && "xl:grid-cols-3",
+      ]}
+    >
       {
         deployedURL && (
           <a
-            class="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 font-semibold text-bg transition-colors hover:bg-white motion-reduce:transition-none"
+            class="inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-accent px-3 py-2 text-[0.8125rem] font-semibold text-bg transition-[background-color,transform] hover:bg-accent-dark active:translate-y-px motion-reduce:transition-none sm:px-4 sm:text-sm"
             href={deployedURL}
             rel="noopener noreferrer"
             target="_blank"
-            data-project-link={title}
-            data-project-destination="website"
+            data-analytics-type="project_website_link"
+            data-analytics-item={title}
           >
-            <span>Website</span>
-            <span aria-hidden="true">&#8599;</span>
+            <span>{deployedLabel}</span>
+            <ArrowUpRight
+              class="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
+              aria-hidden="true"
+              size={16}
+              stroke-width={1.8}
+            />
+          </a>
+        )
+      }
+      {
+        caseStudyURL && (
+          <a
+            class="inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-line bg-surface px-3 py-2 text-[0.8125rem] font-semibold text-white transition-[background-color,border-color,transform] hover:border-gray-400 hover:bg-surface-hover active:translate-y-px motion-reduce:transition-none sm:px-4 sm:text-sm"
+            href={caseStudyURL}
+            rel="noopener noreferrer"
+            target="_blank"
+            data-analytics-type="project_case_study_link"
+            data-analytics-item={title}
+          >
+            <BookOpen aria-hidden="true" size={16} stroke-width={1.8} />
+            <span>{caseStudyLabel}</span>
           </a>
         )
       }
       <a
-        class="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-md border border-line bg-surface px-4 py-2 font-semibold text-white transition-colors hover:border-accent hover:bg-surface-hover motion-reduce:transition-none"
+        class:list={[
+          "inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-line bg-surface px-3 py-2 text-[0.8125rem] font-semibold text-white transition-[background-color,border-color,transform] hover:border-gray-400 hover:bg-surface-hover active:translate-y-px motion-reduce:transition-none sm:px-4 sm:text-sm",
+          actionCount === 3 &&
+            (isFeatured
+              ? "min-[360px]:col-span-2"
+              : "min-[360px]:col-span-2 xl:col-span-1"),
+        ]}
         href={githubURL}
         rel="noopener noreferrer"
         target="_blank"
-        data-project-link={title}
-        data-project-destination="github"
+        data-analytics-type="project_github_link"
+        data-analytics-item={title}
       >
-        <img class="h-4 w-4" src={ghIcon.src} alt="" loading="lazy" />
-        <span>GitHub</span>
+        <GitBranch aria-hidden="true" size={16} stroke-width={1.8} />
+        <span>Source code</span>
       </a>
     </div>
   </div>
