@@ -2,8 +2,8 @@
 
 [![MIT Licence](https://img.shields.io/badge/Licence-MIT-blue.svg)](LICENSE.md)
 
-The source for [slicedearth.dev](https://slicedearth.dev), my portfolio for
-software engineering and project delivery work.
+The source for [www.slicedearth.dev](https://www.slicedearth.dev), my portfolio
+for software engineering and project delivery work.
 
 ## Built with
 

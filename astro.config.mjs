@@ -4,7 +4,7 @@ import sitemap from "@astrojs/sitemap"
 import tailwindcss from "@tailwindcss/vite"
 
 export default defineConfig({
-  site: "https://slicedearth.dev",
+  site: "https://www.slicedearth.dev",
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

@@ -232,3 +232,26 @@ test("404 pages are excluded from indexing", async ({ page }, testInfo) => {
     "noindex, nofollow",
   )
 })
+
+test("homepage metadata uses the primary domain", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Metadata check runs once")
+
+  await page.goto("/")
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://www.slicedearth.dev/",
+  )
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    "content",
+    "https://www.slicedearth.dev/",
+  )
+
+  const structuredData = JSON.parse(
+    (await page.locator('script[type="application/ld+json"]').textContent()) ??
+      "{}",
+  ) as { url?: string }
+  expect(structuredData.url).toBe("https://www.slicedearth.dev/")
+})

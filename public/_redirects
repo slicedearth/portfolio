@@ -1,5 +1,4 @@
 # Canonical host redirects
-https://abymar.netlify.app/* https://slicedearth.dev/:splat 301!
-https://abymar.com/* https://slicedearth.dev/:splat 301!
-https://www.abymar.com/* https://slicedearth.dev/:splat 301!
-https://www.slicedearth.dev/* https://slicedearth.dev/:splat 301!
+https://slicedearth.netlify.app/* https://www.slicedearth.dev/:splat 301!
+https://abymar.com/* https://www.slicedearth.dev/:splat 301!
+https://www.abymar.com/* https://www.slicedearth.dev/:splat 301!
