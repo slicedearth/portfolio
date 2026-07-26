@@ -14,10 +14,11 @@ const { class: className } = Astro.props
     aria-hidden="true"
     set:html={mark}
   />
-  <span
-    class="truncate text-lg leading-none font-bold text-white"
-    aria-label="slicedearth"
-  >
-    slicedearth
+  <span class="brand-word" aria-label="slicedearth">
+    <span class="brand-word-part brand-word-part-first" aria-hidden="true"
+      >sliced</span
+    ><span class="brand-word-part brand-word-part-second" aria-hidden="true"
+      >earth</span
+    >
   </span>
 </span>
