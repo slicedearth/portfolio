@@ -11,6 +11,11 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 )
 
 const [featuredProject, ...remainingProjects] = projects
+const projectDetails = [
+  "Live deployments",
+  "Open-source repositories",
+  "Responsive interfaces",
+]
 
 const imageFor = (filename: string) => {
   const path = `../../assets/images/projects/${filename}`
@@ -26,15 +31,38 @@ const imageFor = (filename: string) => {
 
 <section
   id="projects"
-  class="section-grid border-b border-line bg-surface/35 px-5 py-24 sm:px-8 lg:py-32"
+  class="section-planes border-b border-line bg-surface/35 px-5 py-20 sm:px-8 lg:py-24"
 >
   <div class="mx-auto max-w-7xl">
-    <header data-reveal class="mb-12 max-w-3xl">
-      <h2 class="text-4xl font-bold text-white sm:text-5xl">Projects.</h2>
-      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
-        {projects.length} projects across domain research, public records, browser
-        support and interactive products.
-      </p>
+    <header
+      data-reveal
+      class="mb-10 border-b border-line pb-8 sm:mb-12 sm:pb-10"
+    >
+      <div
+        class="grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-12"
+      >
+        <div class="border-l-2 border-accent/80 pl-5 sm:pl-6">
+          <h2 class="text-4xl font-bold text-white sm:text-5xl">Projects</h2>
+          <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+            {projects.length} projects across domain research, public records, browser
+            support and interactive products.
+          </p>
+        </div>
+
+        <ul
+          class="flex flex-wrap gap-x-6 gap-y-2 font-code text-xs text-gray-300 lg:max-w-[34rem] lg:justify-end"
+          aria-label="Project details"
+        >
+          {
+            projectDetails.map(detail => (
+              <li class="flex items-center gap-2">
+                <span class="h-1.5 w-1.5 bg-accent" aria-hidden="true" />
+                {detail}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </header>
 
     <div class="space-y-6">
