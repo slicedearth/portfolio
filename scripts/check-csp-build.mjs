@@ -4,6 +4,9 @@ import path from "node:path"
 const root = process.cwd()
 const headers = await readFile(path.join(root, "public", "_headers"), "utf8")
 const scriptPolicy = headers.match(/Content-Security-Policy:[^\n]*/)?.[0] ?? ""
+const globalHeaders =
+  headers.match(/^\/\*[ \t]*\n((?:[ \t]+[^\n]*(?:\n|$))*)/m)?.[1] ?? ""
+const globalCachePolicy = globalHeaders.match(/Cache-Control:[^\n]*/)?.[0] ?? ""
 
 if (!scriptPolicy.includes("script-src 'self'")) {
   throw new Error("Expected the production CSP to restrict scripts to self.")
@@ -11,6 +14,12 @@ if (!scriptPolicy.includes("script-src 'self'")) {
 
 if (scriptPolicy.includes("'unsafe-inline'")) {
   throw new Error("The production CSP must not allow unsafe inline scripts.")
+}
+
+if (!/(?:^|,)\s*no-transform(?:,|$)/.test(globalCachePolicy)) {
+  throw new Error(
+    "Expected the global cache policy to prevent edge script injection with no-transform.",
+  )
 }
 
 const htmlFiles = (await readdir(path.join(root, "dist"), { recursive: true }))

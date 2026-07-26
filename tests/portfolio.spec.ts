@@ -101,6 +101,58 @@ test("hero selects an appropriate presentation for each viewport", async ({
   }
 })
 
+test("large desktop layouts keep the page in proportion", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop",
+    "Large viewport check runs once",
+  )
+
+  await page.emulateMedia({ reducedMotion: "reduce" })
+
+  for (const viewport of [
+    { width: 2560, height: 1440 },
+    { width: 3840, height: 2160 },
+  ]) {
+    await page.setViewportSize(viewport)
+    await page.goto("/")
+
+    const layout = await page.evaluate(() => {
+      const frame = document.querySelector<HTMLElement>(".site-frame")
+      const hero = document.querySelector<HTMLElement>(".hero-shell")
+      const projects = document.querySelector<HTMLElement>("#projects")
+      const poster = document.querySelector<HTMLElement>("[data-hero-image]")
+      const canvas = document.querySelector<HTMLElement>("[data-earth-canvas]")
+
+      if (!frame || !hero || !projects || !poster || !canvas) {
+        throw new Error("Large-screen layout elements are missing")
+      }
+
+      return {
+        viewportWidth: document.documentElement.clientWidth,
+        contentWidth: document.documentElement.scrollWidth,
+        frame: frame.getBoundingClientRect().toJSON(),
+        hero: hero.getBoundingClientRect().toJSON(),
+        projects: projects.getBoundingClientRect().toJSON(),
+        poster: poster.getBoundingClientRect().toJSON(),
+        canvas: canvas.getBoundingClientRect().toJSON(),
+      }
+    })
+
+    expect(layout.contentWidth).toBeLessThanOrEqual(layout.viewportWidth)
+    expect(layout.frame.width).toBeGreaterThanOrEqual(viewport.width * 0.65)
+    expect(layout.frame.width).toBeLessThanOrEqual(viewport.width * 0.76)
+    expect(layout.frame.left).toBeCloseTo(
+      viewport.width - layout.frame.right,
+      0,
+    )
+    expect(layout.hero.height).toBeLessThanOrEqual(viewport.height * 0.75)
+    expect(layout.projects.top).toBeLessThan(viewport.height)
+    expect(layout.poster).toEqual(layout.canvas)
+  }
+})
+
 test("featured project uses a static project image", async ({ page }) => {
   await page.route(/sliced-earth-scene/, route => route.abort())
   await page.goto("/#projects")
