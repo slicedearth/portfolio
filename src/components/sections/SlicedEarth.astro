@@ -25,6 +25,9 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
 </div>
 
 <script>
+  import reliefUrl from "../../assets/brand/earth-relief.webp?url"
+  import surfaceUrl from "../../assets/brand/earth-surface.webp?url"
+
   const root = document.querySelector<HTMLElement>("[data-sliced-earth]")
   const canvas = root?.querySelector<HTMLCanvasElement>("[data-earth-canvas]")
 
@@ -45,7 +48,12 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
     if (!reducedMotion && wideCanvas && !connection?.saveData) {
       let disposed = false
       let disposeScene: (() => void) | undefined
-      let startFrame: number | undefined
+      const textureWarmers = [surfaceUrl, reliefUrl].map(url => {
+        const image = new Image()
+        image.decoding = "async"
+        image.src = url
+        return image
+      })
 
       const start = async () => {
         if (disposed || !root.isConnected) return
@@ -62,12 +70,11 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
         })
       }
 
-      // Let the poster paint once, then begin loading the animated scene.
-      startFrame = window.requestAnimationFrame(() => void start())
+      void start()
 
       const dispose = () => {
         disposed = true
-        if (startFrame !== undefined) window.cancelAnimationFrame(startFrame)
+        for (const image of textureWarmers) image.src = ""
         disposeScene?.()
       }
 

@@ -397,6 +397,12 @@ export const mountSlicedEarthScene = async ({
   root,
   onReady,
 }: MountOptions) => {
+  const textureLoader = new TextureLoader()
+  const texturePromise = Promise.all([
+    textureLoader.loadAsync(surfaceUrl),
+    textureLoader.loadAsync(reliefUrl),
+  ])
+
   const renderer = new WebGLRenderer({
     alpha: true,
     antialias: true,
@@ -425,11 +431,7 @@ export const mountSlicedEarthScene = async ({
   rimLight.position.set(5, -1.5, -2.5)
   scene.add(rimLight)
 
-  const textureLoader = new TextureLoader()
-  const [surfaceTexture, reliefTexture] = await Promise.all([
-    textureLoader.loadAsync(surfaceUrl),
-    textureLoader.loadAsync(reliefUrl),
-  ])
+  const [surfaceTexture, reliefTexture] = await texturePromise
   surfaceTexture.colorSpace = SRGBColorSpace
 
   for (const texture of [surfaceTexture, reliefTexture]) {
