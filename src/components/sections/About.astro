@@ -27,16 +27,22 @@ const principles = [
 
 <section
   id="about"
-  class="section-planes section-planes-offset border-b border-line bg-bg px-5 py-20 sm:px-8 lg:py-24"
+  class="about-shell section-planes section-planes-offset border-b border-line bg-bg px-5 py-20 sm:px-8 lg:py-24"
 >
-  <div class="mx-auto max-w-7xl">
+  <div class="site-frame">
     <header data-reveal class="border-b border-line pb-8 sm:pb-10">
       <div
         class="grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-12"
       >
         <div class="border-l-2 border-accent/80 pl-5 sm:pl-6">
-          <h2 class="text-4xl font-bold text-white sm:text-5xl">About</h2>
-          <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+          <h2
+            class="text-4xl font-bold text-white sm:text-5xl min-[1920px]:text-6xl"
+          >
+            About
+          </h2>
+          <p
+            class="mt-4 max-w-2xl text-lg leading-relaxed text-muted min-[1920px]:max-w-3xl min-[1920px]:text-xl"
+          >
             I bring experience coordinating developers, designers and
             stakeholders across concurrent web and ecommerce projects. My work
             also spans domains, DNS, hosting and analytics.
@@ -64,9 +70,11 @@ const principles = [
     >
       {
         principles.map(principle => (
-          <li class="border-b border-line p-5 last:border-b-0 sm:border-b-0 sm:p-6">
-            <h3 class="text-lg font-semibold text-white">{principle.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-muted">
+          <li class="border-b border-line p-5 last:border-b-0 sm:border-b-0 sm:p-6 min-[1920px]:p-8">
+            <h3 class="text-lg font-semibold text-white min-[1920px]:text-xl">
+              {principle.title}
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted min-[1920px]:text-base">
               {principle.description}
             </p>
           </li>
@@ -81,12 +89,16 @@ const principles = [
     >
       <div>
         <div class="flex items-center gap-5">
-          <h3 class="shrink-0 text-2xl font-semibold text-white">
+          <h3
+            class="shrink-0 text-2xl font-semibold text-white min-[1920px]:text-3xl"
+          >
             Engineering judgement
           </h3>
           <span class="h-px flex-1 bg-line" aria-hidden="true"></span>
         </div>
-        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-gray-200">
+        <p
+          class="mt-5 max-w-2xl text-lg leading-relaxed text-gray-200 min-[1920px]:max-w-3xl min-[1920px]:text-xl"
+        >
           I favour bounded systems, clear source context and interfaces that
           show uncertainty instead of hiding it. The aim is software that people
           can understand, operate and trust.
@@ -95,10 +107,16 @@ const principles = [
 
       <div>
         <div class="flex items-center gap-5">
-          <h3 class="shrink-0 text-2xl font-semibold text-white">Core tools</h3>
+          <h3
+            class="shrink-0 text-2xl font-semibold text-white min-[1920px]:text-3xl"
+          >
+            Core tools
+          </h3>
           <span class="h-px flex-1 bg-line" aria-hidden="true"></span>
         </div>
-        <p class="mt-5 max-w-lg leading-relaxed text-muted">
+        <p
+          class="mt-5 max-w-lg leading-relaxed text-muted min-[1920px]:max-w-2xl min-[1920px]:text-lg"
+        >
           A focused toolkit for typed applications, data processing, static
           publishing and browser-level testing.
         </p>
@@ -108,11 +126,11 @@ const principles = [
           {
             skills.map(skill => {
               return (
-                <li class="group flex items-center gap-3 border-b border-line py-4">
-                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-line bg-surface text-accent transition-colors group-hover:border-accent/60 motion-reduce:transition-none">
+                <li class="group flex items-center gap-3 border-b border-line py-4 min-[1920px]:gap-4 min-[1920px]:py-5">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-line bg-surface text-accent transition-colors group-hover:border-accent/60 min-[1920px]:h-11 min-[1920px]:w-11 motion-reduce:transition-none">
                     <ToolLogo name={skill.data.title} class="h-7 w-7" />
                   </span>
-                  <span class="font-semibold text-gray-100">
+                  <span class="font-semibold text-gray-100 min-[1920px]:text-lg">
                     {skill.data.title}
                   </span>
                 </li>

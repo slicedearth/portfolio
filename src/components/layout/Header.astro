@@ -12,7 +12,7 @@ const links = [
   class="fixed inset-x-0 top-0 z-50 border-b border-line/80 bg-bg/90 backdrop-blur-xl"
 >
   <nav
-    class="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 sm:px-8"
+    class="site-frame flex h-18 items-center justify-between px-5 sm:px-8 min-[1920px]:h-20"
     aria-label="Primary"
   >
     <a
@@ -23,12 +23,12 @@ const links = [
       <Logo />
     </a>
 
-    <div class="hidden items-center gap-7 sm:flex">
+    <div class="hidden items-center gap-7 sm:flex min-[1920px]:gap-9">
       {
         links.map(link => (
           <a
             href={link.href}
-            class="font-code text-sm text-gray-300 transition-colors hover:text-white motion-reduce:transition-none"
+            class="font-code text-sm text-gray-300 transition-colors hover:text-white min-[1920px]:text-base motion-reduce:transition-none"
           >
             {link.label}
           </a>

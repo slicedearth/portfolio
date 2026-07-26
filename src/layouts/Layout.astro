@@ -91,7 +91,10 @@ const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
         Skip to content
       </a>
       <Header />
-      <main id="main-content" class="flex flex-1 flex-col pt-18">
+      <main
+        id="main-content"
+        class="flex flex-1 flex-col pt-18 min-[1920px]:pt-20"
+      >
         <slot />
       </main>
       <Footer />
