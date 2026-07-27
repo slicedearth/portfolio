@@ -12,7 +12,7 @@ export {}
 
 declare global {
   interface Window {
-    dataLayer?: unknown[]
+    dataLayer?: Array<ArrayLike<unknown>>
     gtag?: (...args: unknown[]) => void
   }
 }
