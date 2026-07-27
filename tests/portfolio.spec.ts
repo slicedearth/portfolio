@@ -214,6 +214,72 @@ test("analytics queues immediately and loads remotely after interaction", async 
 
   await page.keyboard.press("Tab")
   await expect(page.locator("[data-google-analytics]")).toHaveCount(1)
+
+  const projectLink = page
+    .locator(
+      '[data-analytics-type="project_website_link"][data-analytics-item="WHOISleuth"]',
+    )
+    .first()
+  await projectLink.evaluate(link => {
+    link.addEventListener("click", event => event.preventDefault(), {
+      once: true,
+    })
+    ;(link as HTMLAnchorElement).click()
+  })
+
+  const analyticsEvent = await page.evaluate(() => {
+    const entries = window.dataLayer
+
+    return (
+      entries
+        ?.map(entry => Array.from(entry))
+        .find(entry => entry[0] === "event" && entry[1] === "select_content") ??
+      null
+    )
+  })
+
+  expect(analyticsEvent).toEqual([
+    "event",
+    "select_content",
+    {
+      content_type: "project_website_link",
+      content_id: "WHOISleuth",
+      link_url: "https://whoisleuth.com/demo",
+    },
+  ])
+})
+
+test("analytics loads immediately for Tag Assistant debug sessions", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop",
+    "Analytics behaviour runs once",
+  )
+
+  await page.route("https://www.googletagmanager.com/**", route =>
+    route.abort(),
+  )
+  await page.goto("/?_dbg=debug-session")
+
+  await expect(page.locator("[data-google-analytics]")).toHaveCount(1)
+
+  const analyticsConfig = await page.evaluate(() => {
+    const entries = window.dataLayer
+
+    return (
+      entries
+        ?.map(entry => Array.from(entry))
+        .find(entry => entry[0] === "config") ?? null
+    )
+  })
+
+  expect(analyticsConfig?.[2]).toMatchObject({
+    allow_ad_personalization_signals: false,
+    allow_google_signals: false,
+    cookie_expires: 0,
+    debug_mode: true,
+  })
 })
 
 test("reduced motion retains the static hero", async ({ page }, testInfo) => {

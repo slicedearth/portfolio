@@ -3,6 +3,8 @@ const trackingId = document.querySelector(
 )?.content
 
 if (trackingId) {
+  const isDebugSession = new URLSearchParams(window.location.search).has("_dbg")
+
   window.dataLayer = window.dataLayer || []
   window.gtag = function () {
     window.dataLayer.push(arguments)
@@ -33,11 +35,14 @@ if (trackingId) {
   }
 
   window.gtag("js", new Date())
-  window.gtag("config", trackingId, {
+  const config = {
     allow_ad_personalization_signals: false,
     allow_google_signals: false,
     cookie_expires: 0,
-  })
+    ...(isDebugSession ? { debug_mode: true } : {}),
+  }
+
+  window.gtag("config", trackingId, config)
 
   document.addEventListener("click", event => {
     const link =
@@ -51,12 +56,14 @@ if (trackingId) {
 
     window.gtag?.("event", "select_content", {
       content_type: contentType,
-      item_id: itemId,
+      content_id: itemId,
       link_url: link.getAttribute("href"),
     })
   })
 
-  if (document.readyState === "complete") {
+  if (isDebugSession) {
+    loadAnalytics()
+  } else if (document.readyState === "complete") {
     scheduleAnalytics()
   } else {
     window.addEventListener("load", scheduleAnalytics, { once: true })
