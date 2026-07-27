@@ -3,8 +3,7 @@
 
 /*
   Cache-Control: public, max-age=0, must-revalidate, no-transform
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://analytics.google.com https://www.google-analytics.com https://*.google-analytics.com; font-src 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com; media-src 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com; style-src 'self'; upgrade-insecure-requests
-  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; connect-src 'self' https://analytics.google.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; font-src 'self' data: https://fonts.gstatic.com; form-action 'none'; frame-ancestors 'none'; img-src 'self' data: https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com; media-src 'self'; object-src 'none'; script-src 'self' https://www.googletagmanager.com; script-src-elem 'self' https://www.googletagmanager.com https://tagmanager.google.com; style-src 'self' https://www.googletagmanager.com https://tagmanager.google.com https://fonts.googleapis.com; upgrade-insecure-requests
   Permissions-Policy: camera=(), geolocation=(), microphone=(), payment=(), usb=()
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff

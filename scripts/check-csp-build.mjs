@@ -7,6 +7,37 @@ const scriptPolicy = headers.match(/Content-Security-Policy:[^\n]*/)?.[0] ?? ""
 const globalHeaders =
   headers.match(/^\/\*[ \t]*\n((?:[ \t]+[^\n]*(?:\n|$))*)/m)?.[1] ?? ""
 const globalCachePolicy = globalHeaders.match(/Cache-Control:[^\n]*/)?.[0] ?? ""
+const openerPolicy =
+  globalHeaders.match(/Cross-Origin-Opener-Policy:[^\n]*/)?.[0] ?? ""
+
+const requiredPolicySources = {
+  "connect-src": [
+    "'self'",
+    "https://*.google-analytics.com",
+    "https://*.analytics.google.com",
+    "https://www.googletagmanager.com",
+  ],
+  "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
+  "img-src": [
+    "'self'",
+    "data:",
+    "https://*.google-analytics.com",
+    "https://www.googletagmanager.com",
+    "https://ssl.gstatic.com",
+    "https://www.gstatic.com",
+  ],
+  "script-src-elem": [
+    "'self'",
+    "https://www.googletagmanager.com",
+    "https://tagmanager.google.com",
+  ],
+  "style-src": [
+    "'self'",
+    "https://www.googletagmanager.com",
+    "https://tagmanager.google.com",
+    "https://fonts.googleapis.com",
+  ],
+}
 
 if (!scriptPolicy.includes("script-src 'self'")) {
   throw new Error("Expected the production CSP to restrict scripts to self.")
@@ -19,6 +50,29 @@ if (scriptPolicy.includes("'unsafe-inline'")) {
 if (!/(?:^|,)\s*no-transform(?:,|$)/.test(globalCachePolicy)) {
   throw new Error(
     "Expected the global cache policy to prevent edge script injection with no-transform.",
+  )
+}
+
+for (const [directive, requiredSources] of Object.entries(
+  requiredPolicySources,
+)) {
+  const configuredSources =
+    scriptPolicy
+      .match(new RegExp(`(?:^|;\\s*)${directive}\\s+([^;]+)`))?.[1]
+      ?.split(/\s+/) ?? []
+
+  for (const source of requiredSources) {
+    if (!configuredSources.includes(source)) {
+      throw new Error(
+        `Expected ${directive} to allow ${source} for analytics debugging.`,
+      )
+    }
+  }
+}
+
+if (openerPolicy && !/:\s*unsafe-none\s*$/i.test(openerPolicy)) {
+  throw new Error(
+    "The global opener policy must allow the Tag Assistant debug window handshake.",
   )
 }
 
