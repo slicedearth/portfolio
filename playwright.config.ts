@@ -23,6 +23,7 @@ export default defineConfig({
   projects: [
     {
       name: "desktop",
+      testMatch: /portfolio\.spec\.ts/,
       use: {
         browserName: "chromium",
         viewport: { width: 1440, height: 900 },
@@ -30,6 +31,7 @@ export default defineConfig({
     },
     {
       name: "tablet",
+      testMatch: /portfolio\.spec\.ts/,
       use: {
         browserName: "chromium",
         viewport: { width: 820, height: 1180 },
@@ -38,6 +40,7 @@ export default defineConfig({
     },
     {
       name: "mobile",
+      testMatch: /portfolio\.spec\.ts/,
       use: {
         browserName: "chromium",
         viewport: { width: 390, height: 844 },
@@ -47,9 +50,28 @@ export default defineConfig({
     },
     {
       name: "narrow-mobile",
+      testMatch: /portfolio\.spec\.ts/,
       use: {
         browserName: "chromium",
         viewport: { width: 320, height: 800 },
+        hasTouch: true,
+        isMobile: true,
+      },
+    },
+    {
+      name: "firefox-desktop",
+      testMatch: /cross-browser\.spec\.ts/,
+      use: {
+        browserName: "firefox",
+        viewport: { width: 1440, height: 900 },
+      },
+    },
+    {
+      name: "webkit-mobile",
+      testMatch: /cross-browser\.spec\.ts/,
+      use: {
+        browserName: "webkit",
+        viewport: { width: 390, height: 844 },
         hasTouch: true,
         isMobile: true,
       },

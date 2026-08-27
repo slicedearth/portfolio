@@ -1,7 +1,15 @@
 import { readFile, readdir, stat } from "node:fs/promises"
 import { extname, join, normalize } from "node:path"
 import { gzipSync } from "node:zlib"
-import { parse } from "parse5"
+import { parse, type DefaultTreeAdapterMap } from "parse5"
+
+type FileEntry = {
+  path: string
+  size: number
+}
+
+type HtmlNode = DefaultTreeAdapterMap["node"]
+type HtmlElement = DefaultTreeAdapterMap["element"]
 
 const limits = {
   css: 70 * 1024,
@@ -22,8 +30,8 @@ try {
   throw new Error("No build output found. Run npm run build first.")
 }
 
-const files = []
-const walk = async directory => {
+const files: FileEntry[] = []
+const walk = async (directory: string) => {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name)
     if (entry.isDirectory()) {
@@ -36,21 +44,27 @@ const walk = async directory => {
 await walk("dist")
 
 const html = await readFile("dist/index.html", "utf8")
-const scriptElements = []
-const collectScriptElements = node => {
-  if (node.nodeName === "script") scriptElements.push(node)
-  for (const child of node.childNodes ?? []) collectScriptElements(child)
+const scriptElements: HtmlElement[] = []
+const collectScriptElements = (node: HtmlNode) => {
+  if ("tagName" in node && node.tagName === "script") {
+    scriptElements.push(node)
+  }
+  if ("childNodes" in node) {
+    for (const child of node.childNodes) collectScriptElements(child)
+  }
 }
 collectScriptElements(parse(html))
 
-const attributeValue = (element, name) =>
+const attributeValue = (element: HtmlElement, name: string) =>
   element.attrs?.find(attribute => attribute.name === name)?.value
-const scriptText = element =>
-  (element.childNodes ?? []).map(node => node.value ?? "").join("")
+const scriptText = (element: HtmlElement) =>
+  element.childNodes.map(node => ("value" in node ? node.value : "")).join("")
 const initialScriptPaths = new Set(
   scriptElements
     .map(element => attributeValue(element, "src"))
-    .filter(source => source?.match(/\.js(?:\?|$)/))
+    .filter((source): source is string =>
+      Boolean(source?.match(/\.js(?:\?|$)/)),
+    )
     .filter(source => source.startsWith("/"))
     .map(source => normalize(join("dist", source.split("?")[0]))),
 )
@@ -87,7 +101,7 @@ const deferredJavaScriptTotal = deferredJavaScript.reduce(
   (total, file) => total + file.size,
   0,
 )
-const gzipTotal = async selectedFiles => {
+const gzipTotal = async (selectedFiles: FileEntry[]) => {
   const sizes = await Promise.all(
     selectedFiles.map(
       async file => gzipSync(await readFile(file.path), { level: 9 }).length,
@@ -103,8 +117,8 @@ const optionalSceneJavaScriptTotal = optionalSceneJavaScript.reduce(
 )
 const optionalSceneJavaScriptGzip = await gzipTotal(optionalSceneJavaScript)
 
-const failures = []
-const checkTotal = (name, total, limit) => {
+const failures: string[] = []
+const checkTotal = (name: string, total: number, limit: number) => {
   if (total <= limit) return
   failures.push(
     `${name} totals ${Math.ceil(total / 1024)} KiB; budget is ${Math.ceil(
