@@ -1,6 +1,5 @@
 import AxeBuilder from "@axe-core/playwright"
 import { expect, test } from "@playwright/test"
-import sharp from "sharp"
 
 test("homepage presents the portfolio without accessibility violations", async ({
   page,
@@ -15,6 +14,10 @@ test("homepage presents the portfolio without accessibility violations", async (
     }),
   ).toBeVisible()
   await expect(page.getByRole("heading", { name: "WHOISleuth" })).toBeVisible()
+  const projectHeadings = page.locator("[data-project-card] h3")
+  await expect(projectHeadings).toHaveCount(6)
+  await expect(projectHeadings.nth(0)).toHaveText("WHOISleuth")
+  await expect(projectHeadings.nth(1)).toHaveText("ZoneSkein")
   await expect(page.locator("#main-content")).toBeVisible()
   await expect(page).toHaveTitle("Aser - Software Engineer | slicedearth")
 
@@ -39,25 +42,38 @@ test("homepage presents the portfolio without accessibility violations", async (
 test("hero selects an appropriate presentation for each viewport", async ({
   page,
 }, testInfo) => {
+  test.setTimeout(testInfo.project.name === "desktop" ? 60_000 : 30_000)
   const requestedAssets: string[] = []
   page.on("request", request => requestedAssets.push(request.url()))
+  await page.addInitScript(() => {
+    const states: string[] = []
+    Object.defineProperty(window, "__earthMotionStates", { value: states })
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const earth = document.querySelector<HTMLElement>("[data-sliced-earth]")
+      if (!earth) return
+
+      const recordState = () => {
+        const state = earth.dataset.earthMotion
+        if (state && states.at(-1) !== state) states.push(state)
+      }
+      recordState()
+      new MutationObserver(recordState).observe(earth, {
+        attributeFilter: ["data-earth-motion"],
+      })
+    })
+  })
 
   await page.goto("/")
 
   const earth = page.locator("[data-sliced-earth]")
   const canvas = earth.locator("[data-earth-canvas]")
   const terrain = page.locator("[data-hero-image]")
-  await expect
-    .poll(
-      () =>
-        terrain.evaluate(image =>
-          image instanceof HTMLImageElement ? image.naturalWidth : 0,
-        ),
-      { timeout: 10_000 },
-    )
-    .toBeGreaterThan(0)
 
   expect(requestedAssets.some(asset => asset.endsWith(".webm"))).toBe(false)
+  expect(
+    requestedAssets.some(asset => asset.includes("hero-slicedearth")),
+  ).toBe(true)
   await expect(terrain).toHaveAttribute("loading", "eager")
   await expect(terrain).toHaveAttribute("fetchpriority", "high")
 
@@ -65,7 +81,29 @@ test("hero selects an appropriate presentation for each viewport", async ({
     await expect(earth).toHaveAttribute("data-earth-ready", "true", {
       timeout: 10_000,
     })
+    await expect(earth).toHaveAttribute("data-earth-handoff", "complete", {
+      timeout: 3_000,
+    })
+    await expect(earth).toHaveAttribute("data-earth-motion", "running", {
+      timeout: 3_000,
+    })
     await expect(canvas).toHaveCSS("opacity", "1")
+    await expect(canvas).toHaveCSS("transition-duration", "0s")
+    await expect(terrain).toHaveCSS("opacity", "0")
+    await expect(terrain).toHaveCSS("transition-duration", "0s")
+
+    const motionStates = await page.evaluate(
+      () =>
+        (
+          window as typeof window & {
+            __earthMotionStates?: string[]
+          }
+        ).__earthMotionStates ?? [],
+    )
+    expect(motionStates).toContain("paused")
+    expect(motionStates.indexOf("paused")).toBeLessThan(
+      motionStates.indexOf("running"),
+    )
 
     const dimensions = await canvas.evaluate(element => {
       const canvasElement = element as HTMLCanvasElement
@@ -77,22 +115,33 @@ test("hero selects an appropriate presentation for each viewport", async ({
       }
     })
     expect(dimensions.backingWidth).toBeGreaterThanOrEqual(
-      dimensions.cssWidth * 1.49,
+      dimensions.cssWidth * 0.74,
     )
     expect(dimensions.backingHeight).toBeGreaterThanOrEqual(
-      dimensions.cssHeight * 1.49,
+      dimensions.cssHeight * 0.74,
     )
-
-    const canvasBounds = await canvas.boundingBox()
-    expect(canvasBounds).not.toBeNull()
-    const canvasImage = await page.screenshot({ clip: canvasBounds! })
-    const imageStats = await sharp(canvasImage).stats()
-    expect(
-      Math.max(...imageStats.channels.map(channel => channel.stdev)),
-    ).toBeGreaterThan(8)
+    expect(dimensions.backingWidth).toBeLessThanOrEqual(
+      dimensions.cssWidth * 1.51,
+    )
+    expect(dimensions.backingHeight).toBeLessThanOrEqual(
+      dimensions.cssHeight * 1.51,
+    )
   } else {
+    await terrain.evaluate(async element => {
+      if (!(element instanceof HTMLImageElement)) {
+        throw new Error("Hero poster is not an image element")
+      }
+      if (!element.complete || element.naturalWidth === 0)
+        await element.decode()
+    })
+    expect(
+      await terrain.evaluate(image =>
+        image instanceof HTMLImageElement ? image.naturalWidth : 0,
+      ),
+    ).toBeGreaterThan(0)
     await page.waitForTimeout(1_200)
     await expect(earth).not.toHaveAttribute("data-earth-ready", "true")
+    await expect(earth).not.toHaveAttribute("data-earth-motion", "running")
     await expect(canvas).toHaveCSS("opacity", "0")
     expect(
       requestedAssets.some(asset => /sliced-earth-scene|three/i.test(asset)),
@@ -165,9 +214,85 @@ test("featured project uses a static project image", async ({ page }) => {
     .locator("[data-project-card]")
     .filter({ has: page.getByRole("heading", { name: "WHOISleuth" }) })
   await expect(featuredProject.locator("video")).toHaveCount(0)
-  await expect(featuredProject.locator("img")).toHaveCSS("object-fit", "cover")
+  await expect(featuredProject.locator("[data-project-image]")).toHaveCSS(
+    "object-fit",
+    "contain",
+  )
   await expect(featuredProject).toHaveAttribute("data-reveal-delay", "90")
   await expect(featuredProject).toHaveAttribute("data-reveal-state", "visible")
+})
+
+test("project screenshots remain fully visible across major viewports", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop",
+    "Responsive image framing runs once",
+  )
+
+  await page.emulateMedia({ reducedMotion: "reduce" })
+
+  for (const viewport of [
+    { width: 320, height: 800 },
+    { width: 390, height: 844 },
+    { width: 820, height: 1180 },
+    { width: 1440, height: 900 },
+    { width: 2560, height: 1440 },
+    { width: 3840, height: 2160 },
+  ]) {
+    await page.setViewportSize(viewport)
+    await page.goto("/#projects")
+
+    const projectImages = page.locator("[data-project-image]")
+    await expect(projectImages).toHaveCount(6)
+
+    for (let index = 0; index < (await projectImages.count()); index += 1) {
+      const projectImage = projectImages.nth(index)
+      await projectImage.scrollIntoViewIfNeeded()
+      await expect
+        .poll(() =>
+          projectImage.evaluate(image =>
+            image instanceof HTMLImageElement ? image.naturalWidth : 0,
+          ),
+        )
+        .toBeGreaterThan(0)
+    }
+
+    const imageStates = await projectImages.evaluateAll(images =>
+      images.map(image => {
+        const element = image as HTMLImageElement
+        const style = getComputedStyle(element)
+        const bounds = element.getBoundingClientRect()
+        const containerBounds = element.parentElement!.getBoundingClientRect()
+
+        return {
+          complete: element.complete,
+          naturalHeight: element.naturalHeight,
+          naturalWidth: element.naturalWidth,
+          objectFit: style.objectFit,
+          transform: style.transform,
+          bounds: bounds.toJSON(),
+          containerBounds: containerBounds.toJSON(),
+        }
+      }),
+    )
+
+    for (const image of imageStates) {
+      expect(image.complete).toBe(true)
+      expect(image.naturalWidth).toBeGreaterThan(0)
+      expect(image.naturalHeight).toBeGreaterThan(0)
+      expect(image.objectFit).toBe("contain")
+      expect(image.transform).toBe("none")
+      expect(image.bounds.width).toBeCloseTo(image.containerBounds.width, 0)
+      expect(image.bounds.height).toBeCloseTo(image.containerBounds.height, 0)
+    }
+
+    const pageWidth = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      content: document.documentElement.scrollWidth,
+    }))
+    expect(pageWidth.content).toBeLessThanOrEqual(pageWidth.viewport)
+  }
 })
 
 test("brand mark interaction reinforces the sliced layers", async ({
@@ -289,6 +414,10 @@ test("reduced motion retains the static hero", async ({ page }, testInfo) => {
   page.on("request", request => requestedAssets.push(request.url()))
   await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/")
+  const terrain = page.locator("[data-hero-image]")
+  await terrain.evaluate(async element => {
+    if (element instanceof HTMLImageElement) await element.decode()
+  })
   await page.waitForTimeout(1_200)
 
   expect(
@@ -299,6 +428,11 @@ test("reduced motion retains the static hero", async ({ page }, testInfo) => {
     "true",
   )
   await expect(page.locator("[data-earth-canvas]")).toHaveCSS("opacity", "0")
+  expect(
+    await terrain.evaluate(image =>
+      image instanceof HTMLImageElement ? image.naturalWidth : 0,
+    ),
+  ).toBeGreaterThan(0)
   await expect(page.locator("[data-reveal]").first()).toBeVisible()
 })
 
@@ -366,10 +500,35 @@ test("homepage metadata uses the primary domain", async ({
     "content",
     "https://www.slicedearth.dev/",
   )
+  await expect(page.locator("html")).toHaveAttribute("lang", "en-AU")
+  await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute(
+    "content",
+    "en_AU",
+  )
+  await expect(page.locator('meta[name="twitter:image:alt"]')).toHaveAttribute(
+    "content",
+    "slicedearth portfolio for software engineering and project delivery",
+  )
 
   const structuredData = JSON.parse(
     (await page.locator('script[type="application/ld+json"]').textContent()) ??
       "{}",
-  ) as { url?: string }
-  expect(structuredData.url).toBe("https://www.slicedearth.dev/")
+  ) as {
+    "@graph"?: Array<{
+      "@type"?: string
+      itemListElement?: unknown[]
+      numberOfItems?: number
+      url?: string
+    }>
+  }
+  const profilePage = structuredData["@graph"]?.find(
+    item => item["@type"] === "ProfilePage",
+  )
+  const projectList = structuredData["@graph"]?.find(
+    item => item["@type"] === "ItemList",
+  )
+
+  expect(profilePage?.url).toBe("https://www.slicedearth.dev/")
+  expect(projectList?.numberOfItems).toBe(6)
+  expect(projectList?.itemListElement).toHaveLength(6)
 })

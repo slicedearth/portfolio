@@ -30,7 +30,7 @@ const robots = noindex ? "noindex, nofollow" : "index, follow"
 const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
 ---
 
-<html lang="en">
+<html lang="en-AU">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -60,9 +60,11 @@ const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_AU" />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={`${siteUrl}/og-image.png`} />
+    <meta property="og:image:type" content="image/png" />
     <meta
       property="og:image:alt"
       content="slicedearth portfolio for software engineering and project delivery"
@@ -73,6 +75,10 @@ const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
+    <meta
+      name="twitter:image:alt"
+      content="slicedearth portfolio for software engineering and project delivery"
+    />
     {
       gaId && (
         <>

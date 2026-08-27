@@ -39,6 +39,7 @@ or on the first interaction.
 | `npm run check`          | Check Astro components and TypeScript              |
 | `npm run build`          | Build the production site                          |
 | `npm run budget`         | Check HTML, font, CSS, JS and image budgets        |
+| `npm run links:check`    | Check outbound links in the production build       |
 | `npm run security:check` | Check generated scripts against the production CSP |
 | `npm run test:e2e`       | Build and test the site in responsive browsers     |
 | `npm run test:e2e:built` | Test an existing production build                  |
@@ -48,6 +49,10 @@ or on the first interaction.
 The performance budget caps initial and deferred JavaScript, CSS, fonts, HTML
 and generated images. The optional desktop hero scene has separate raw and gzip
 limits so its cost cannot weaken the budgets for the rest of the site.
+
+CI checks the responsive Chromium experience plus focused Firefox and WebKit
+smoke coverage. A weekly workflow checks the public links rendered by the
+production build.
 
 ## Licensing
 

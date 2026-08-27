@@ -47,7 +47,10 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
 
     if (!reducedMotion && wideCanvas && !connection?.saveData) {
       let disposed = false
-      let disposeScene: (() => void) | undefined
+      let sceneController:
+        import("./sliced-earth-scene").SlicedEarthSceneController | undefined
+      let handoffFrame: number | undefined
+      let motionFrame: number | undefined
       const textureWarmers = [surfaceUrl, reliefUrl].map(url => {
         const image = new Image()
         image.decoding = "async"
@@ -55,27 +58,55 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
         return image
       })
 
+      const startMotion = () => {
+        if (disposed || root.dataset.earthMotion === "running") return
+
+        sceneController?.startMotion()
+        root.dataset.earthMotion = "running"
+      }
+
+      root.dataset.earthMotion = "loading"
+      root.dataset.earthHandoff = "pending"
+
       const start = async () => {
         if (disposed || !root.isConnected) return
 
         const { mountSlicedEarthScene } = await import("./sliced-earth-scene")
         if (disposed || !root.isConnected) return
 
-        disposeScene = await mountSlicedEarthScene({
+        const mountedScene = await mountSlicedEarthScene({
           canvas,
           root,
           onReady: () => {
+            if (disposed || !root.isConnected) return
+
+            root.dataset.earthMotion = "paused"
             root.dataset.earthReady = "true"
+            handoffFrame = window.requestAnimationFrame(() => {
+              if (disposed) return
+
+              root.dataset.earthHandoff = "complete"
+              motionFrame = window.requestAnimationFrame(startMotion)
+            })
           },
         })
+
+        if (disposed || !root.isConnected) {
+          mountedScene.dispose()
+          return
+        }
+
+        sceneController = mountedScene
       }
 
       void start()
 
       const dispose = () => {
         disposed = true
+        if (handoffFrame) window.cancelAnimationFrame(handoffFrame)
+        if (motionFrame) window.cancelAnimationFrame(motionFrame)
         for (const image of textureWarmers) image.src = ""
-        disposeScene?.()
+        sceneController?.dispose()
       }
 
       document.addEventListener("astro:before-swap", dispose, { once: true })
@@ -88,11 +119,6 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
     background: #070a0e;
   }
 
-  .sliced-earth__poster,
-  .sliced-earth__canvas {
-    transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
   .sliced-earth__canvas {
     opacity: 0;
   }
@@ -101,14 +127,7 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
     opacity: 1;
   }
 
-  .sliced-earth[data-earth-ready="true"] .sliced-earth__poster {
+  .sliced-earth[data-earth-handoff="complete"] .sliced-earth__poster {
     opacity: 0;
-  }
-
-  @media screen and (prefers-reduced-motion: reduce) {
-    .sliced-earth__poster,
-    .sliced-earth__canvas {
-      transition: none;
-    }
   }
 </style>

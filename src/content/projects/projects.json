@@ -5,23 +5,40 @@
     "title": "WHOISleuth",
     "eyebrow": "Domains and brand protection",
     "image": "whoisleuth.webp",
-    "image_alt": "WHOISleuth console showing domain evidence and investigation signals",
+    "image_alt": "WHOISleuth homepage showing candidate, evidence and monitoring views",
     "githubURL": "https://github.com/slicedearth/whoisleuth",
     "deployedURL": "https://whoisleuth.com/demo",
     "deployedLabel": "Try the demo",
     "caseStudyURL": "https://github.com/slicedearth/whoisleuth/blob/main/docs/engineering-case-study.md",
     "caseStudyLabel": "Case study",
-    "description": "A domain review console that brings registration, DNS, certificate, website and network evidence into one place.",
+    "description": "A local-first investigation and brand-protection tool for reviewing domain evidence, finding lookalikes and retaining cases without hiding uncertainty.",
     "highlights": [
-      "Evidence stays linked to its source and investigation state stays in the browser",
-      "Outbound requests are bounded and protected against unsafe redirects and DNS rebinding",
-      "The hosted deployments and command-line tool use the same investigation core"
+      "Evidence from registration, DNS, certificates, websites and networks stays separately attributed",
+      "Lookalike discovery and bulk triage keep priorities explainable and source limits visible",
+      "Cases, watchlists and comparisons stay browser-local by default"
     ],
     "tags": ["SvelteKit", "TypeScript", "Node.js"]
   },
   {
-    "id": "breach-gazette",
+    "id": "zoneskein",
     "order": 2,
+    "title": "ZoneSkein",
+    "eyebrow": "DNS inspection and change planning",
+    "image": "zoneSkein.webp",
+    "image_alt": "ZoneSkein homepage introducing its DNS investigation and change-planning workbench",
+    "githubURL": "https://github.com/slicedearth/zoneskein",
+    "deployedURL": "https://www.zoneskein.com/",
+    "deployedLabel": "Open the workbench",
+    "description": "A browser-based workbench for inspecting DNS records, following policy dependencies and preparing changes without publishing them.",
+    "highlights": [
+      "Resolver comparisons keep evidence, source and uncertainty visible",
+      "Record authoring, checks and change plans stay local until explicitly exported"
+    ],
+    "tags": ["React", "TypeScript", "DNS"]
+  },
+  {
+    "id": "breach-gazette",
+    "order": 3,
     "title": "Breach Gazette",
     "eyebrow": "Breach records and public data",
     "image": "breachGazette.webp",
@@ -40,7 +57,7 @@
   },
   {
     "id": "control-current",
-    "order": 3,
+    "order": 4,
     "title": "ControlCurrent",
     "eyebrow": "Browser support and security",
     "image": "controlCurrent.webp",
@@ -59,7 +76,7 @@
   },
   {
     "id": "contract-delta-au",
-    "order": 4,
+    "order": 5,
     "title": "ContractDelta AU",
     "eyebrow": "Government contract changes",
     "image": "contractDelta.webp",
@@ -78,7 +95,7 @@
   },
   {
     "id": "forty-life",
-    "order": 5,
+    "order": 6,
     "title": "Forty Life",
     "eyebrow": "Magic: The Gathering",
     "image": "fortyLife.webp",

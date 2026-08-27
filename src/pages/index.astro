@@ -8,16 +8,53 @@ import About from "../components/sections/About.astro"
 const skills = (await getCollection("skills")).sort(
   (a, b) => a.data.order - b.data.order,
 )
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+)
 
-const personSchema = {
+const siteUrl = "https://www.slicedearth.dev/"
+const personId = `${siteUrl}#aser`
+const projectListId = `${siteUrl}#projects`
+const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Aser",
-  alternateName: "slicedearth",
-  jobTitle: "Software Engineer",
-  url: "https://www.slicedearth.dev/",
-  sameAs: ["https://github.com/slicedearth"],
-  knowsAbout: skills.map(skill => skill.data.title),
+  "@graph": [
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}#profile`,
+      url: siteUrl,
+      name: "Aser - Software Engineer | slicedearth",
+      mainEntity: { "@id": personId },
+      hasPart: { "@id": projectListId },
+    },
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: "Aser",
+      alternateName: "slicedearth",
+      jobTitle: "Software Engineer",
+      url: siteUrl,
+      sameAs: ["https://github.com/slicedearth"],
+      knowsAbout: skills.map(skill => skill.data.title),
+    },
+    {
+      "@type": "ItemList",
+      "@id": projectListId,
+      name: "Projects",
+      numberOfItems: projects.length,
+      itemListElement: projects.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "SoftwareApplication",
+          name: project.data.title,
+          description: project.data.description,
+          url: project.data.deployedURL ?? project.data.githubURL,
+          codeRepository: project.data.githubURL,
+          author: { "@id": personId },
+        },
+      })),
+    },
+  ],
 }
 ---
 
@@ -29,7 +66,7 @@ const personSchema = {
   <script
     is:inline
     type="application/ld+json"
-    set:html={JSON.stringify(personSchema)}
+    set:html={JSON.stringify(structuredData)}
   />
   <Hero />
   <Projects />

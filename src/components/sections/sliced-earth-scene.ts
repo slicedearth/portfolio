@@ -38,6 +38,11 @@ type MountOptions = {
   onReady: () => void
 }
 
+export type SlicedEarthSceneController = {
+  dispose: () => void
+  startMotion: () => void
+}
+
 type GlobeBand = {
   baseOffset: number
   group: Group
@@ -66,6 +71,7 @@ type Location = {
 const globeRadius = 2.18
 const posterAspectRatio = 16 / 9
 const accent = 0x5eead4
+const rotationRadiansPerMillisecond = MathUtils.degToRad(1.2) / 1_000
 const bandDefinitions = [
   { latitudeTop: 90, latitudeBottom: 25, offset: 0.3 },
   { latitudeTop: 25, latitudeBottom: -50, offset: 0 },
@@ -238,16 +244,13 @@ const createCap = (
   edgeMaterial: MeshStandardMaterial,
 ) => {
   const group = new Group()
-  const cap = new Mesh(new CircleGeometry(radius, 128), material)
+  const cap = new Mesh(new CircleGeometry(radius, 96), material)
   cap.rotation.x = facesUp ? -Math.PI / 2 : Math.PI / 2
   cap.position.y = y
   group.add(cap)
 
   if (radius > 0.08) {
-    const edge = new Mesh(
-      new TorusGeometry(radius, 0.016, 8, 128),
-      edgeMaterial,
-    )
+    const edge = new Mesh(new TorusGeometry(radius, 0.016, 6, 96), edgeMaterial)
     edge.rotation.x = Math.PI / 2
     edge.position.y = y
     group.add(edge)
@@ -262,18 +265,17 @@ const createRoutePoints = (start: Location, end: Location) => {
   const axis = startVector.clone().cross(endVector).normalize()
   const angle = Math.acos(MathUtils.clamp(startVector.dot(endVector), -1, 1))
 
-  return Array.from({ length: 97 }, (_, index) =>
+  return Array.from({ length: 65 }, (_, index) =>
     startVector
       .clone()
-      .applyAxisAngle(axis, angle * (index / 96))
+      .applyAxisAngle(axis, angle * (index / 64))
       .multiplyScalar(globeRadius + 0.028),
   )
 }
 
 const routeProgress = (cycle: number) => {
   const wrapped = ((cycle % 2) + 2) % 2
-  const pingPong = wrapped <= 1 ? wrapped : 2 - wrapped
-  return MathUtils.smoothstep(pingPong, 0, 1)
+  return wrapped <= 1 ? wrapped : 2 - wrapped
 }
 
 const addBlockedRoute = (
@@ -334,9 +336,9 @@ const addRoute = (
     const curve = new CatmullRomCurve3(activePoints)
     const geometry = new TubeGeometry(
       curve,
-      Math.max(activePoints.length * 2, 12),
+      Math.max(Math.ceil(activePoints.length * 1.25), 10),
       0.007,
-      5,
+      4,
       false,
     )
     activeBand.group.add(new Mesh(geometry, material))
@@ -413,9 +415,6 @@ export const mountSlicedEarthScene = async ({
   renderer.outputColorSpace = SRGBColorSpace
   renderer.toneMapping = ACESFilmicToneMapping
   renderer.toneMappingExposure = 0.94
-  const renderPixelRatio = Math.min(Math.max(window.devicePixelRatio, 1.5), 2)
-  renderer.setPixelRatio(renderPixelRatio)
-
   const scene = new Scene()
   const camera = new PerspectiveCamera(34, 1, 0.1, 100)
   camera.position.set(0, 1.8, 9.2)
@@ -473,7 +472,7 @@ export const mountSlicedEarthScene = async ({
     opacity: 0.22,
     transparent: true,
   })
-  const nodeGeometry = new SphereGeometry(0.034, 12, 8)
+  const nodeGeometry = new SphereGeometry(0.034, 10, 6)
   const nodeMaterial = new MeshBasicMaterial({ color: accent })
 
   const model = new Group()
@@ -492,8 +491,8 @@ export const mountSlicedEarthScene = async ({
     const surfaceGeometry = restoreGlobalLatitudeUv(
       new SphereGeometry(
         globeRadius,
-        128,
-        72,
+        96,
+        54,
         0,
         Math.PI * 2,
         thetaStart,
@@ -550,15 +549,21 @@ export const mountSlicedEarthScene = async ({
   let disposed = false
   let frame = 0
   let visible = true
-  let lastRender = 0
-  // The canvas begins moving beneath the aligned poster during the crossfade.
-  const sceneStartTime = performance.now()
+  let previousRenderTime: number | undefined
+  let motionStartTime: number | undefined
 
   const resize = () => {
     const width = root.clientWidth
     const height = root.clientHeight
     if (width === 0 || height === 0) return
 
+    const preferredPixelRatio = 1.5
+    const pixelBudgetRatio = Math.sqrt(3_000_000 / (width * height))
+    const maximumPixelRatio = Math.max(
+      0.75,
+      Math.min(preferredPixelRatio, pixelBudgetRatio),
+    )
+    renderer.setPixelRatio(maximumPixelRatio)
     renderer.setSize(width, height, false)
 
     const rootAspectRatio = width / height
@@ -587,16 +592,28 @@ export const mountSlicedEarthScene = async ({
   const render = (time: number) => {
     if (disposed) return
     frame = window.requestAnimationFrame(render)
-    if (!visible || time - lastRender < 32) return
-    lastRender = time
-    const elapsed = Math.max(0, time - sceneStartTime)
+    if (!visible) {
+      previousRenderTime = undefined
+      return
+    }
 
-    pointerX += (targetPointerX - pointerX) * 0.045
-    pointerY += (targetPointerY - pointerY) * 0.045
-    globe.rotation.y = baseRotation + elapsed * 0.000011 + pointerX * 0.055
+    const frameDuration = previousRenderTime
+      ? Math.min(time - previousRenderTime, 50)
+      : 1000 / 60
+    previousRenderTime = time
+    const elapsed = motionStartTime ? Math.max(0, time - motionStartTime) : 0
+
+    if (motionStartTime) {
+      const pointerSmoothing = 1 - Math.pow(0.955, frameDuration / 32)
+      pointerX += (targetPointerX - pointerX) * pointerSmoothing
+      pointerY += (targetPointerY - pointerY) * pointerSmoothing
+    }
+    globe.rotation.y = baseRotation + elapsed * rotationRadiansPerMillisecond
     axisTilt.rotation.x = 0.035 + pointerY * 0.025
 
-    const sliceSeparation = Math.sin(elapsed * 0.00045) * 0.03
+    const sliceCycle = (elapsed / 7_000) % 2
+    const sliceSeparation =
+      (sliceCycle <= 1 ? sliceCycle : 2 - sliceCycle) * 0.03
     for (const [index, band] of bands.entries()) {
       const direction = index === 0 ? 1 : index === 2 ? -1 : 0
       band.group.position.x = pointerX * direction * 0.035
@@ -645,7 +662,7 @@ export const mountSlicedEarthScene = async ({
   window.requestAnimationFrame(onReady)
   frame = window.requestAnimationFrame(render)
 
-  return () => {
+  const dispose = () => {
     disposed = true
     window.cancelAnimationFrame(frame)
     resizeObserver.disconnect()
@@ -666,4 +683,11 @@ export const mountSlicedEarthScene = async ({
     renderer.dispose()
     renderer.forceContextLoss()
   }
+
+  return {
+    dispose,
+    startMotion: () => {
+      if (!motionStartTime) motionStartTime = performance.now()
+    },
+  } satisfies SlicedEarthSceneController
 }

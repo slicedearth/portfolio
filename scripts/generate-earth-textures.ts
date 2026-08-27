@@ -1,6 +1,16 @@
 import { readFile } from "node:fs/promises"
 import sharp from "sharp"
 
+type Position = [longitude: number, latitude: number]
+type LinearRing = Position[]
+type LandGeometry =
+  | { type: "Polygon"; coordinates: LinearRing[] }
+  | { type: "MultiPolygon"; coordinates: LinearRing[][] }
+
+type LandCollection = {
+  features: Array<{ geometry: LandGeometry }>
+}
+
 const width = 2048
 const height = 1024
 const reliefWidth = 1024
@@ -9,14 +19,14 @@ const dataPath = "src/assets/data/natural-earth-land-110m.json"
 const surfacePath = "src/assets/brand/earth-surface.webp"
 const reliefPath = "src/assets/brand/earth-relief.webp"
 
-const land = JSON.parse(await readFile(dataPath, "utf8"))
+const land = JSON.parse(await readFile(dataPath, "utf8")) as LandCollection
 
-const point = ([longitude, latitude]) => [
+const point = ([longitude, latitude]: Position) => [
   ((longitude + 180) / 360) * width,
   ((90 - latitude) / 180) * height,
 ]
 
-const ringPath = ring =>
+const ringPath = (ring: LinearRing) =>
   ring
     .map((coordinate, index) => {
       const [x, y] = point(coordinate)
@@ -24,7 +34,7 @@ const ringPath = ring =>
     })
     .join(" ") + " Z"
 
-const geometryPath = geometry => {
+const geometryPath = (geometry: LandGeometry) => {
   if (geometry.type === "Polygon") {
     return geometry.coordinates.map(ringPath).join(" ")
   }
@@ -35,7 +45,7 @@ const geometryPath = geometry => {
       .join(" ")
   }
 
-  throw new Error(`Unsupported Natural Earth geometry: ${geometry.type}`)
+  throw new Error("Unsupported Natural Earth geometry.")
 }
 
 const landPaths = land.features
