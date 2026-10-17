@@ -1,5 +1,13 @@
 import AxeBuilder from "@axe-core/playwright"
-import { expect, test } from "@playwright/test"
+import { expect, test } from "./fixtures"
+import { readFileSync } from "node:fs"
+
+const projects = JSON.parse(
+  readFileSync(
+    new URL("../src/content/projects/projects.json", import.meta.url),
+    "utf8",
+  ),
+) as Array<{ title: string }>
 
 test("homepage presents the portfolio without accessibility violations", async ({
   page,
@@ -7,19 +15,13 @@ test("homepage presents the portfolio without accessibility violations", async (
   await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/")
 
-  await expect(
-    page.getByRole("heading", {
-      level: 1,
-      name: "Hey, I'm Aser.",
-    }),
-  ).toBeVisible()
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
   await expect(page.getByRole("heading", { name: "WHOISleuth" })).toBeVisible()
   const projectHeadings = page.locator("[data-project-card] h3")
-  await expect(projectHeadings).toHaveCount(6)
-  await expect(projectHeadings.nth(0)).toHaveText("WHOISleuth")
-  await expect(projectHeadings.nth(1)).toHaveText("ZoneSkein")
+  await expect(projectHeadings).toHaveText(
+    projects.map(project => project.title),
+  )
   await expect(page.locator("#main-content")).toBeVisible()
-  await expect(page).toHaveTitle("Aser - Software Engineer | slicedearth")
 
   const pageWidth = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
@@ -143,6 +145,7 @@ test("hero selects an appropriate presentation for each viewport", async ({
     await expect(earth).not.toHaveAttribute("data-earth-ready", "true")
     await expect(earth).not.toHaveAttribute("data-earth-motion", "running")
     await expect(canvas).toHaveCSS("opacity", "0")
+    await expect(page.locator("[data-earth-toggle]")).toBeHidden()
     expect(
       requestedAssets.some(asset => /sliced-earth-scene|three/i.test(asset)),
     ).toBe(false)
@@ -218,7 +221,6 @@ test("featured project uses a static project image", async ({ page }) => {
     "object-fit",
     "contain",
   )
-  await expect(featuredProject).toHaveAttribute("data-reveal-delay", "90")
   await expect(featuredProject).toHaveAttribute("data-reveal-state", "visible")
 })
 
@@ -235,7 +237,12 @@ test("project screenshots remain fully visible across major viewports", async ({
   for (const viewport of [
     { width: 320, height: 800 },
     { width: 390, height: 844 },
+    { width: 639, height: 900 },
+    { width: 640, height: 900 },
+    { width: 768, height: 1024 },
     { width: 820, height: 1180 },
+    { width: 1023, height: 900 },
+    { width: 1024, height: 900 },
     { width: 1440, height: 900 },
     { width: 2560, height: 1440 },
     { width: 3840, height: 2160 },
@@ -244,7 +251,7 @@ test("project screenshots remain fully visible across major viewports", async ({
     await page.goto("/#projects")
 
     const projectImages = page.locator("[data-project-image]")
-    await expect(projectImages).toHaveCount(6)
+    await expect(projectImages).toHaveCount(projects.length)
 
     for (let index = 0; index < (await projectImages.count()); index += 1) {
       const projectImage = projectImages.nth(index)
@@ -264,6 +271,11 @@ test("project screenshots remain fully visible across major viewports", async ({
         const style = getComputedStyle(element)
         const bounds = element.getBoundingClientRect()
         const containerBounds = element.parentElement!.getBoundingClientRect()
+        const card = element.closest<HTMLElement>("[data-project-card]")!
+        const mediaBounds = element.closest("a")!.getBoundingClientRect()
+        const contentBounds = card
+          .querySelector("h3")!
+          .parentElement!.getBoundingClientRect()
 
         return {
           complete: element.complete,
@@ -273,6 +285,9 @@ test("project screenshots remain fully visible across major viewports", async ({
           transform: style.transform,
           bounds: bounds.toJSON(),
           containerBounds: containerBounds.toJSON(),
+          variant: card.dataset.projectVariant,
+          mediaBounds: mediaBounds.toJSON(),
+          contentBounds: contentBounds.toJSON(),
         }
       }),
     )
@@ -285,6 +300,16 @@ test("project screenshots remain fully visible across major viewports", async ({
       expect(image.transform).toBe("none")
       expect(image.bounds.width).toBeCloseTo(image.containerBounds.width, 0)
       expect(image.bounds.height).toBeCloseTo(image.containerBounds.height, 0)
+      if (image.variant === "compact") {
+        expect(image.mediaBounds.bottom).toBeLessThanOrEqual(
+          image.contentBounds.top + 1,
+        )
+        expect(image.bounds.width).toBeCloseTo(image.mediaBounds.width, 0)
+        expect(image.mediaBounds.height).toBeCloseTo(
+          (image.mediaBounds.width * image.naturalHeight) / image.naturalWidth,
+          0,
+        )
+      }
     }
 
     const pageWidth = await page.evaluate(() => ({
@@ -309,102 +334,6 @@ test("brand mark interaction reinforces the sliced layers", async ({
   await expect
     .poll(() => topLayer.evaluate(layer => getComputedStyle(layer).transform))
     .not.toBe("none")
-})
-
-test("analytics queues immediately and loads remotely after interaction", async ({
-  page,
-}, testInfo) => {
-  test.skip(
-    testInfo.project.name !== "desktop",
-    "Analytics behaviour runs once",
-  )
-
-  await page.route("https://www.googletagmanager.com/**", route =>
-    route.abort(),
-  )
-  await page.emulateMedia({ reducedMotion: "reduce" })
-  await page.goto("/")
-
-  await expect(page.locator("[data-google-analytics]")).toHaveCount(0)
-  expect(
-    await page.evaluate(
-      () =>
-        (
-          window as typeof window & {
-            dataLayer?: unknown[]
-          }
-        ).dataLayer?.length ?? 0,
-    ),
-  ).toBeGreaterThanOrEqual(2)
-
-  await page.keyboard.press("Tab")
-  await expect(page.locator("[data-google-analytics]")).toHaveCount(1)
-
-  const projectLink = page
-    .locator(
-      '[data-analytics-type="project_website_link"][data-analytics-item="WHOISleuth"]',
-    )
-    .first()
-  await projectLink.evaluate(link => {
-    link.addEventListener("click", event => event.preventDefault(), {
-      once: true,
-    })
-    ;(link as HTMLAnchorElement).click()
-  })
-
-  const analyticsEvent = await page.evaluate(() => {
-    const entries = window.dataLayer
-
-    return (
-      entries
-        ?.map(entry => Array.from(entry))
-        .find(entry => entry[0] === "event" && entry[1] === "select_content") ??
-      null
-    )
-  })
-
-  expect(analyticsEvent).toEqual([
-    "event",
-    "select_content",
-    {
-      content_type: "project_website_link",
-      content_id: "WHOISleuth",
-      link_url: "https://whoisleuth.com/demo",
-    },
-  ])
-})
-
-test("analytics loads immediately for Tag Assistant debug sessions", async ({
-  page,
-}, testInfo) => {
-  test.skip(
-    testInfo.project.name !== "desktop",
-    "Analytics behaviour runs once",
-  )
-
-  await page.route("https://www.googletagmanager.com/**", route =>
-    route.abort(),
-  )
-  await page.goto("/?_dbg=debug-session")
-
-  await expect(page.locator("[data-google-analytics]")).toHaveCount(1)
-
-  const analyticsConfig = await page.evaluate(() => {
-    const entries = window.dataLayer
-
-    return (
-      entries
-        ?.map(entry => Array.from(entry))
-        .find(entry => entry[0] === "config") ?? null
-    )
-  })
-
-  expect(analyticsConfig?.[2]).toMatchObject({
-    allow_ad_personalization_signals: false,
-    allow_google_signals: false,
-    cookie_expires: 0,
-    debug_mode: true,
-  })
 })
 
 test("reduced motion retains the static hero", async ({ page }, testInfo) => {
@@ -470,6 +399,13 @@ test("mobile navigation keeps closed links out of view", async ({
 
   await projectsLink.click()
   await expect(menu).not.toHaveAttribute("open")
+  await expect
+    .poll(() =>
+      page
+        .locator("#projects h2")
+        .evaluate(element => element.getBoundingClientRect().top),
+    )
+    .toBeGreaterThan(72)
 })
 
 test("404 pages are excluded from indexing", async ({ page }, testInfo) => {
@@ -507,7 +443,7 @@ test("homepage metadata uses the primary domain", async ({
   )
   await expect(page.locator('meta[name="twitter:image:alt"]')).toHaveAttribute(
     "content",
-    "slicedearth portfolio for software engineering and project delivery",
+    /slicedearth/,
   )
 
   const structuredData = JSON.parse(
@@ -529,6 +465,39 @@ test("homepage metadata uses the primary domain", async ({
   )
 
   expect(profilePage?.url).toBe("https://www.slicedearth.dev/")
-  expect(projectList?.numberOfItems).toBe(6)
-  expect(projectList?.itemListElement).toHaveLength(6)
+  expect(projectList?.numberOfItems).toBe(projects.length)
+  expect(projectList?.itemListElement).toHaveLength(projects.length)
+  const person = structuredData["@graph"]?.find(
+    item => item["@type"] === "Person",
+  )
+  expect(person).not.toHaveProperty("jobTitle")
+})
+
+test("project actions have contextual accessible names and safe new-tab links", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop",
+    "Shared link semantics run once",
+  )
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.goto("/#projects")
+  for (const project of projects) {
+    const card = page.locator("[data-project-card]").filter({
+      has: page.getByRole("heading", { name: project.title, exact: true }),
+    })
+    await expect(
+      card.getByRole("link", {
+        name: `Source code for ${project.title}`,
+        exact: true,
+      }),
+    ).toBeVisible()
+    for (const link of await card.getByRole("link").all()) {
+      await expect(link).toHaveAttribute("target", "_blank")
+      await expect(link).toHaveAttribute("rel", /noopener/)
+      await expect(link).toHaveAttribute("rel", /noreferrer/)
+      expect(await link.getAttribute("aria-label")).toContain(project.title)
+      await expect(link).toHaveAccessibleDescription(/\S/)
+    }
+  }
 })

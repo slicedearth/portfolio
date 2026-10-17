@@ -158,7 +158,7 @@ html {
 }
 
 [id] {
-  scroll-margin-top: 4rem;
+  scroll-margin-top: 5.5rem;
 }
 
 .site-frame {
@@ -179,7 +179,7 @@ html {
   }
 
   [id] {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 6rem;
   }
 
   .brand-mark {
@@ -239,37 +239,19 @@ body {
   opacity: 0.38;
 }
 
-.section-planes {
-  background-image: url("/patterns/section-planes.svg");
-  background-position: center top;
-  background-repeat: repeat-y;
-  background-size: max(80rem, 100%) 1120px;
+.hero-shell {
+  min-height: 32rem;
 }
 
-.section-planes-offset {
-  background-position: center -430px;
+@media screen and (min-width: 48rem) {
+  .hero-shell {
+    min-height: 35rem;
+  }
 }
 
 @media screen and (min-width: 120rem) {
   .hero-shell {
-    min-height: clamp(58rem, 72svh, 90rem);
-  }
-
-  .about-shell {
-    display: flex;
-    min-height: calc(100svh - 7rem);
-    align-items: center;
-  }
-
-  .section-planes {
-    background-image: url("/patterns/section-planes-wide.svg");
-    background-position: center top;
-    background-repeat: repeat-y;
-    background-size: 100% auto;
-  }
-
-  .section-planes-offset {
-    background-position: center -27rem;
+    min-height: 42rem;
   }
 }
 

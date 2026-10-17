@@ -105,14 +105,12 @@ const logo = toolLogos[name]
     preserveAspectRatio="xMidYMid meet"
     viewBox={logo.viewBox}
   >
-    {
-      logo.paths.map(path => (
-        <path
-          d={path.d}
-          fill={path.fill}
-          opacity={"opacity" in path ? path.opacity : undefined}
-        />
-      ))
-    }
+    {logo.paths.map(path => (
+      <path
+        d={path.d}
+        fill={path.fill}
+        opacity={"opacity" in path ? path.opacity : undefined}
+      />
+    ))}
   </svg>
 </span>
