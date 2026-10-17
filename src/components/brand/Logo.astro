@@ -8,17 +8,18 @@ interface Props {
 const { class: className } = Astro.props
 ---
 
-<span class:list={["inline-flex min-w-0 items-center gap-3", className]}>
+<span class:list={["inline-flex min-w-0 items-center gap-[12px]", className]}>
   <span
-    class="brand-mark h-10 w-10 shrink-0"
+    class="brand-mark h-[40px] w-[40px] shrink-0"
     aria-hidden="true"
     set:html={mark}
   />
   <span class="brand-word" aria-label="slicedearth">
-    <span class="brand-word-part brand-word-part-first" aria-hidden="true"
-      >sliced</span
-    ><span class="brand-word-part brand-word-part-second" aria-hidden="true"
-      >earth</span
-    >
+    <span class="brand-word-part brand-word-part-first" aria-hidden="true">
+      sliced
+    </span>
+    <span class="brand-word-part brand-word-part-second" aria-hidden="true">
+      earth
+    </span>
   </span>
 </span>

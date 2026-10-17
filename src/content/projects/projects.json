@@ -4,20 +4,20 @@
     "order": 1,
     "title": "WHOISleuth",
     "eyebrow": "Domains and brand protection",
-    "image": "whoisleuth.webp",
-    "image_alt": "WHOISleuth homepage showing candidate, evidence and monitoring views",
+    "image": "whoisleuth-dark.webp",
+    "image_alt": "WHOISleuth homepage in dark mode with fictional domain candidates and evidence panels",
     "githubURL": "https://github.com/slicedearth/whoisleuth",
-    "deployedURL": "https://whoisleuth.com/demo",
+    "deployedURL": "https://www.whoisleuth.com/demo",
     "deployedLabel": "Try the demo",
     "caseStudyURL": "https://github.com/slicedearth/whoisleuth/blob/main/docs/engineering-case-study.md",
     "caseStudyLabel": "Case study",
-    "description": "A local-first investigation and brand-protection tool for reviewing domain evidence, finding lookalikes and retaining cases without hiding uncertainty.",
+    "description": "A domain and brand investigation workspace for reviewing evidence, comparing lookalikes and preparing case handoffs.",
     "highlights": [
-      "Evidence from registration, DNS, certificates, websites and networks stays separately attributed",
-      "Lookalike discovery and bulk triage keep priorities explainable and source limits visible",
-      "Cases, watchlists and comparisons stay browser-local by default"
+      "Review source-linked registration, DNS, certificate, website and network evidence, including gaps and conflicting observations.",
+      "The public demo uses fictional records, with no live investigation or sign-in required."
     ],
-    "tags": ["SvelteKit", "TypeScript", "Node.js"]
+    "tags": ["SvelteKit", "TypeScript", "Node.js"],
+    "presentation": "featured"
   },
   {
     "id": "zoneskein",
@@ -29,12 +29,15 @@
     "githubURL": "https://github.com/slicedearth/zoneskein",
     "deployedURL": "https://www.zoneskein.com/",
     "deployedLabel": "Open the workbench",
-    "description": "A browser-based workbench for inspecting DNS records, following policy dependencies and preparing changes without publishing them.",
+    "description": "A DNS workbench for domain owners and web teams, connecting record inspection with local change plans.",
     "highlights": [
-      "Resolver comparisons keep evidence, source and uncertainty visible",
-      "Record authoring, checks and change plans stay local until explicitly exported"
+      "Compare resolver answers, inspect mail policies and trace DNSSEC trust chains.",
+      "Draft and export DNS changes without publishing records or accessing a provider account."
     ],
-    "tags": ["React", "TypeScript", "DNS"]
+    "tags": ["React", "TypeScript", "DNS"],
+    "presentation": "secondary",
+    "caseStudyURL": "https://github.com/slicedearth/zoneskein/blob/main/docs/ARCHITECTURE.md",
+    "caseStudyLabel": "Architecture"
   },
   {
     "id": "breach-gazette",
@@ -42,16 +45,15 @@
     "title": "Breach Gazette",
     "eyebrow": "Breach records and public data",
     "image": "breachGazette.webp",
-    "image_alt": "Breach Gazette homepage showing public breach notifications and source filters",
+    "image_alt": "Breach Gazette homepage with notification search and distinct public-record categories",
     "githubURL": "https://github.com/slicedearth/breachgazette",
     "deployedURL": "https://breachgazette.netlify.app/",
     "deployedLabel": "Explore the data",
     "caseStudyURL": "https://github.com/slicedearth/breachgazette/blob/main/docs/methodology.md",
     "caseStudyLabel": "Methodology",
-    "description": "Connects official breach statistics, notification records and regulatory actions while keeping their meanings clear.",
+    "description": "A public-data reference for official breach notices, reporting statistics and regulatory actions, with source context kept visible.",
     "highlights": [
-      "Statistics, notification records and legal actions stay separate",
-      "Source gaps, coverage limits and update status stay visible"
+      "Search and export notification records without treating reports, aggregate figures or legal actions as equivalent."
     ],
     "tags": ["Python", "Astro", "Data pipelines"]
   },
@@ -61,16 +63,15 @@
     "title": "ControlCurrent",
     "eyebrow": "Browser support and security",
     "image": "controlCurrent.webp",
-    "image_alt": "ControlCurrent dashboard comparing web security feature support across browsers",
+    "image_alt": "ControlCurrent homepage comparing Permissions Policy support across desktop and mobile browsers",
     "githubURL": "https://github.com/slicedearth/controlcurrent",
     "deployedURL": "https://slicedearth.github.io/controlcurrent/",
     "deployedLabel": "Open the tool",
     "caseStudyURL": "https://github.com/slicedearth/controlcurrent/blob/main/docs/engineering-case-study.md",
     "caseStudyLabel": "Case study",
-    "description": "Helps web teams choose security features that will work in the oldest browsers they still support.",
+    "description": "Helps web teams compare browser security support, plan minimum versions and review supplied website evidence.",
     "highlights": [
-      "Pick browser minimums and see what should work",
-      "Known limits, missing data and unsupported features are shown separately"
+      "The web app reviews evidence locally; it does not scan websites or upload supplied files."
     ],
     "tags": ["Astro", "TypeScript", "Web security"]
   },
@@ -80,16 +81,15 @@
     "title": "ContractDelta AU",
     "eyebrow": "Government contract changes",
     "image": "contractDelta.webp",
-    "image_alt": "ContractDelta AU dashboard showing reported government contract changes",
+    "image_alt": "ContractDelta AU homepage with contract-change totals and links to the published change feed",
     "githubURL": "https://github.com/slicedearth/contract-delta-au",
     "deployedURL": "https://slicedearth.github.io/contract-delta-au/",
     "deployedLabel": "Explore changes",
     "caseStudyURL": "https://github.com/slicedearth/contract-delta-au/blob/main/docs/methodology.md",
     "caseStudyLabel": "Methodology",
-    "description": "Tracks how reported Australian Government contract values, dates and suppliers change over time.",
+    "description": "Tracks changes in reported Australian Government contract values, dates and suppliers.",
     "highlights": [
-      "Before-and-after changes link back to official AusTender records",
-      "Contact details and other personal data are excluded before publication"
+      "Before-and-after comparisons link to AusTender records, with timelines and downloadable change data."
     ],
     "tags": ["Python", "Astro", "Public data"]
   },
@@ -103,10 +103,9 @@
     "githubURL": "https://github.com/slicedearth/forty-life",
     "deployedURL": "https://forty-life.netlify.app/",
     "deployedLabel": "Use the app",
-    "description": "A fast, touch-friendly Magic: The Gathering life counter for one device shared around the table.",
+    "description": "A touch-friendly Magic: The Gathering life counter for 2-6 players sharing one device.",
     "highlights": [
-      "Layouts for 2-6 players rotate counters towards each seat",
-      "Commander search, split partner artwork and saved game state"
+      "Tracks commander damage and poison, with undo, saved games and offline play after the first load."
     ],
     "tags": ["Svelte", "TypeScript", "PWA"]
   }

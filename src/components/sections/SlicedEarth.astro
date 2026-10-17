@@ -15,118 +15,54 @@ import heroPoster from "../../assets/brand/hero-slicedearth.webp"
     loading="eager"
     fetchpriority="high"
     quality={84}
-    sizes="(max-width: 639px) 155vw, 100vw"
-    class="sliced-earth__poster absolute inset-0 h-full w-full scale-[1.55] object-contain object-[68%_center] sm:scale-100 sm:object-contain sm:object-center"
+    sizes="(max-width: 639px) 125vw, 100vw"
+    class="sliced-earth__poster absolute inset-0 h-full w-full scale-125 object-contain object-bottom opacity-60 sm:scale-100 sm:object-center sm:opacity-100"
     data-hero-image
   />
   <canvas
     class="sliced-earth__canvas absolute inset-0 h-full w-full"
-    data-earth-canvas></canvas>
+    data-earth-canvas
+  ></canvas>
 </div>
+<button
+  type="button"
+  hidden
+  data-earth-toggle
+  aria-pressed="false"
+  class="absolute right-5 bottom-5 z-[3] min-h-11 rounded-md border border-line bg-bg/90 px-3 font-code text-xs text-muted hover:text-white focus-visible:outline-2 focus-visible:outline-accent"
+>
+  Static view
+</button>
 
 <script>
-  import reliefUrl from "../../assets/brand/earth-relief.webp?url"
-  import surfaceUrl from "../../assets/brand/earth-surface.webp?url"
-
-  const root = document.querySelector<HTMLElement>("[data-sliced-earth]")
-  const canvas = root?.querySelector<HTMLCanvasElement>("[data-earth-canvas]")
-
-  if (root && canvas) {
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches
-    const posterAspectRatio = 16 / 9
-    const wideCanvas =
-      window.matchMedia("(min-width: 768px)").matches &&
-      root.clientWidth / root.clientHeight >= posterAspectRatio
-    const connection = (
-      navigator as Navigator & {
-        connection?: { saveData?: boolean }
-      }
-    ).connection
-
-    if (!reducedMotion && wideCanvas && !connection?.saveData) {
-      let disposed = false
-      let sceneController:
-        import("./sliced-earth-scene").SlicedEarthSceneController | undefined
-      let handoffFrame: number | undefined
-      let motionFrame: number | undefined
-      const textureWarmers = [surfaceUrl, reliefUrl].map(url => {
-        const image = new Image()
-        image.decoding = "async"
-        image.src = url
-        return image
-      })
-
-      const startMotion = () => {
-        if (disposed || root.dataset.earthMotion === "running") return
-
-        sceneController?.startMotion()
-        root.dataset.earthMotion = "running"
-      }
-
-      root.dataset.earthMotion = "loading"
-      root.dataset.earthHandoff = "pending"
-
-      const start = async () => {
-        if (disposed || !root.isConnected) return
-
-        const { mountSlicedEarthScene } = await import("./sliced-earth-scene")
-        if (disposed || !root.isConnected) return
-
-        const mountedScene = await mountSlicedEarthScene({
-          canvas,
-          root,
-          onReady: () => {
-            if (disposed || !root.isConnected) return
-
-            root.dataset.earthMotion = "paused"
-            root.dataset.earthReady = "true"
-            handoffFrame = window.requestAnimationFrame(() => {
-              if (disposed) return
-
-              root.dataset.earthHandoff = "complete"
-              motionFrame = window.requestAnimationFrame(startMotion)
-            })
-          },
-        })
-
-        if (disposed || !root.isConnected) {
-          mountedScene.dispose()
-          return
-        }
-
-        sceneController = mountedScene
-      }
-
-      void start()
-
-      const dispose = () => {
-        disposed = true
-        if (handoffFrame) window.cancelAnimationFrame(handoffFrame)
-        if (motionFrame) window.cancelAnimationFrame(motionFrame)
-        for (const image of textureWarmers) image.src = ""
-        sceneController?.dispose()
-      }
-
-      document.addEventListener("astro:before-swap", dispose, { once: true })
-    }
+  import { mountEarthLifecycle } from "../../scripts/earth-lifecycle"
+  let dispose: (() => void) | undefined
+  const mount = () => {
+    dispose?.()
+    const root = document.querySelector<HTMLElement>("[data-sliced-earth]")
+    const button = document.querySelector<HTMLButtonElement>(
+      "[data-earth-toggle]",
+    )
+    if (root && button) dispose = mountEarthLifecycle(root, button)
   }
+  mount()
+  document.addEventListener("astro:page-load", mount)
+  document.addEventListener("astro:before-swap", () => {
+    dispose?.()
+    dispose = undefined
+  })
 </script>
 
 <style>
   .sliced-earth {
     background: #070a0e;
   }
-
   .sliced-earth__canvas {
     opacity: 0;
   }
-
-  .sliced-earth[data-earth-ready="true"] .sliced-earth__canvas {
+  .sliced-earth[data-earth-handoff="complete"] .sliced-earth__canvas {
     opacity: 1;
   }
-
   .sliced-earth[data-earth-handoff="complete"] .sliced-earth__poster {
     opacity: 0;
   }

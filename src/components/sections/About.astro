@@ -2,143 +2,74 @@
 import { getCollection } from "astro:content"
 import ToolLogo from "../icons/ToolLogo.astro"
 
-const skills = (await getCollection("skills")).sort(
+const technologies = (await getCollection("skills")).sort(
   (a, b) => a.data.order - b.data.order,
 )
-
-const principles = [
-  {
-    title: "Define",
-    description:
-      "Establish the requirements, boundaries and exclusions before implementation begins.",
-  },
-  {
-    title: "Implement",
-    description:
-      "Deliver the agreed scope with maintainable code and accessible interfaces.",
-  },
-  {
-    title: "Validate",
-    description:
-      "Test critical paths and edge cases, then resolve findings before release.",
-  },
-]
 ---
 
 <section
   id="about"
-  class="about-shell section-planes section-planes-offset border-b border-line bg-bg px-5 py-20 sm:px-8 lg:py-24"
+  class="section-planes section-planes-offset border-t border-line bg-bg px-5 py-14 sm:px-8 sm:py-16"
 >
   <div class="site-frame">
-    <header data-reveal class="border-b border-line pb-8 sm:pb-10">
-      <div
-        class="grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-12"
-      >
-        <div class="border-l-2 border-accent/80 pl-5 sm:pl-6">
-          <h2
-            class="text-4xl font-bold text-white sm:text-5xl min-[1920px]:text-6xl"
-          >
-            About
-          </h2>
-          <p
-            class="mt-4 max-w-2xl text-lg leading-relaxed text-muted min-[1920px]:max-w-3xl min-[1920px]:text-xl"
-          >
-            I bring experience coordinating developers, designers and
-            stakeholders across concurrent web and ecommerce projects. My work
-            also spans domains, DNS, hosting and analytics.
-          </p>
-        </div>
-
-        <div
-          class="flex items-center gap-4 border-y border-line py-4 lg:min-w-[21rem]"
-        >
-          <span
-            class="h-2 w-2 shrink-0 rounded-full bg-accent"
-            aria-hidden="true"></span>
-          <div>
-            <p class="font-code text-xs text-accent">Based in</p>
-            <p class="mt-1 font-semibold text-gray-100">Melbourne, Australia</p>
-          </div>
-        </div>
-      </div>
+    <header
+      data-reveal
+      class="mb-8 flex flex-wrap items-baseline justify-between gap-4"
+    >
+      <h2 class="text-3xl font-bold text-white sm:text-4xl min-[1920px]:text-5xl">
+        About
+      </h2>
+      <p class="font-code text-xs text-muted sm:text-sm">
+        Melbourne, Australia
+      </p>
     </header>
-
-    <ol
-      data-reveal
-      data-reveal-delay="90"
-      class="mt-10 grid border border-line bg-surface/20 sm:grid-cols-3 sm:divide-x sm:divide-line"
-    >
-      {
-        principles.map(principle => (
-          <li class="border-b border-line p-5 last:border-b-0 sm:border-b-0 sm:p-6 min-[1920px]:p-8">
-            <h3 class="text-lg font-semibold text-white min-[1920px]:text-xl">
-              {principle.title}
-            </h3>
-            <p class="mt-3 text-sm leading-relaxed text-muted min-[1920px]:text-base">
-              {principle.description}
-            </p>
-          </li>
-        ))
-      }
-    </ol>
-
     <div
+      class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16"
       data-reveal
-      data-reveal-delay="140"
-      class="mt-14 grid gap-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(26rem,1.1fr)] lg:gap-20"
     >
-      <div>
-        <div class="flex items-center gap-5">
-          <h3
-            class="shrink-0 text-2xl font-semibold text-white min-[1920px]:text-3xl"
-          >
-            Engineering judgement
-          </h3>
-          <span class="h-px flex-1 bg-line" aria-hidden="true"></span>
-        </div>
-        <p
-          class="mt-5 max-w-2xl text-lg leading-relaxed text-gray-200 min-[1920px]:max-w-3xl min-[1920px]:text-xl"
-        >
-          I favour bounded systems, clear source context and interfaces that
-          show uncertainty instead of hiding it. The aim is software that people
-          can understand, operate and trust.
+      <div class="max-w-2xl">
+        <h3 class="text-xl font-semibold text-white sm:text-2xl">
+          How I approach projects
+        </h3>
+        <p class="mt-4 max-w-xl text-lg leading-relaxed text-gray-200 sm:text-xl lg:text-2xl">
+          I focus on clear requirements, useful documentation and keeping
+          developers, designers and stakeholders aligned as a project
+          progresses.
         </p>
       </div>
-
       <div>
-        <div class="flex items-center gap-5">
-          <h3
-            class="shrink-0 text-2xl font-semibold text-white min-[1920px]:text-3xl"
-          >
-            Core tools
-          </h3>
-          <span class="h-px flex-1 bg-line" aria-hidden="true"></span>
-        </div>
-        <p
-          class="mt-5 max-w-lg leading-relaxed text-muted min-[1920px]:max-w-2xl min-[1920px]:text-lg"
+        <h3 class="text-xl font-semibold text-white sm:text-2xl">
+          Tools &amp; technologies
+        </h3>
+        <ul
+          class="technology-list mt-5 grid gap-x-5 gap-y-1"
+          aria-label="Tools and technologies"
         >
-          A focused toolkit for typed applications, data processing, static
-          publishing and browser-level testing.
-        </p>
-        <ol
-          class="mt-5 grid grid-cols-2 gap-x-6 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3"
-        >
-          {
-            skills.map(skill => {
-              return (
-                <li class="group flex items-center gap-3 border-b border-line py-4 min-[1920px]:gap-4 min-[1920px]:py-5">
-                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-line bg-surface text-accent transition-colors group-hover:border-accent/60 min-[1920px]:h-11 min-[1920px]:w-11 motion-reduce:transition-none">
-                    <ToolLogo name={skill.data.title} class="h-7 w-7" />
-                  </span>
-                  <span class="font-semibold text-gray-100 min-[1920px]:text-lg">
-                    {skill.data.title}
-                  </span>
-                </li>
-              )
-            })
-          }
-        </ol>
+          {technologies.map(technology => (
+            <li class="flex min-w-0 items-center gap-3 py-3">
+              <>
+                <ToolLogo
+                  name={technology.data.title}
+                  class="h-6 w-6 shrink-0 text-accent"
+                />
+                <span class="text-sm font-medium text-gray-200 sm:text-base">
+                  {technology.data.title}
+                </span>
+              </>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .technology-list {
+    /* Let enlarged labels reflow without overflowing narrow columns. */
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, max(8rem, 30%)), 1fr)
+    );
+  }
+</style>

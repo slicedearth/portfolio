@@ -2,7 +2,7 @@
   "name": "portfolio",
   "type": "module",
   "private": true,
-  "description": "slicedearth software engineering portfolio",
+  "description": "slicedearth digital projects and web operations portfolio",
   "version": "1.0.0",
   "license": "MIT",
   "engines": {
@@ -19,7 +19,10 @@
     "budget": "node scripts/check-performance-budget.ts",
     "links:check": "node scripts/check-external-links.ts",
     "security:check": "node scripts/check-csp-build.ts",
-    "test:e2e": "npm run build && npm run test:e2e:built",
+    "test": "npm run test:e2e",
+    "test:contracts": "node --test tests/contracts.test.ts",
+    "test:analytics:off": "node scripts/test-portfolio.ts off",
+    "test:e2e": "node scripts/test-portfolio.ts on",
     "test:e2e:built": "playwright test",
     "test:e2e:install": "playwright install chromium firefox webkit"
   },
@@ -32,21 +35,21 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.62.1",
-    "@types/node": "^24.13.3",
-    "@types/three": "^0.185.4",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^24.19.2",
+    "@types/three": "^0.186.0",
     "parse5": "^8.0.1",
-    "prettier": "^3.9.6",
-    "prettier-plugin-astro": "^0.14.1",
-    "sharp": "^0.35.4",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "sharp": "^0.35.5",
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
-    "@lucide/astro": "^1.34.0",
+    "@astrojs/sitemap": "^3.7.4",
+    "@lucide/astro": "^1.59.0",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.7",
-    "three": "^0.185.1"
+    "astro": "^7.4.0",
+    "three": "^0.186.1"
   }
 }

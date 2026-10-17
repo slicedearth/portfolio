@@ -15,8 +15,11 @@ const projects = defineCollection({
     deployedLabel: z.string().optional(),
     caseStudyURL: z.url().optional(),
     caseStudyLabel: z.string().optional(),
+    presentation: z
+      .enum(["featured", "secondary", "compact"])
+      .default("compact"),
     description: z.string(),
-    highlights: z.array(z.string()).min(2).max(3),
+    highlights: z.array(z.string()).min(1).max(3),
     tags: z.array(z.string()).max(4),
   }),
 })
@@ -28,6 +31,7 @@ const skills = defineCollection({
     title: z.enum([
       "TypeScript",
       "Svelte",
+      "React",
       "Python",
       "Node.js",
       "Astro",

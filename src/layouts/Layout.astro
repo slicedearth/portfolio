@@ -12,7 +12,7 @@ interface Props {
 
 const siteName = "slicedearth"
 const siteDescription =
-  "Aser plans and builds software for security, public data and the web."
+  "Aser's portfolio of digital projects and web operations, with experience in web and ecommerce coordination, domains, DNS, hosting and analytics."
 const siteUrl = "https://www.slicedearth.dev"
 
 const {
@@ -24,7 +24,7 @@ const {
 const canonical = `${siteUrl}${pathname ?? Astro.url.pathname}`
 const pageTitle =
   title === "Home"
-    ? `Aser - Software Engineer | ${siteName}`
+    ? "Aser | Digital Projects & Web Operations"
     : `${title} | ${siteName}`
 const robots = noindex ? "noindex, nofollow" : "index, follow"
 const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
@@ -67,7 +67,7 @@ const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
     <meta property="og:image:type" content="image/png" />
     <meta
       property="og:image:alt"
-      content="slicedearth portfolio for software engineering and project delivery"
+      content="slicedearth - Aser, digital projects and web operations"
     />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -77,18 +77,19 @@ const gaId = import.meta.env.PUBLIC_GA_TRACKING_ID
     <meta name="twitter:image" content={`${siteUrl}/og-image.png`} />
     <meta
       name="twitter:image:alt"
-      content="slicedearth portfolio for software engineering and project delivery"
+      content="slicedearth - Aser, digital projects and web operations"
     />
-    {
-      gaId && (
-        <>
-          <meta name="google-analytics-id" content={gaId} />
-          <script is:inline defer src="/analytics.js" />
-        </>
-      )
-    }
+    {gaId && (
+      <>
+        <meta name="google-analytics-id" content={gaId} />
+        <script is:inline defer src="/analytics.js" />
+      </>
+    )}
   </head>
   <body>
+    <span id="external-window-note" hidden>
+      Opens in a new tab.
+    </span>
     <div class="flex min-h-screen flex-col">
       <a
         href="#main-content"

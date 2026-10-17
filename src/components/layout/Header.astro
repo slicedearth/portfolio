@@ -8,11 +8,9 @@ const links = [
 ]
 ---
 
-<header
-  class="fixed inset-x-0 top-0 z-50 border-b border-line/80 bg-bg/90 backdrop-blur-xl"
->
+<header class="fixed inset-x-0 top-0 z-50 border-b border-line/80 bg-bg/90 px-5 backdrop-blur-xl sm:px-8">
   <nav
-    class="site-frame flex h-18 items-center justify-between px-5 sm:px-8 min-[1920px]:h-20"
+    class="site-frame flex h-18 items-center justify-between min-[1920px]:h-20"
     aria-label="Primary"
   >
     <a
@@ -24,16 +22,14 @@ const links = [
     </a>
 
     <div class="hidden items-center gap-7 sm:flex min-[1920px]:gap-9">
-      {
-        links.map(link => (
-          <a
-            href={link.href}
-            class="font-code text-sm text-gray-300 transition-colors hover:text-white min-[1920px]:text-base motion-reduce:transition-none"
-          >
-            {link.label}
-          </a>
-        ))
-      }
+      {links.map(link => (
+        <a
+          href={link.href}
+          class="font-code text-sm text-gray-300 transition-colors hover:text-white min-[1920px]:text-base motion-reduce:transition-none"
+        >
+          {link.label}
+        </a>
+      ))}
     </div>
 
     <details class="group relative sm:hidden" data-mobile-nav>
@@ -54,20 +50,16 @@ const links = [
           stroke-width={1.8}
         />
       </summary>
-      <div
-        class="absolute top-[calc(100%+0.75rem)] right-0 w-[min(18rem,calc(100vw-2.5rem))] overflow-hidden rounded-md border border-line bg-surface p-2 shadow-2xl shadow-black/35"
-      >
-        {
-          links.map(link => (
-            <a
-              href={link.href}
-              class="flex min-h-12 items-center border-b border-line/70 px-3 font-code text-gray-200 transition-colors last:border-b-0 hover:bg-surface-hover hover:text-white motion-reduce:transition-none"
-              data-mobile-nav-link
-            >
-              {link.label}
-            </a>
-          ))
-        }
+      <div class="absolute top-[calc(100%+0.75rem)] right-0 w-[min(18rem,calc(100vw-2.5rem))] overflow-hidden rounded-md border border-line bg-surface p-2 shadow-2xl shadow-black/35">
+        {links.map(link => (
+          <a
+            href={link.href}
+            class="flex min-h-12 items-center border-b border-line/70 px-3 font-code text-gray-200 transition-colors last:border-b-0 hover:bg-surface-hover hover:text-white motion-reduce:transition-none"
+            data-mobile-nav-link
+          >
+            {link.label}
+          </a>
+        ))}
       </div>
     </details>
   </nav>

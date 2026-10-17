@@ -3,12 +3,6 @@ const revealItems = Array.from(
   document.querySelectorAll<HTMLElement>("[data-reveal]"),
 )
 
-revealItems.forEach(item => {
-  const delay = Number(item.dataset.revealDelay ?? 0)
-  if (!Number.isFinite(delay) || delay <= 0) return
-  item.style.setProperty("--reveal-delay", `${Math.min(delay, 180)}ms`)
-})
-
 if (!reducedMotion.matches && revealItems.length > 0) {
   document.documentElement.dataset.revealMotion = "ready"
 

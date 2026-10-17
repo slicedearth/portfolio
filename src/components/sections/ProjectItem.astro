@@ -15,10 +15,8 @@ interface Props {
   deployedLabel?: string
   caseStudyURL?: string
   caseStudyLabel?: string
-  variant?: "featured" | "standard"
-  revealDelay?: number
+  variant?: "featured" | "secondary" | "compact"
 }
-
 const {
   title,
   eyebrow,
@@ -32,194 +30,153 @@ const {
   deployedLabel = "Open project",
   caseStudyURL,
   caseStudyLabel = "Read more",
-  variant = "standard",
-  revealDelay = 0,
+  variant = "compact",
 } = Astro.props
-
-const isFeatured = variant === "featured"
-const primaryLink = deployedURL
-  ? {
-      href: deployedURL,
-      analyticsType: "project_website_link",
-    }
+const isFeature = variant !== "compact"
+const primaryLink = deployedURL ?? caseStudyURL ?? githubURL
+const primaryType = deployedURL
+  ? "project_website_link"
   : caseStudyURL
-    ? {
-        href: caseStudyURL,
-        analyticsType: "project_case_study_link",
-      }
-    : {
-        href: githubURL,
-        analyticsType: "project_github_link",
-      }
-const actionCount =
-  1 + Number(Boolean(deployedURL)) + Number(Boolean(caseStudyURL))
+    ? "project_case_study_link"
+    : "project_github_link"
 ---
 
 <article
   data-project-card
+  data-project-variant={variant}
   data-reveal
-  data-reveal-delay={revealDelay || undefined}
   class:list={[
-    "group overflow-hidden rounded-md border border-line bg-card transition-[border-color,box-shadow] duration-500 ease-out hover:border-accent/50 hover:shadow-xl hover:shadow-bg/40 motion-reduce:transition-none",
-    isFeatured
-      ? "lg:grid lg:grid-cols-[minmax(0,1.45fr)_minmax(21rem,0.85fr)]"
-      : "flex h-full flex-col",
+    "group min-w-0 overflow-hidden rounded-md border border-line bg-card",
+    isFeature ? "lg:col-span-2 lg:grid lg:items-stretch" : "flex flex-col",
+    variant === "featured" && "lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]",
+    variant === "secondary" && "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]",
   ]}
 >
   <a
-    href={primaryLink.href}
+    href={primaryLink}
     rel="noopener noreferrer"
     target="_blank"
     aria-label={`Open ${title}`}
-    data-analytics-type={primaryLink.analyticsType}
+    aria-describedby="external-window-note"
+    data-analytics-type={primaryType}
     data-analytics-item={title}
     class:list={[
-      "block overflow-hidden border-line bg-bg focus-visible:outline-offset-[-2px]",
-      isFeatured
-        ? "aspect-video border-b lg:aspect-auto lg:min-h-[31rem] lg:border-r lg:border-b-0"
-        : "aspect-video border-b",
+      "min-w-0 overflow-hidden focus-visible:outline-offset-[-4px]",
+      isFeature
+        ? "flex items-center bg-surface p-3 sm:p-4"
+        : "block shrink-0 border-b border-line bg-bg",
+      variant === "secondary" && "lg:order-2",
     ]}
   >
-    <figure class="relative h-full overflow-hidden bg-bg">
-      <Image
-        src={image}
-        alt=""
-        width={isFeatured ? 1200 : 680}
-        layout="constrained"
-        quality={isFeatured ? 92 : 84}
-        loading="lazy"
-        aria-hidden="true"
-        class="absolute inset-0 h-full w-full scale-110 object-cover opacity-55 blur-lg brightness-75 saturate-75"
-      />
-      <span
-        class="pointer-events-none absolute inset-0 z-[1] bg-bg/30"
-        aria-hidden="true"></span>
+    <figure
+      class:list={[
+        "relative w-full min-h-0",
+        isFeature && "overflow-hidden rounded-sm bg-bg ring-1 ring-line",
+      ]}
+    >
       <Image
         src={image}
         alt={imageAlt}
-        width={isFeatured ? 1200 : 680}
+        width={isFeature ? 1600 : 960}
         layout="constrained"
-        quality={isFeatured ? 92 : 84}
+        quality={84}
         loading="lazy"
         data-project-image
-        class="absolute inset-0 z-[2] h-full w-full object-contain transition-[filter] duration-500 ease-out motion-safe:group-hover:brightness-105 motion-reduce:transition-none"
+        class="h-auto w-full object-contain"
       />
     </figure>
   </a>
-
   <div
     class:list={[
-      "flex flex-1 flex-col",
-      isFeatured ? "p-4 sm:p-8" : "p-4 sm:p-5",
+      "flex min-w-0 flex-1 flex-col p-5 sm:p-6",
+      isFeature && "lg:justify-center lg:p-8",
+      variant === "featured" && "min-[1920px]:p-10",
     ]}
   >
-    <p
-      class="font-code text-[0.8125rem] text-accent sm:text-sm min-[1920px]:text-base"
-    >
+    <p class="font-code text-xs leading-relaxed text-accent sm:text-sm">
       {eyebrow}
     </p>
     <h3
       class:list={[
-        "mt-2 font-semibold text-white sm:mt-3",
-        isFeatured
+        "mt-2 font-semibold text-white",
+        isFeature
           ? "text-2xl sm:text-3xl min-[1920px]:text-4xl"
-          : "text-xl sm:text-2xl min-[1920px]:text-3xl",
+          : "text-xl sm:text-2xl",
       ]}
     >
       {title}
     </h3>
     <p
-      class="mt-2 text-sm leading-6 text-muted sm:mt-3 sm:text-base sm:leading-relaxed min-[1920px]:text-lg"
+      class:list={[
+        "mt-3 leading-relaxed text-gray-200",
+        isFeature ? "text-base min-[1920px]:text-lg" : "text-sm sm:text-base",
+      ]}
     >
       {description}
     </p>
-
-    <div class="mt-4 flex-1 border-t border-line pt-4 sm:mt-6 sm:pt-5">
-      <p class="font-code text-sm text-gray-300 min-[1920px]:text-base">
-        Key decisions
-      </p>
-      <ul class="mt-2 space-y-2 sm:mt-3 sm:space-y-3">
-        {
-          highlights.map(highlight => (
-            <li class="border-l border-accent/60 pl-3 text-sm leading-5 text-gray-300 sm:leading-relaxed min-[1920px]:text-base">
-              {highlight}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
+    <ul class="mt-4 space-y-2 text-sm leading-relaxed text-muted">
+      {highlights.map(highlight => (
+        <li class="border-l border-accent/40 pl-3">{highlight}</li>
+      ))}
+    </ul>
     <ul
-      class="mt-4 flex flex-wrap gap-2 sm:mt-5"
+      class="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-code text-xs text-muted"
       aria-label={`${title} technologies and focus areas`}
     >
-      {
-        tags.map(tag => (
-          <li class="border border-line bg-bg/50 px-2 py-0.5 font-code text-xs text-gray-300 sm:px-2.5 sm:py-1 min-[1920px]:text-sm">
-            {tag}
-          </li>
-        ))
-      }
+      {tags.map(tag => (
+        <li>{tag}</li>
+      ))}
     </ul>
-
-    <div
-      class:list={[
-        "mt-5 grid grid-cols-1 gap-2 min-[360px]:grid-cols-2 sm:mt-6",
-        !isFeatured && actionCount === 3 && "xl:grid-cols-3",
-      ]}
-    >
-      {
-        deployedURL && (
-          <a
-            class="inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-md bg-accent px-3 py-2 text-[0.8125rem] font-semibold text-bg transition-[background-color,transform] hover:bg-accent-dark active:translate-y-px motion-reduce:transition-none sm:px-4 sm:text-sm"
-            href={deployedURL}
-            rel="noopener noreferrer"
-            target="_blank"
-            data-analytics-type="project_website_link"
-            data-analytics-item={title}
-          >
+    <div class:list={["pt-5", !isFeature && "mt-auto"]}>
+      {deployedURL && (
+        <a
+          href={deployedURL}
+          rel="noopener noreferrer"
+          target="_blank"
+          aria-label={`${deployedLabel}: ${title}`}
+          aria-describedby="external-window-note"
+          data-analytics-type="project_website_link"
+          data-analytics-item={title}
+          class="inline-flex min-h-11 max-w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-bg transition-colors hover:bg-accent-dark motion-reduce:transition-none"
+        >
+          <>
             <span>{deployedLabel}</span>
-            <ArrowUpRight
-              class="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none"
-              aria-hidden="true"
-              size={16}
-              stroke-width={1.8}
-            />
-          </a>
-        )
-      }
-      {
-        caseStudyURL && (
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </>
+        </a>
+      )}
+      <div class="mt-2 flex flex-wrap gap-x-5 text-sm text-gray-300">
+        <a
+          href={githubURL}
+          rel="noopener noreferrer"
+          target="_blank"
+          aria-label={`Source code for ${title}`}
+          aria-describedby="external-window-note"
+          data-analytics-type="project_github_link"
+          data-analytics-item={title}
+          class="inline-flex min-h-11 items-center gap-2 underline-offset-4 hover:text-accent hover:underline"
+        >
+          <GitBranch size={15} aria-hidden="true" />
+          <span>Source code</span>
+        </a>
+        {caseStudyURL && (
           <a
-            class="inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-line bg-surface px-3 py-2 text-[0.8125rem] font-semibold text-white transition-[background-color,border-color,transform] hover:border-gray-400 hover:bg-surface-hover active:translate-y-px motion-reduce:transition-none sm:px-4 sm:text-sm"
             href={caseStudyURL}
             rel="noopener noreferrer"
             target="_blank"
+            aria-label={`${caseStudyLabel}: ${title}`}
+            aria-describedby="external-window-note"
             data-analytics-type="project_case_study_link"
             data-analytics-item={title}
+            class="inline-flex min-h-11 items-center gap-2 underline-offset-4 hover:text-accent hover:underline"
           >
-            <BookOpen aria-hidden="true" size={16} stroke-width={1.8} />
-            <span>{caseStudyLabel}</span>
+            <>
+              <BookOpen size={15} aria-hidden="true" />
+              <span>{caseStudyLabel}</span>
+            </>
           </a>
-        )
-      }
-      <a
-        class:list={[
-          "inline-flex min-h-11 w-full min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-line bg-surface px-3 py-2 text-[0.8125rem] font-semibold text-white transition-[background-color,border-color,transform] hover:border-gray-400 hover:bg-surface-hover active:translate-y-px motion-reduce:transition-none sm:px-4 sm:text-sm",
-          actionCount === 3 &&
-            (isFeatured
-              ? "min-[360px]:col-span-2"
-              : "min-[360px]:col-span-2 xl:col-span-1"),
-        ]}
-        href={githubURL}
-        rel="noopener noreferrer"
-        target="_blank"
-        data-analytics-type="project_github_link"
-        data-analytics-item={title}
-      >
-        <GitBranch aria-hidden="true" size={16} stroke-width={1.8} />
-        <span>Source code</span>
-      </a>
+        )}
+      </div>
     </div>
   </div>
 </article>
