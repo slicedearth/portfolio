@@ -2,7 +2,7 @@
   "name": "portfolio",
   "type": "module",
   "private": true,
-  "description": "slicedearth software engineering portfolio",
+  "description": "slicedearth digital projects and web operations portfolio",
   "version": "1.0.0",
   "license": "MIT",
   "engines": {
@@ -19,7 +19,10 @@
     "budget": "node scripts/check-performance-budget.ts",
     "links:check": "node scripts/check-external-links.ts",
     "security:check": "node scripts/check-csp-build.ts",
-    "test:e2e": "npm run build && npm run test:e2e:built",
+    "test": "npm run test:e2e",
+    "test:contracts": "node --test tests/contracts.test.ts",
+    "test:analytics:off": "node scripts/test-portfolio.ts off",
+    "test:e2e": "node scripts/test-portfolio.ts on",
     "test:e2e:built": "playwright test",
     "test:e2e:install": "playwright install chromium firefox webkit"
   },

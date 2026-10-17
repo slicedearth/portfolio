@@ -1,5 +1,13 @@
 import AxeBuilder from "@axe-core/playwright"
-import { expect, test } from "@playwright/test"
+import { expect, test } from "./fixtures"
+import { readFileSync } from "node:fs"
+
+const projects = JSON.parse(
+  readFileSync(
+    new URL("../src/content/projects/projects.json", import.meta.url),
+    "utf8",
+  ),
+) as unknown[]
 
 test("core portfolio experience works across browser engines", async ({
   page,
@@ -7,10 +15,8 @@ test("core portfolio experience works across browser engines", async ({
   await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto("/")
 
-  await expect(
-    page.getByRole("heading", { level: 1, name: "Hey, I'm Aser." }),
-  ).toBeVisible()
-  await expect(page.locator("[data-project-card]")).toHaveCount(6)
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
+  await expect(page.locator("[data-project-card]")).toHaveCount(projects.length)
   await expect(page.locator("[data-sliced-earth]")).not.toHaveAttribute(
     "data-earth-ready",
     "true",

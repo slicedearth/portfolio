@@ -2,6 +2,10 @@ import { defineConfig } from "@playwright/test"
 
 const port = Number(process.env.PORTFOLIO_TEST_PORT ?? 4322)
 const baseURL = `http://127.0.0.1:${port}`
+const outDir =
+  process.env.PORTFOLIO_ANALYTICS_MODE === "off"
+    ? ".astro/analytics-off"
+    : "dist"
 
 export default defineConfig({
   testDir: "./tests",
@@ -15,7 +19,9 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   webServer: {
-    command: `npm run preview -- --host 127.0.0.1 --port ${port}`,
+    // Keep the preview process owned by the test runner, including automatic cleanup.
+    env: { ASTRO_PREVIEW_BACKGROUND: "1" },
+    command: `npm run preview -- --host 127.0.0.1 --port ${port} --outDir ${outDir}`,
     url: baseURL,
     reuseExistingServer: false,
     timeout: 30_000,
@@ -23,7 +29,7 @@ export default defineConfig({
   projects: [
     {
       name: "desktop",
-      testMatch: /portfolio\.spec\.ts/,
+      testMatch: /(?:portfolio|hero|analytics)\.spec\.ts/,
       use: {
         browserName: "chromium",
         viewport: { width: 1440, height: 900 },

@@ -42,17 +42,23 @@ jobs:
       - name: Check types and Astro components
         run: npm run check
 
-      - name: Build production site
+      - name: Build production site with a fake analytics ID
         run: npm run build
 
       - name: Check performance budget
         run: npm run budget
 
-      - name: Check production security policy compatibility
+      - name: Check build-time CSP compatibility
         run: npm run security:check
+
+      - name: Check local contracts
+        run: npm run test:contracts
 
       - name: Install browsers
         run: npx playwright install --with-deps chromium firefox webkit
 
       - name: Run browser and accessibility checks
         run: npm run test:e2e:built
+
+      - name: Check the analytics-off artifact and focused browser contract
+        run: npm run test:analytics:off
