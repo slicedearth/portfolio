@@ -13,6 +13,7 @@ import {
   LinearFilter,
   Line,
   LineDashedMaterial,
+  Material,
   MathUtils,
   Mesh,
   MeshBasicMaterial,
@@ -35,7 +36,8 @@ import surfaceUrl from "../../assets/brand/earth-surface.webp?url"
 type MountOptions = {
   canvas: HTMLCanvasElement
   root: HTMLElement
-  onReady: () => void
+  pointerTarget: HTMLElement
+  signal: AbortSignal
 }
 
 export type SlicedEarthSceneController = {
@@ -385,309 +387,403 @@ const addRoute = (
   } satisfies RoutePulse
 }
 
-const disposeMaterial = (
-  material: LineDashedMaterial | MeshBasicMaterial | MeshStandardMaterial,
-) => {
-  for (const value of Object.values(material)) {
-    if (value instanceof Texture) value.dispose()
-  }
-  material.dispose()
-}
-
 export const mountSlicedEarthScene = async ({
   canvas,
   root,
-  onReady,
+  pointerTarget,
+  signal,
 }: MountOptions) => {
-  const textureLoader = new TextureLoader()
-  const texturePromise = Promise.all([
-    textureLoader.loadAsync(surfaceUrl),
-    textureLoader.loadAsync(reliefUrl),
-  ])
-
+  signal.throwIfAborted()
   const renderer = new WebGLRenderer({
     alpha: true,
     antialias: true,
     canvas,
     powerPreference: "high-performance",
   })
-  renderer.setClearColor(0x070a0e, 0)
-  renderer.outputColorSpace = SRGBColorSpace
-  renderer.toneMapping = ACESFilmicToneMapping
-  renderer.toneMappingExposure = 0.94
   const scene = new Scene()
-  const camera = new PerspectiveCamera(34, 1, 0.1, 100)
-  camera.position.set(0, 1.8, 9.2)
-
-  scene.add(new AmbientLight(0x668090, 0.38))
-  scene.add(new HemisphereLight(0x9fc9dd, 0x05080c, 1.55))
-
-  const keyLight = new DirectionalLight(0xd7f5ff, 3.4)
-  keyLight.position.set(-3.5, 4.5, 6.2)
-  scene.add(keyLight)
-
-  const rimLight = new DirectionalLight(0x4b9bb7, 2.1)
-  rimLight.position.set(5, -1.5, -2.5)
-  scene.add(rimLight)
-
-  const [surfaceTexture, reliefTexture] = await texturePromise
-  surfaceTexture.colorSpace = SRGBColorSpace
-
-  for (const texture of [surfaceTexture, reliefTexture]) {
-    texture.wrapS = RepeatWrapping
-    texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8)
-  }
-
-  const surfaceMaterial = new MeshStandardMaterial({
-    bumpMap: reliefTexture,
-    bumpScale: 0.026,
-    map: surfaceTexture,
-    metalness: 0.02,
-    roughness: 0.93,
-  })
-  const coreTexture = createCoreTexture()
-  const strataMaterial = new MeshStandardMaterial({
-    emissive: new Color(0x0b151b),
-    emissiveIntensity: 0.36,
-    map: coreTexture,
-    metalness: 0,
-    roughness: 1,
-    side: DoubleSide,
-  })
-  const edgeMaterial = new MeshStandardMaterial({
-    color: new Color(0x243842),
-    metalness: 0,
-    roughness: 0.96,
-  })
-  const routeMaterial = new MeshBasicMaterial({
-    color: accent,
-    opacity: 0.5,
-    transparent: true,
-  })
-  const blockedRouteMaterial = new LineDashedMaterial({
-    color: accent,
-    dashSize: 0.035,
-    depthWrite: false,
-    gapSize: 0.045,
-    opacity: 0.22,
-    transparent: true,
-  })
-  const nodeGeometry = new SphereGeometry(0.034, 10, 6)
-  const nodeMaterial = new MeshBasicMaterial({ color: accent })
-
-  const model = new Group()
-  const axisTilt = new Group()
-  const globe = new Group()
-  model.add(axisTilt)
-  axisTilt.add(globe)
-  scene.add(model)
-
-  const bands: GlobeBand[] = bandDefinitions.map(definition => {
-    const thetaStart = latitudeToTheta(definition.latitudeTop)
-    const thetaEnd = latitudeToTheta(definition.latitudeBottom)
-    const band = new Group()
-    band.position.y = definition.offset
-
-    const surfaceGeometry = restoreGlobalLatitudeUv(
-      new SphereGeometry(
-        globeRadius,
-        96,
-        54,
-        0,
-        Math.PI * 2,
-        thetaStart,
-        thetaEnd - thetaStart,
-      ),
-    )
-    const surface = new Mesh(surfaceGeometry, surfaceMaterial)
-    band.add(surface)
-
-    if (thetaStart > 0.001) {
-      const radius = globeRadius * Math.sin(thetaStart)
-      const y = globeRadius * Math.cos(thetaStart)
-      band.add(createCap(radius, y, true, strataMaterial, edgeMaterial))
-    }
-
-    if (thetaEnd < Math.PI - 0.001) {
-      const radius = globeRadius * Math.sin(thetaEnd)
-      const y = globeRadius * Math.cos(thetaEnd)
-      band.add(createCap(radius, y, false, strataMaterial, edgeMaterial))
-    }
-
-    globe.add(band)
-    return {
-      baseOffset: definition.offset,
-      group: band,
-      thetaEnd,
-      thetaStart,
-    }
-  })
-
-  for (const [start, end] of blockedRoutes) {
-    addBlockedRoute(start, end, bands, blockedRouteMaterial)
-  }
-
-  const routePulses = activeRoutes
-    .map(([start, end], index) =>
-      addRoute(start, end, bands, routeMaterial, {
-        geometry: nodeGeometry,
-        material: nodeMaterial,
-        phase: index / activeRoutes.length,
-      }),
-    )
-    .filter((pulse): pulse is RoutePulse => pulse !== undefined)
-
-  const baseRotation = MathUtils.degToRad(139)
-  const axialTilt = -MathUtils.degToRad(23.44)
-  axisTilt.rotation.set(0.035, 0, axialTilt)
-  globe.rotation.set(0, baseRotation, 0)
-
-  let pointerX = 0
-  let pointerY = 0
-  let targetPointerX = 0
-  let targetPointerY = 0
+  const textures = new Set<Texture>()
+  const materials = new Set<Material>()
+  const textureCleanups = new Set<() => void>()
   let disposed = false
-  let frame = 0
-  let visible = true
-  let previousRenderTime: number | undefined
-  let motionStartTime: number | undefined
-
-  const resize = () => {
-    const width = root.clientWidth
-    const height = root.clientHeight
-    if (width === 0 || height === 0) return
-
-    const preferredPixelRatio = 1.5
-    const pixelBudgetRatio = Math.sqrt(3_000_000 / (width * height))
-    const maximumPixelRatio = Math.max(
-      0.75,
-      Math.min(preferredPixelRatio, pixelBudgetRatio),
-    )
-    renderer.setPixelRatio(maximumPixelRatio)
-    renderer.setSize(width, height, false)
-
-    const rootAspectRatio = width / height
-    const viewportWidth =
-      rootAspectRatio >= posterAspectRatio ? height * posterAspectRatio : width
-    const viewportHeight =
-      rootAspectRatio >= posterAspectRatio ? height : width / posterAspectRatio
-    const viewportX = (width - viewportWidth) / 2
-    const viewportY = (height - viewportHeight) / 2
-
-    renderer.setScissorTest(false)
-    renderer.clear()
-    renderer.setViewport(viewportX, viewportY, viewportWidth, viewportHeight)
-    renderer.setScissor(viewportX, viewportY, viewportWidth, viewportHeight)
-    renderer.setScissorTest(true)
-
-    camera.aspect = posterAspectRatio
-    camera.updateProjectionMatrix()
-
-    model.position.set(2.15, -0.24, 0)
-    model.scale.setScalar(1.02)
-
-    camera.lookAt(model.position.x * 0.16, -0.16, 0)
-  }
-
-  const render = (time: number) => {
-    if (disposed) return
-    frame = window.requestAnimationFrame(render)
-    if (!visible) {
-      previousRenderTime = undefined
-      return
-    }
-
-    const frameDuration = previousRenderTime
-      ? Math.min(time - previousRenderTime, 50)
-      : 1000 / 60
-    previousRenderTime = time
-    const elapsed = motionStartTime ? Math.max(0, time - motionStartTime) : 0
-
-    if (motionStartTime) {
-      const pointerSmoothing = 1 - Math.pow(0.955, frameDuration / 32)
-      pointerX += (targetPointerX - pointerX) * pointerSmoothing
-      pointerY += (targetPointerY - pointerY) * pointerSmoothing
-    }
-    globe.rotation.y = baseRotation + elapsed * rotationRadiansPerMillisecond
-    axisTilt.rotation.x = 0.035 + pointerY * 0.025
-
-    const sliceCycle = (elapsed / 7_000) % 2
-    const sliceSeparation =
-      (sliceCycle <= 1 ? sliceCycle : 2 - sliceCycle) * 0.03
-    for (const [index, band] of bands.entries()) {
-      const direction = index === 0 ? 1 : index === 2 ? -1 : 0
-      band.group.position.x = pointerX * direction * 0.035
-      band.group.position.y =
-        band.baseOffset + direction * (sliceSeparation + pointerY * 0.024)
-    }
-
-    for (const pulse of routePulses) {
-      const cycle = elapsed * 0.00005 * pulse.speed + pulse.phase * 2
-      const progress = routeProgress(cycle)
-      const fade = Math.sin(progress * Math.PI)
-      pulse.mesh.position.copy(pulse.curve.getPointAt(progress))
-      pulse.mesh.scale.setScalar(0.78 + fade * 0.32)
-    }
-
-    renderer.render(scene, camera)
-  }
-
-  const onPointerMove = (event: PointerEvent) => {
-    const bounds = root.getBoundingClientRect()
-    targetPointerX = (event.clientX - bounds.left) / bounds.width - 0.5
-    targetPointerY = (event.clientY - bounds.top) / bounds.height - 0.5
-  }
-
-  const onPointerLeave = () => {
-    targetPointerX = 0
-    targetPointerY = 0
-  }
-
-  const resizeObserver = new ResizeObserver(resize)
-  resizeObserver.observe(root)
-
-  const intersectionObserver = new IntersectionObserver(
-    entries => {
-      visible = entries.some(entry => entry.isIntersecting)
-    },
-    { threshold: 0.01 },
-  )
-  intersectionObserver.observe(root)
-
-  root.addEventListener("pointermove", onPointerMove)
-  root.addEventListener("pointerleave", onPointerLeave)
-
-  resize()
-  renderer.render(scene, camera)
-  window.requestAnimationFrame(onReady)
-  frame = window.requestAnimationFrame(render)
-
+  let frame: number | undefined
+  let releaseListeners = () => {}
   const dispose = () => {
+    if (disposed) return
     disposed = true
-    window.cancelAnimationFrame(frame)
-    resizeObserver.disconnect()
-    intersectionObserver.disconnect()
-    root.removeEventListener("pointermove", onPointerMove)
-    root.removeEventListener("pointerleave", onPointerLeave)
-
+    if (frame !== undefined) cancelAnimationFrame(frame)
+    frame = undefined
+    releaseListeners()
+    for (const cleanup of textureCleanups) cleanup()
+    textureCleanups.clear()
+    signal.removeEventListener("abort", dispose)
+    const geometries = new Set<BufferGeometry>()
     scene.traverse(object => {
       if (!(object instanceof Line) && !(object instanceof Mesh)) return
-      object.geometry.dispose()
-      if (Array.isArray(object.material)) {
-        object.material.forEach(disposeMaterial)
-      } else {
-        disposeMaterial(object.material)
-      }
+      geometries.add(object.geometry)
+      for (const material of Array.isArray(object.material)
+        ? object.material
+        : [object.material])
+        materials.add(material)
     })
-
+    for (const material of materials) {
+      for (const value of Object.values(material))
+        if (value instanceof Texture) textures.add(value)
+      material.dispose()
+    }
+    for (const geometry of geometries) geometry.dispose()
+    for (const texture of textures) texture.dispose()
     renderer.dispose()
     renderer.forceContextLoss()
   }
+  signal.addEventListener("abort", dispose, { once: true })
+  const track = <T extends Material>(material: T): T => {
+    materials.add(material)
+    return material
+  }
+  const loadTexture = (url: string) =>
+    new Promise<Texture>((resolve, reject) => {
+      const cleanup = () => {
+        signal.removeEventListener("abort", onAbort)
+        textureCleanups.delete(cleanup)
+        reject(new DOMException("Texture load cancelled", "AbortError"))
+      }
+      const onAbort = cleanup
+      textureCleanups.add(cleanup)
+      signal.addEventListener("abort", onAbort, { once: true })
+      const texture = new TextureLoader().load(
+        url,
+        loaded => {
+          signal.removeEventListener("abort", onAbort)
+          textureCleanups.delete(cleanup)
+          if (disposed || signal.aborted) {
+            loaded.dispose()
+            reject(signal.reason)
+            return
+          }
+          resolve(loaded)
+        },
+        undefined,
+        error => {
+          signal.removeEventListener("abort", onAbort)
+          textureCleanups.delete(cleanup)
+          reject(error)
+        },
+      )
+      textures.add(texture)
+    })
+  try {
+    renderer.setClearColor(0x070a0e, 0)
+    renderer.outputColorSpace = SRGBColorSpace
+    renderer.toneMapping = ACESFilmicToneMapping
+    renderer.toneMappingExposure = 0.94
+    const camera = new PerspectiveCamera(34, 1, 0.1, 100)
+    camera.position.set(0, 1.8, 9.2)
 
-  return {
-    dispose,
-    startMotion: () => {
-      if (!motionStartTime) motionStartTime = performance.now()
-    },
-  } satisfies SlicedEarthSceneController
+    scene.add(new AmbientLight(0x668090, 0.38))
+    scene.add(new HemisphereLight(0x9fc9dd, 0x05080c, 1.55))
+
+    const keyLight = new DirectionalLight(0xd7f5ff, 3.4)
+    keyLight.position.set(-3.5, 4.5, 6.2)
+    scene.add(keyLight)
+
+    const rimLight = new DirectionalLight(0x4b9bb7, 2.1)
+    rimLight.position.set(5, -1.5, -2.5)
+    scene.add(rimLight)
+
+    const [surfaceTexture, reliefTexture] = await Promise.all([
+      loadTexture(surfaceUrl),
+      loadTexture(reliefUrl),
+    ])
+    signal.throwIfAborted()
+    surfaceTexture.colorSpace = SRGBColorSpace
+
+    for (const texture of [surfaceTexture, reliefTexture]) {
+      texture.wrapS = RepeatWrapping
+      texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8)
+    }
+
+    const surfaceMaterial = track(
+      new MeshStandardMaterial({
+        bumpMap: reliefTexture,
+        bumpScale: 0.026,
+        map: surfaceTexture,
+        metalness: 0.02,
+        roughness: 0.93,
+      }),
+    )
+    const coreTexture = createCoreTexture()
+    textures.add(coreTexture)
+    const strataMaterial = track(
+      new MeshStandardMaterial({
+        emissive: new Color(0x0b151b),
+        emissiveIntensity: 0.36,
+        map: coreTexture,
+        metalness: 0,
+        roughness: 1,
+        side: DoubleSide,
+      }),
+    )
+    const edgeMaterial = track(
+      new MeshStandardMaterial({
+        color: new Color(0x243842),
+        metalness: 0,
+        roughness: 0.96,
+      }),
+    )
+    const routeMaterial = track(
+      new MeshBasicMaterial({
+        color: accent,
+        opacity: 0.5,
+        transparent: true,
+      }),
+    )
+    const blockedRouteMaterial = track(
+      new LineDashedMaterial({
+        color: accent,
+        dashSize: 0.035,
+        depthWrite: false,
+        gapSize: 0.045,
+        opacity: 0.22,
+        transparent: true,
+      }),
+    )
+    const nodeGeometry = new SphereGeometry(0.034, 10, 6)
+    const nodeMaterial = track(new MeshBasicMaterial({ color: accent }))
+
+    const model = new Group()
+    const axisTilt = new Group()
+    const globe = new Group()
+    model.add(axisTilt)
+    axisTilt.add(globe)
+    scene.add(model)
+
+    const bands: GlobeBand[] = bandDefinitions.map(definition => {
+      const thetaStart = latitudeToTheta(definition.latitudeTop)
+      const thetaEnd = latitudeToTheta(definition.latitudeBottom)
+      const band = new Group()
+      band.position.y = definition.offset
+
+      const surfaceGeometry = restoreGlobalLatitudeUv(
+        new SphereGeometry(
+          globeRadius,
+          96,
+          54,
+          0,
+          Math.PI * 2,
+          thetaStart,
+          thetaEnd - thetaStart,
+        ),
+      )
+      const surface = new Mesh(surfaceGeometry, surfaceMaterial)
+      band.add(surface)
+
+      if (thetaStart > 0.001) {
+        const radius = globeRadius * Math.sin(thetaStart)
+        const y = globeRadius * Math.cos(thetaStart)
+        band.add(createCap(radius, y, true, strataMaterial, edgeMaterial))
+      }
+
+      if (thetaEnd < Math.PI - 0.001) {
+        const radius = globeRadius * Math.sin(thetaEnd)
+        const y = globeRadius * Math.cos(thetaEnd)
+        band.add(createCap(radius, y, false, strataMaterial, edgeMaterial))
+      }
+
+      globe.add(band)
+      return {
+        baseOffset: definition.offset,
+        group: band,
+        thetaEnd,
+        thetaStart,
+      }
+    })
+
+    for (const [start, end] of blockedRoutes) {
+      addBlockedRoute(start, end, bands, blockedRouteMaterial)
+    }
+
+    const routePulses = activeRoutes
+      .map(([start, end], index) =>
+        addRoute(start, end, bands, routeMaterial, {
+          geometry: nodeGeometry,
+          material: nodeMaterial,
+          phase: index / activeRoutes.length,
+        }),
+      )
+      .filter((pulse): pulse is RoutePulse => pulse !== undefined)
+
+    const baseRotation = MathUtils.degToRad(139)
+    const axialTilt = -MathUtils.degToRad(23.44)
+    axisTilt.rotation.set(0.035, 0, axialTilt)
+    globe.rotation.set(0, baseRotation, 0)
+
+    let pointerX = 0
+    let pointerY = 0
+    let targetPointerX = 0
+    let targetPointerY = 0
+    let visible = true
+    let pageVisible = document.visibilityState === "visible"
+    let previousRenderTime: number | undefined
+    let motionStarted = false
+    let activeSince: number | undefined
+    let accumulatedTime = 0
+    const canRender = () => !disposed && motionStarted && visible && pageVisible
+    const schedule = () => {
+      if (canRender() && frame === undefined)
+        frame = requestAnimationFrame(render)
+    }
+    const syncRendering = () => {
+      const now = performance.now()
+      if (canRender()) {
+        activeSince ??= now
+        schedule()
+      } else {
+        if (activeSince !== undefined) accumulatedTime += now - activeSince
+        activeSince = undefined
+        previousRenderTime = undefined
+        if (frame !== undefined) cancelAnimationFrame(frame)
+        frame = undefined
+      }
+    }
+
+    const resize = () => {
+      const width = root.clientWidth
+      const height = root.clientHeight
+      if (width === 0 || height === 0) return
+
+      const preferredPixelRatio = 1.5
+      const pixelBudgetRatio = Math.sqrt(3_000_000 / (width * height))
+      const maximumPixelRatio = Math.max(
+        0.75,
+        Math.min(preferredPixelRatio, pixelBudgetRatio),
+      )
+      renderer.setPixelRatio(maximumPixelRatio)
+      renderer.setSize(width, height, false)
+
+      const rootAspectRatio = width / height
+      const viewportWidth =
+        rootAspectRatio >= posterAspectRatio
+          ? height * posterAspectRatio
+          : width
+      const viewportHeight =
+        rootAspectRatio >= posterAspectRatio
+          ? height
+          : width / posterAspectRatio
+      const viewportX = (width - viewportWidth) / 2
+      const viewportY = (height - viewportHeight) / 2
+
+      renderer.setScissorTest(false)
+      renderer.clear()
+      renderer.setViewport(viewportX, viewportY, viewportWidth, viewportHeight)
+      renderer.setScissor(viewportX, viewportY, viewportWidth, viewportHeight)
+      renderer.setScissorTest(true)
+
+      camera.aspect = posterAspectRatio
+      camera.updateProjectionMatrix()
+
+      model.position.set(2.15, -0.24, 0)
+      model.scale.setScalar(1.02)
+
+      camera.lookAt(model.position.x * 0.16, -0.16, 0)
+    }
+
+    const render = (time: number) => {
+      frame = undefined
+      if (!canRender()) return
+
+      const frameDuration = previousRenderTime
+        ? Math.min(time - previousRenderTime, 50)
+        : 1000 / 60
+      previousRenderTime = time
+      const elapsed =
+        accumulatedTime +
+        (activeSince !== undefined ? Math.max(0, time - activeSince) : 0)
+
+      if (motionStarted) {
+        const pointerSmoothing = 1 - Math.pow(0.955, frameDuration / 32)
+        pointerX += (targetPointerX - pointerX) * pointerSmoothing
+        pointerY += (targetPointerY - pointerY) * pointerSmoothing
+      }
+      globe.rotation.y = baseRotation + elapsed * rotationRadiansPerMillisecond
+      axisTilt.rotation.x = 0.035 + pointerY * 0.025
+
+      const sliceCycle = (elapsed / 7_000) % 2
+      const sliceSeparation =
+        (sliceCycle <= 1 ? sliceCycle : 2 - sliceCycle) * 0.03
+      for (const [index, band] of bands.entries()) {
+        const direction = index === 0 ? 1 : index === 2 ? -1 : 0
+        band.group.position.x = pointerX * direction * 0.035
+        band.group.position.y =
+          band.baseOffset + direction * (sliceSeparation + pointerY * 0.024)
+      }
+
+      for (const pulse of routePulses) {
+        const cycle = elapsed * 0.00005 * pulse.speed + pulse.phase * 2
+        const progress = routeProgress(cycle)
+        const fade = Math.sin(progress * Math.PI)
+        pulse.mesh.position.copy(pulse.curve.getPointAt(progress))
+        pulse.mesh.scale.setScalar(0.78 + fade * 0.32)
+      }
+
+      renderer.render(scene, camera)
+      schedule()
+    }
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch" || !canRender()) return
+      const bounds = root.getBoundingClientRect()
+      targetPointerX = (event.clientX - bounds.left) / bounds.width - 0.5
+      targetPointerY = (event.clientY - bounds.top) / bounds.height - 0.5
+      root.dataset.earthPointer = "active"
+    }
+
+    const onPointerLeave = () => {
+      targetPointerX = 0
+      targetPointerY = 0
+      root.dataset.earthPointer = "idle"
+    }
+
+    const resizeObserver = new ResizeObserver(resize)
+    resizeObserver.observe(root)
+
+    const intersectionObserver = new IntersectionObserver(
+      entries => {
+        visible = entries.some(entry => entry.isIntersecting)
+        syncRendering()
+      },
+      { threshold: 0.01 },
+    )
+    intersectionObserver.observe(root)
+
+    const onVisibility = () => {
+      pageVisible = document.visibilityState === "visible"
+      syncRendering()
+    }
+    pointerTarget.addEventListener("pointermove", onPointerMove)
+    pointerTarget.addEventListener("pointerleave", onPointerLeave)
+    document.addEventListener("visibilitychange", onVisibility)
+    releaseListeners = () => {
+      resizeObserver.disconnect()
+      intersectionObserver.disconnect()
+      pointerTarget.removeEventListener("pointermove", onPointerMove)
+      pointerTarget.removeEventListener("pointerleave", onPointerLeave)
+      document.removeEventListener("visibilitychange", onVisibility)
+      delete root.dataset.earthPointer
+    }
+
+    resize()
+    renderer.render(scene, camera)
+
+    return {
+      dispose,
+      startMotion: () => {
+        if (disposed || motionStarted) return
+        motionStarted = true
+        syncRendering()
+      },
+    } satisfies SlicedEarthSceneController
+  } catch (error) {
+    dispose()
+    throw error
+  }
 }
