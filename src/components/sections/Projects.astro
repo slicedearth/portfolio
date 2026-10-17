@@ -18,7 +18,7 @@ const imageFor = (filename: string) => {
 
 <section
   id="projects"
-  class="border-b border-line bg-surface/35 px-5 py-14 sm:px-8 sm:py-16"
+  class="section-planes border-b border-line bg-surface/35 px-5 py-14 sm:px-8 sm:py-16"
 >
   <div class="site-frame">
     <header
@@ -36,7 +36,7 @@ const imageFor = (filename: string) => {
       </div>
     </header>
     <div class="grid gap-5 lg:grid-cols-2 sm:gap-6">
-      {projects.map((project, index) => (
+      {projects.map(project => (
         <ProjectItem
           title={project.data.title}
           eyebrow={project.data.eyebrow}
@@ -51,7 +51,6 @@ const imageFor = (filename: string) => {
           caseStudyURL={project.data.caseStudyURL}
           caseStudyLabel={project.data.caseStudyLabel}
           variant={project.data.presentation}
-          revealDelay={(index % 2) * 60}
         />
       ))}
     </div>

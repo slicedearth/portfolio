@@ -217,10 +217,6 @@ test("featured project uses a static project image", async ({ page }) => {
     .locator("[data-project-card]")
     .filter({ has: page.getByRole("heading", { name: "WHOISleuth" }) })
   await expect(featuredProject.locator("video")).toHaveCount(0)
-  await expect(featuredProject.locator("[data-project-image]")).toHaveCSS(
-    "object-fit",
-    "contain",
-  )
   await expect(featuredProject).toHaveAttribute("data-reveal-state", "visible")
 })
 
@@ -244,11 +240,35 @@ test("project screenshots remain fully visible across major viewports", async ({
     { width: 1023, height: 900 },
     { width: 1024, height: 900 },
     { width: 1440, height: 900 },
+    { width: 1536, height: 960 },
+    { width: 1920, height: 1080 },
     { width: 2560, height: 1440 },
+    { width: 3200, height: 1800 },
     { width: 3840, height: 2160 },
   ]) {
     await page.setViewportSize(viewport)
     await page.goto("/#projects")
+
+    const alignment = await page.evaluate(() => {
+      const navigation = document.querySelector('nav[aria-label="Primary"]')!
+      const controls = Array.from(navigation.children).filter(
+        element => element.getBoundingClientRect().width > 0,
+      )
+      return {
+        frames: Array.from(document.querySelectorAll(".site-frame")).map(
+          element => element.getBoundingClientRect().toJSON(),
+        ),
+        navigationLeft: controls[0].getBoundingClientRect().left,
+        navigationRight: controls.at(-1)!.getBoundingClientRect().right,
+      }
+    })
+    const contentFrame = alignment.frames[0]
+    for (const frame of alignment.frames) {
+      expect(frame.left).toBeCloseTo(contentFrame.left, 0)
+      expect(frame.right).toBeCloseTo(contentFrame.right, 0)
+    }
+    expect(alignment.navigationLeft).toBeCloseTo(contentFrame.left, 0)
+    expect(alignment.navigationRight).toBeCloseTo(contentFrame.right, 0)
 
     const projectImages = page.locator("[data-project-image]")
     await expect(projectImages).toHaveCount(projects.length)
@@ -256,6 +276,7 @@ test("project screenshots remain fully visible across major viewports", async ({
     for (let index = 0; index < (await projectImages.count()); index += 1) {
       const projectImage = projectImages.nth(index)
       await projectImage.scrollIntoViewIfNeeded()
+      await expect(projectImage).toBeVisible()
       await expect
         .poll(() =>
           projectImage.evaluate(image =>
@@ -268,9 +289,8 @@ test("project screenshots remain fully visible across major viewports", async ({
     const imageStates = await projectImages.evaluateAll(images =>
       images.map(image => {
         const element = image as HTMLImageElement
-        const style = getComputedStyle(element)
         const bounds = element.getBoundingClientRect()
-        const containerBounds = element.parentElement!.getBoundingClientRect()
+        const frameBounds = element.closest("figure")!.getBoundingClientRect()
         const card = element.closest<HTMLElement>("[data-project-card]")!
         const mediaBounds = element.closest("a")!.getBoundingClientRect()
         const contentBounds = card
@@ -281,10 +301,8 @@ test("project screenshots remain fully visible across major viewports", async ({
           complete: element.complete,
           naturalHeight: element.naturalHeight,
           naturalWidth: element.naturalWidth,
-          objectFit: style.objectFit,
-          transform: style.transform,
           bounds: bounds.toJSON(),
-          containerBounds: containerBounds.toJSON(),
+          frameBounds: frameBounds.toJSON(),
           variant: card.dataset.projectVariant,
           mediaBounds: mediaBounds.toJSON(),
           contentBounds: contentBounds.toJSON(),
@@ -296,18 +314,21 @@ test("project screenshots remain fully visible across major viewports", async ({
       expect(image.complete).toBe(true)
       expect(image.naturalWidth).toBeGreaterThan(0)
       expect(image.naturalHeight).toBeGreaterThan(0)
-      expect(image.objectFit).toBe("contain")
-      expect(image.transform).toBe("none")
-      expect(image.bounds.width).toBeCloseTo(image.containerBounds.width, 0)
-      expect(image.bounds.height).toBeCloseTo(image.containerBounds.height, 0)
+      // Responsive image candidates may round their intrinsic height by a pixel.
+      const naturalHeight =
+        (image.bounds.width * image.naturalHeight) / image.naturalWidth
+      expect(Math.abs(image.bounds.height - naturalHeight)).toBeLessThanOrEqual(
+        1,
+      )
+      for (const frame of [image.frameBounds, image.mediaBounds]) {
+        expect(image.bounds.left).toBeGreaterThanOrEqual(frame.left - 1)
+        expect(image.bounds.top).toBeGreaterThanOrEqual(frame.top - 1)
+        expect(image.bounds.right).toBeLessThanOrEqual(frame.right + 1)
+        expect(image.bounds.bottom).toBeLessThanOrEqual(frame.bottom + 1)
+      }
       if (image.variant === "compact") {
         expect(image.mediaBounds.bottom).toBeLessThanOrEqual(
           image.contentBounds.top + 1,
-        )
-        expect(image.bounds.width).toBeCloseTo(image.mediaBounds.width, 0)
-        expect(image.mediaBounds.height).toBeCloseTo(
-          (image.mediaBounds.width * image.naturalHeight) / image.naturalWidth,
-          0,
         )
       }
     }
@@ -317,6 +338,98 @@ test("project screenshots remain fully visible across major viewports", async ({
       content: document.documentElement.scrollWidth,
     }))
     expect(pageWidth.content).toBeLessThanOrEqual(pageWidth.viewport)
+  }
+})
+
+test("enlarged text keeps content and navigation usable", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Text reflow runs once")
+  await page.emulateMedia({ reducedMotion: "reduce" })
+
+  for (const viewport of [
+    { width: 320, height: 800 },
+    { width: 390, height: 844 },
+    { width: 1440, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport)
+    await page.goto("/")
+    await page.evaluate(async () => {
+      document.documentElement.style.fontSize = "200%"
+      await document.fonts.ready
+    })
+
+    const layout = await page.evaluate(() => {
+      const hero = document
+        .querySelector(".hero-shell")!
+        .getBoundingClientRect()
+      return {
+        viewport: document.documentElement.clientWidth,
+        content: document.documentElement.scrollWidth,
+        clippedText: Array.from(
+          document.querySelectorAll("h1, h2, h3, p, a, li"),
+        )
+          .filter(
+            element =>
+              element.clientWidth &&
+              element.scrollWidth > element.clientWidth + 1,
+          )
+          .map(element => element.textContent?.trim()),
+        heroClips: Array.from(
+          document.querySelectorAll(
+            ".hero-title, .hero-shell p, .hero-shell a",
+          ),
+        ).some(element => {
+          const bounds = element.getBoundingClientRect()
+          return (
+            bounds.left < hero.left ||
+            bounds.right > hero.right ||
+            bounds.bottom > hero.bottom
+          )
+        }),
+      }
+    })
+    expect(layout.content).toBeLessThanOrEqual(layout.viewport)
+    expect(layout.clippedText).toEqual([])
+    expect(layout.heroClips).toBe(false)
+
+    const menu = page.locator("[data-mobile-nav]")
+    if (await menu.isVisible()) {
+      await menu.locator("summary").focus()
+      await page.keyboard.press("Enter")
+      await expect(menu).toHaveAttribute("open")
+      await page.keyboard.press("Tab")
+      const destination = menu.getByRole("link").first()
+      await expect(destination).toBeFocused()
+      await page.keyboard.press("Enter")
+      await expect(menu).not.toHaveAttribute("open")
+    }
+  }
+})
+
+test("portfolio content remains visible without JavaScript", async ({
+  browser,
+  baseURL,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Static rendering runs once")
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    viewport: { width: 390, height: 844 },
+  })
+  try {
+    await context.route("**/*", route =>
+      new URL(route.request().url()).origin === new URL(baseURL!).origin
+        ? route.continue()
+        : route.abort(),
+    )
+    const page = await context.newPage()
+    await page.goto(baseURL!)
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
+    for (const section of await page.locator("[data-reveal]").all()) {
+      await expect(section).toHaveCSS("opacity", "1")
+    }
+  } finally {
+    await context.close()
   }
 })
 
@@ -365,7 +478,7 @@ test("reduced motion retains the static hero", async ({ page }, testInfo) => {
   await expect(page.locator("[data-reveal]").first()).toBeVisible()
 })
 
-test("mobile navigation keeps closed links out of view", async ({
+test("mobile navigation supports keyboard dismissal and link navigation", async ({
   page,
 }, testInfo) => {
   test.skip(
@@ -382,8 +495,17 @@ test("mobile navigation keeps closed links out of view", async ({
   await expect(menu).not.toHaveAttribute("open")
   await expect(projectsLink).not.toBeVisible()
 
-  await toggle.click()
+  await toggle.focus()
+  await page.keyboard.press("Enter")
   await expect(menu).toHaveAttribute("open", "")
+  await expect(projectsLink).toBeVisible()
+  await page.keyboard.press("Tab")
+  await expect(projectsLink).toBeFocused()
+  await page.keyboard.press("Escape")
+  await expect(menu).not.toHaveAttribute("open")
+  await expect(toggle).toBeFocused()
+  await page.keyboard.press("Enter")
+  await expect(menu).toHaveAttribute("open")
   await expect(projectsLink).toBeVisible()
 
   await page.evaluate(async () => {

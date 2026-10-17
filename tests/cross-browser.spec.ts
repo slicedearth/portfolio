@@ -35,7 +35,6 @@ test("core portfolio experience works across browser engines", async ({
         ),
       )
       .toBeGreaterThan(0)
-    await expect(image).toHaveCSS("object-fit", "contain")
   }
 
   const widths = await page.evaluate(() => ({

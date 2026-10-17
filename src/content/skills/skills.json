@@ -10,23 +10,28 @@
     "title": "Svelte"
   },
   {
-    "id": "python",
+    "id": "react",
     "order": 3,
+    "title": "React"
+  },
+  {
+    "id": "python",
+    "order": 4,
     "title": "Python"
   },
   {
     "id": "nodejs",
-    "order": 4,
+    "order": 5,
     "title": "Node.js"
   },
   {
     "id": "astro",
-    "order": 5,
+    "order": 6,
     "title": "Astro"
   },
   {
     "id": "playwright",
-    "order": 6,
+    "order": 7,
     "title": "Playwright"
   }
 ]

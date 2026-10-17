@@ -16,7 +16,6 @@ interface Props {
   caseStudyURL?: string
   caseStudyLabel?: string
   variant?: "featured" | "secondary" | "compact"
-  revealDelay?: number
 }
 const {
   title,
@@ -32,7 +31,6 @@ const {
   caseStudyURL,
   caseStudyLabel = "Read more",
   variant = "compact",
-  revealDelay = 0,
 } = Astro.props
 const isFeature = variant !== "compact"
 const primaryLink = deployedURL ?? caseStudyURL ?? githubURL
@@ -47,7 +45,6 @@ const primaryType = deployedURL
   data-project-card
   data-project-variant={variant}
   data-reveal
-  data-reveal-delay={revealDelay || undefined}
   class:list={[
     "group min-w-0 overflow-hidden rounded-md border border-line bg-card",
     isFeature ? "lg:col-span-2 lg:grid lg:items-stretch" : "flex flex-col",
@@ -64,12 +61,19 @@ const primaryType = deployedURL
     data-analytics-type={primaryType}
     data-analytics-item={title}
     class:list={[
-      "block min-w-0 overflow-hidden bg-bg focus-visible:outline-offset-[-4px]",
-      isFeature ? "aspect-video lg:aspect-auto" : "shrink-0",
+      "min-w-0 overflow-hidden focus-visible:outline-offset-[-4px]",
+      isFeature
+        ? "flex items-center bg-surface p-3 sm:p-4"
+        : "block shrink-0 border-b border-line bg-bg",
       variant === "secondary" && "lg:order-2",
     ]}
   >
-    <figure class:list={["relative min-h-0", isFeature && "h-full"]}>
+    <figure
+      class:list={[
+        "relative w-full min-h-0",
+        isFeature && "overflow-hidden rounded-sm bg-bg ring-1 ring-line",
+      ]}
+    >
       <Image
         src={image}
         alt={imageAlt}
@@ -78,7 +82,7 @@ const primaryType = deployedURL
         quality={84}
         loading="lazy"
         data-project-image
-        class:list={["w-full object-contain", isFeature ? "h-full" : "h-auto"]}
+        class="h-auto w-full object-contain"
       />
     </figure>
   </a>

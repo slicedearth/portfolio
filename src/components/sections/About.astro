@@ -9,7 +9,7 @@ const technologies = (await getCollection("skills")).sort(
 
 <section
   id="about"
-  class="border-t border-line bg-bg px-5 py-14 sm:px-8 sm:py-16"
+  class="section-planes section-planes-offset border-t border-line bg-bg px-5 py-14 sm:px-8 sm:py-16"
 >
   <div class="site-frame">
     <header
@@ -23,12 +23,15 @@ const technologies = (await getCollection("skills")).sort(
         Melbourne, Australia
       </p>
     </header>
-    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16" data-reveal>
+    <div
+      class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16"
+      data-reveal
+    >
       <div class="max-w-2xl">
         <h3 class="text-xl font-semibold text-white sm:text-2xl">
           How I approach projects
         </h3>
-        <p class="mt-4 leading-relaxed text-muted sm:text-lg">
+        <p class="mt-4 max-w-xl text-lg leading-relaxed text-gray-200 sm:text-xl lg:text-2xl">
           I focus on clear requirements, useful documentation and keeping
           developers, designers and stakeholders aligned as a project
           progresses.
@@ -36,15 +39,11 @@ const technologies = (await getCollection("skills")).sort(
       </div>
       <div>
         <h3 class="text-xl font-semibold text-white sm:text-2xl">
-          Technologies used in these projects
+          Tools &amp; technologies
         </h3>
-        <p class="mt-4 max-w-xl leading-relaxed text-muted">
-          The applications use a mix of web frameworks, data-processing tools
-          and browser testing libraries.
-        </p>
         <ul
-          class="mt-5 grid grid-cols-2 gap-x-5 gap-y-1 sm:grid-cols-3"
-          aria-label="Project technologies"
+          class="technology-list mt-5 grid gap-x-5 gap-y-1"
+          aria-label="Tools and technologies"
         >
           {technologies.map(technology => (
             <li class="flex min-w-0 items-center gap-3 py-3">
@@ -64,3 +63,13 @@ const technologies = (await getCollection("skills")).sort(
     </div>
   </div>
 </section>
+
+<style>
+  .technology-list {
+    /* Let enlarged labels reflow without overflowing narrow columns. */
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, max(8rem, 30%)), 1fr)
+    );
+  }
+</style>

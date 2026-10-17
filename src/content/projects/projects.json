@@ -4,7 +4,7 @@
     "order": 1,
     "title": "WHOISleuth",
     "eyebrow": "Domains and brand protection",
-    "image": "whoisleuth.webp",
+    "image": "whoisleuth-dark.webp",
     "image_alt": "WHOISleuth homepage in dark mode with fictional domain candidates and evidence panels",
     "githubURL": "https://github.com/slicedearth/whoisleuth",
     "deployedURL": "https://www.whoisleuth.com/demo",

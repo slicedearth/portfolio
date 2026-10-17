@@ -31,6 +31,7 @@ const skills = defineCollection({
     title: z.enum([
       "TypeScript",
       "Svelte",
+      "React",
       "Python",
       "Node.js",
       "Astro",
